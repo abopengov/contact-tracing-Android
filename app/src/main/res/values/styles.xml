@@ -1,0 +1,207 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:fontFamily">@font/font</item>
+        <item name="fontFamily">@font/font</item>
+    </style>
+
+    <style name="AppTheme.DebugNoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:fontFamily">@font/font</item>
+        <item name="fontFamily">@font/font</item>
+    </style>
+
+    <style name="button" parent="@android:style/Widget.Button">
+        <item name="android:fontFamily">@font/font</item>
+        <item name="fontFamily">@font/font</item>
+    </style>
+
+    <style name="AppFont">
+        <item name="android:fontFamily">@font/font</item>
+        <item name="fontFamily">@font/font</item>
+    </style>
+
+    <style name="Theme.AppCompat.Transparent.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="word_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+    </style>
+
+    <style name="MyProgressBar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressBackgroundTint">@color/grey_9</item>
+        <item name="android:progressTint">@color/green</item>
+        <item name="android:minWidth">200dp</item>
+    </style>
+
+
+    <style name="OnboardingImage">
+        <item name="android:layout_marginLeft">26dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginRight">26dp</item>
+    </style>
+
+    <style name="OnboardingTitle" parent="AppFont">
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="OnboardingDesc" parent="AppFont">
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="OnboardingDescNew" parent="AppFont">
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="OnboardingDescNoPadding" parent="AppFont">
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="OnboardingSubDesc" parent="AppFont">
+        <item name="android:layout_marginTop">28dp</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textFontWeight">300</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="StepText" parent="AppFont">
+        <item name="android:layout_marginTop">28dp</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/final_gray</item>
+    </style>
+
+    <style name="OnboardingCheckbox" parent="AppFont">
+        <item name="android:layout_marginTop">28dp</item>
+        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/grey_3</item>
+    </style>
+
+    <style name="CustomButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginBottom">24dp</item>
+        <item name="android:background">@drawable/custom_button</item>
+        <item name="android:gravity">center_horizontal|bottom</item>
+        <item name="android:layout_gravity">center_horizontal|bottom</item>
+    </style>
+
+    <style name="CustomButtonText">
+        <item name="android:fontFamily">@font/font</item>
+        <item name="fontFamily">@font/font</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="CustomButtonIcon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+        <item name="android:colorControlActivated">@color/secondary_teal</item>
+    </style>
+
+    <style name="SwitchThemePrivacy" parent="Theme.AppCompat.Light">
+        <item name="android:colorControlActivated">@color/final_blue</item>
+    </style>
+
+    <style name="PremCard">
+        <item name="android:paddingLeft">11dp</item>
+        <item name="android:paddingRight">11dp</item>
+<!--        <item name="android:paddingTop">12dp</item>-->
+<!--        <item name="android:paddingBottom">12dp</item>-->
+        <item name="android:layout_height">64dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/card_border</item>
+
+    </style>
+
+    <style name="PremCardText">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+
+    <style name="PremCardTextOnly">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/black</item>
+
+    </style>
+
+    <style name="PremCardTextContainer">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="CodeText">
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:textSize">56sp</item>
+        <item name="android:textColor">@color/primary_purple</item>
+        <item name="android:letterSpacing">0.2</item>
+    </style>
+
+
+
+</resources>

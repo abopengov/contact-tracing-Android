@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/view_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="30dp"
+
+                    android:visibility="visible">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animation_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:scaleType="centerCrop"
+                        app:lottie_loop="false"
+                        app:lottie_rawRes="@raw/animated_home"
+                        app:lottie_imageAssetsFolder="images" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_home_title"
+                        style="@style/OnboardingTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="155dp"
+                        android:text="@string/home_title"
+                        android:textAllCaps="true"
+                        android:visibility="visible"
+                        android:layout_marginTop="0dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                         />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_home_subtitle"
+                        style="@style/OnboardingDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_subtitle"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="163dp"
+                        android:layout_marginTop="0dp"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_home_title"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_last_update"
+                        style="@style/OnboardingDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="13dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginBottom="0dp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_home_subtitle"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_app_version"
+                        style="@style/OnboardingDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="13dp"
+                        android:layout_marginTop="0dp"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_last_update"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/permission_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="13dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="12dp"
+                        >
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_title"
+                            style="@style/OnboardingTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginRight="0dp"
+                            android:layout_marginBottom="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:text="@string/app_permission_status"
+                            android:textAllCaps="true" />
+
+                        <ImageView
+                            android:id="@+id/prem_info_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="11dp"
+                            android:clickable="true"
+                            android:background="@drawable/ic_info" />
+                    </LinearLayout>
+
+<!--                    <androidx.cardview.widget.CardView-->
+<!--                        android:id="@+id/battery_card_view"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:visibility="visible"-->
+<!--                        card_view:cardBackgroundColor="@color/white"-->
+<!--                        card_view:cardMaxElevation="2dp"-->
+<!--                        card_view:contentPadding="0dp">-->
+
+<!--                        <LinearLayout-->
+<!--                            style="@style/PremCard">-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:orientation="vertical"-->
+<!--                                style="@style/PremCardTextContainer"-->
+<!--                                android:layout_gravity="center_vertical"-->
+<!--                                >-->
+<!--                                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                                    android:id="@+id/tv_battery"-->
+<!--                                    style="@style/PremCardTextOnly"-->
+<!--                                    android:text="@string/battery_optimiser" />-->
+<!--                                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:textSize="12sp"-->
+<!--                                    android:textStyle="italic"-->
+<!--                                    android:textColor="@color/grey_3"-->
+<!--                                    android:text="Turn off at home to prolong battery life" />-->
+
+<!--                            </LinearLayout>-->
+
+<!--                            <Switch-->
+<!--                                android:id="@+id/switch_battery"-->
+<!--                                android:layout_gravity="center_vertical"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:checked="false"-->
+<!--                                android:theme="@style/SwitchTheme" />-->
+
+<!--                        </LinearLayout>-->
+
+<!--                    </androidx.cardview.widget.CardView>-->
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/location_card_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        card_view:cardBackgroundColor="@color/white">
+
+                        <LinearLayout
+                            style="@style/PremCard">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_location"
+                                style="@style/PremCardText"
+                                android:text="@string/location_on" />
+
+                            <ImageView
+                                android:id="@+id/iv_location"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/icon_checkbox"
+                                android:clickable="false" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/bluetooth_card_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="0dp"
+                        card_view:cardBackgroundColor="@color/white">
+
+                        <LinearLayout
+                            style="@style/PremCard">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_bluetooth"
+                                style="@style/PremCardText"
+                                android:text="@string/bluetooth_on" />
+
+                            <ImageView
+                                android:id="@+id/iv_bluetooth"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/icon_checkbox"
+                                android:clickable="false" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/push_card_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        card_view:cardBackgroundColor="@color/white">
+
+
+                        <LinearLayout
+                            style="@style/PremCard">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_push"
+                                style="@style/PremCardText"
+                                android:text="@string/push_noti" />
+
+                            <ImageView
+                                android:id="@+id/iv_push"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:clickable="false"
+                                android:src="@drawable/icon_checkbox" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="13dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="0dp"
+                        android:background="@drawable/card_border"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop ="0dp"
+                            app:srcCompat="@drawable/ic_physical_distance_illustration"
+                            />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/OnboardingTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:paddingTop="0dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginLeft="22dp"
+                            android:layout_marginRight="22dp"
+                            android:textAllCaps="true"
+                            android:text="@string/info_title" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/OnboardingDesc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:paddingTop="0dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginLeft="22dp"
+                            android:layout_marginRight="22dp"
+                            android:text="@string/info_desc_1" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/OnboardingDesc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="22dp"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:layout_marginLeft="22dp"
+                            android:layout_marginRight="22dp"
+                            android:text="@string/info_desc_2" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/view_setup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/light_yellow"
+                    android:orientation="vertical"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:paddingBottom="20dp">
+
+                    <ImageView
+                        android:id="@+id/imv_incomplete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="25dp"
+                        android:paddingLeft="66dp"
+                        android:paddingRight="66dp"
+                        android:src="@drawable/ic_opentrace_blue_transparent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="15dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:text="@string/setup_incomplete"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:text="@string/help_us_identify"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/btn_restart_app_setup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/gradient"
+                        android:minWidth="200dp"
+                        android:text="@string/restart_app_setup"
+                        android:textAllCaps="false"
+                        android:textColor="#fff"
+                        android:textFontWeight="600"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/share_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="13dp"
+                android:layout_marginRight="13dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/card_border"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/OnboardingTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingTop="0dp"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginRight="22dp"
+                        android:drawableLeft="@drawable/ic_share"
+                        android:drawableTint="@color/grey_3"
+                        android:drawablePadding="16dp"
+                        android:textAllCaps="true"
+                        android:text="@string/share_this_app"
+                        android:visibility="visible" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/OnboardingDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="0dp"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginRight="22dp"
+                        android:layout_marginBottom="22dp"
+                        android:text="@string/ask_friend"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <FrameLayout
+                android:id="@+id/watermark_foot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dp"
+                android:layout_marginBottom="23dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <include layout="@layout/watermark_foot" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_announcement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@color/primary_purple"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_announcement"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="No news"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:clickable="true"
+            android:linksClickable="true"
+            android:textColorLink="@color/white"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/btn_announcement_close" />
+
+        <ImageButton
+            android:id="@+id/btn_announcement_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:src="@drawable/ic_cross"
+            android:paddingLeft="8dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

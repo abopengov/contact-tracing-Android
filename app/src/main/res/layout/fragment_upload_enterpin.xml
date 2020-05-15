@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/enterPinBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_arrow_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_title"
+        style="@style/OnboardingTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:text="@string/enter_pin_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_desc"
+        style="@style/OnboardingDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:paddingLeft="19dp"
+        android:paddingRight="19dp"
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="19dp"
+        android:gravity="center"
+        android:text="@string/enter_pin_desc"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+        <LinearLayout
+            android:id="@+id/enterPinInputs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="46dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <EditText
+                android:id="@+id/otp_et1"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:imeOptions="actionGo"
+                android:inputType="textEmailAddress"
+                android:lineSpacingExtra="12dp"
+                android:textSize="48sp"
+                android:textColor="@color/primary_purple"
+                android:layout_weight="1"
+                android:maxLength="1" />
+            <EditText
+                android:id="@+id/otp_et2"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:imeOptions="actionGo"
+                android:inputType="textEmailAddress"
+                android:lineSpacingExtra="12dp"
+                android:textSize="48sp"
+                android:textColor="@color/primary_purple"
+                android:layout_weight="1"
+                android:maxLength="1" />
+            <EditText
+                android:id="@+id/otp_et3"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:imeOptions="actionGo"
+                android:inputType="textEmailAddress"
+                android:lineSpacingExtra="12dp"
+                android:textSize="48sp"
+                android:textColor="@color/primary_purple"
+                android:layout_weight="1"
+                android:maxLength="1" />
+            <EditText
+                android:id="@+id/otp_et4"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:imeOptions="actionGo"
+                android:inputType="textEmailAddress"
+                android:lineSpacingExtra="12dp"
+                android:textSize="48sp"
+                android:textColor="@color/primary_purple"
+                android:layout_weight="1"
+                android:maxLength="1" />
+            <EditText
+                android:id="@+id/otp_et5"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:imeOptions="actionGo"
+                android:inputType="textEmailAddress"
+                android:lineSpacingExtra="12dp"
+                android:textSize="48sp"
+                android:textColor="@color/primary_purple"
+                android:layout_weight="1"
+                android:maxLength="1" />
+            <EditText
+                android:id="@+id/otp_et6"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:imeOptions="actionGo"
+                android:inputType="textEmailAddress"
+                android:lineSpacingExtra="12dp"
+                android:textSize="48sp"
+                android:textColor="@color/primary_purple"
+                android:layout_weight="1"
+                android:maxLength="1" />
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/enterPinFragmentErrorMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/invalid_pin"
+            android:textColor="#C20000"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/enterPinInputs"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <ImageView
+            style="@style/OnboardingImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="2"
+            android:paddingBottom="0dp"
+            android:src="@drawable/ic_upoad_illustration"
+            app:layout_constraintBottom_toBottomOf="@+id/enterPinActionButton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+
+        <LinearLayout
+            android:id="@+id/enterPinActionButton"
+            style="@style/CustomButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+            <TextView
+                android:id="@+id/enterPinButtonText"
+                style="@style/CustomButtonText"
+                android:text="@string/upload_button" />
+            <ImageView
+                style="@style/CustomButtonIcon"
+                android:src="@drawable/ic_arrow_forward_white" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+

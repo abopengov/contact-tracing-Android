@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".onboarding.OnboardingActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/onboardingBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_arrow_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/footer"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/topLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="64dp"
+            app:layout_constraintBottom_toTopOf="@+id/middleLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/StepText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/otp_step" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/OnboardingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_otp"
+                android:textAllCaps="true"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/middleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topLayout"
+            app:layout_constraintVertical_weight="3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/otp_et1"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:imeOptions="actionGo"
+                    android:inputType="phone"
+                    android:lineSpacingExtra="12dp"
+                    android:textSize="48sp"
+                    android:textColor="@color/primary_purple"
+                    android:layout_weight="1"
+                    android:maxLength="1" />
+                <EditText
+                    android:id="@+id/otp_et2"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:imeOptions="actionGo"
+                    android:inputType="phone"
+                    android:lineSpacingExtra="12dp"
+                    android:textSize="48sp"
+                    android:textColor="@color/primary_purple"
+                    android:layout_weight="1"
+                    android:maxLength="1" />
+                <EditText
+                    android:id="@+id/otp_et3"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:imeOptions="actionGo"
+                    android:inputType="phone"
+                    android:lineSpacingExtra="12dp"
+                    android:textSize="48sp"
+                    android:textColor="@color/primary_purple"
+                    android:layout_weight="1"
+                    android:maxLength="1" />
+                <EditText
+                    android:id="@+id/otp_et4"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:imeOptions="actionGo"
+                    android:inputType="phone"
+                    android:lineSpacingExtra="12dp"
+                    android:textSize="48sp"
+                    android:textColor="@color/primary_purple"
+                    android:layout_weight="1"
+                    android:maxLength="1" />
+                <EditText
+                    android:id="@+id/otp_et5"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:imeOptions="actionGo"
+                    android:inputType="phone"
+                    android:lineSpacingExtra="12dp"
+                    android:textSize="48sp"
+                    android:textColor="@color/primary_purple"
+                    android:layout_weight="1"
+                    android:maxLength="1" />
+                <EditText
+                    android:id="@+id/otp_et6"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:imeOptions="actionGo"
+                    android:inputType="phone"
+                    android:lineSpacingExtra="12dp"
+                    android:textSize="48sp"
+                    android:textColor="@color/primary_purple"
+                    android:layout_weight="1"
+                    android:maxLength="1" />
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+
+                android:gravity="center"
+                android:textColor="@color/error"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottomLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_marginTop="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/middleLayout"
+            app:layout_constraintVertical_weight="4">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/sent_to"
+                style="@style/OnboardingDesc"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/otp_sent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/timer"
+                style="@style/OnboardingDesc"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/otp_countdown" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/OnboardingDesc"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="4dp"
+                    android:text="@string/resend_code_label" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/OnboardingDesc"
+                    android:id="@+id/resendCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="4dp"
+                    android:text="@string/resend_code"
+                    android:textColor="@color/secondary_teal" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include layout="@layout/button_and_progress" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
