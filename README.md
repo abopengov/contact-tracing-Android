@@ -9,6 +9,18 @@ The OpenTrace reference implementation comprises of:
 - Cloud functions: [opentrace-community/opentrace-cloud-functions](https://github.com/opentrace-community/opentrace-cloud-functions)
 - Calibration: [opentrace-community/opentrace-calibration](https://github.com/opentrace-community/opentrace-calibration)
 
+ 
+## Note
+This is the open source release of ABTraceTogether, however any components considered sensitive and specific to Alberta Health Services have been removed. The following are the changes made for this release:
+
+1. All licensed artwork has been replace with the transparent images that are of the same resolution
+2. Changed package names
+3. Renamed files, variables, and references specific to Alberta Health
+4. Replaced font with an open source font
+5. Removed mfp certificate file in assets and commented out code that pins said certificate
+6. Removed all references to server names
+7. Replaced sample config and build file in README.md file to be more generic
+
 ## Setup of the app
 To get started on the app, setup and configure the following:
 
