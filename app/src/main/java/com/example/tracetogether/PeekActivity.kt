@@ -47,28 +47,28 @@ class PeekActivity : AppCompatActivity() {
             adapter.setSourceData(records)
         })
 
-        expand.setOnClickListener {
+        expand?.setOnClickListener {
             viewModel.allRecords.value?.let {
                 adapter.setMode(RecordListAdapter.MODE.ALL)
             }
         }
 
-        collapse.setOnClickListener {
+        collapse?.setOnClickListener {
             viewModel.allRecords.value?.let {
                 adapter.setMode(RecordListAdapter.MODE.COLLAPSE)
             }
         }
 
 
-        start.setOnClickListener {
+        start?.setOnClickListener {
             startService()
         }
 
-        stop.setOnClickListener {
+        stop?.setOnClickListener {
             stopService()
         }
 
-        delete.setOnClickListener { view ->
+        delete?.setOnClickListener { view ->
             view.isEnabled = false
 
             val builder = AlertDialog.Builder(this)
@@ -101,7 +101,7 @@ class PeekActivity : AppCompatActivity() {
 
         }
 
-        plot.setOnClickListener { view ->
+        plot?.setOnClickListener { view ->
             val intent = Intent(this, PlotActivity::class.java)
             intent.putExtra("time_period", nextTimePeriod())
             startActivity(intent)
@@ -109,13 +109,13 @@ class PeekActivity : AppCompatActivity() {
 
         val uid = Preference.getUUID(applicationContext)
         val serviceUUID = BuildConfig.BLE_SSID
-        info.text =
+        info?.text =
             "UID: ${uid.substring(uid.length - 4)}   SSID: ${serviceUUID.substring(serviceUUID.length - 4)}"
 
         if (!BuildConfig.DEBUG) {
-            start.visibility = View.GONE
-            stop.visibility = View.GONE
-            delete.visibility = View.GONE
+            start?.visibility = View.GONE
+            stop?.visibility = View.GONE
+            delete?.visibility = View.GONE
         }
     }
 

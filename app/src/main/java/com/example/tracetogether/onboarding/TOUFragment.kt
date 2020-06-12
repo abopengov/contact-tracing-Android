@@ -13,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.tracetogether.R
 import com.example.tracetogether.logging.CentralLog
+import android.widget.TextView
+import com.example.tracetogether.Utils
 import kotlinx.android.synthetic.main.fragment_tou.*
 
 
@@ -48,9 +50,11 @@ class TOUFragment : OnboardingFragmentInterface() {
 
     override fun onButtonClick(buttonView: View) {
         CentralLog.d(TAG, "OnButtonClick 4")
-        val onboardActivity = context as OnboardingActivity
-        onboardActivity.navigateToNextPage()
-    }
+        val onboardActivity = context as OnboardingActivity?
+        onboardActivity?.let{
+            it.navigateToNextPage()
+        }?:(Utils.restartAppWithNoContext(0,"TOUFragment not attached to OnboardingActivity"))
+}
 
     override fun onBackButtonClick(view: View) {}
 

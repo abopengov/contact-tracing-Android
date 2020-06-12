@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction
 import kotlinx.android.synthetic.main.fragment_upload_page.*
 import com.example.tracetogether.MainActivity
 import com.example.tracetogether.R
+import com.example.tracetogether.Utils
 import com.example.tracetogether.status.persistence.StatusRecord
 import com.example.tracetogether.streetpass.persistence.StreetPassRecord
 
@@ -54,8 +55,10 @@ class UploadPageFragment : Fragment() {
     }
 
     fun goBackToHome() {
-        var parentActivity = activity as MainActivity
-        parentActivity.goToHome()
+        var parentActivity = activity as MainActivity?
+        parentActivity?.let {
+            it.goToHome()
+        }?:(Utils.restartAppWithNoContext(0,"UploadPageFragment not attached to MainActivity"))
     }
 
     fun navigateToUploadComplete() {
@@ -68,11 +71,13 @@ class UploadPageFragment : Fragment() {
     }
 
     fun navigateToOTCFragment(){
-        val parentActivity: MainActivity = activity as MainActivity
-        parentActivity.openFragment(
-            parentActivity.LAYOUT_MAIN_ID, ForUseByOTCFragment(),
-            ForUseByOTCFragment::class.java.name, 0
-        )
+        val parentActivity: MainActivity? = activity as MainActivity?
+        parentActivity?.let {
+            it.openFragment(
+                parentActivity.LAYOUT_MAIN_ID, ForUseByOTCFragment(),
+                ForUseByOTCFragment::class.java.name, 0
+            )
+        }?:(Utils.restartAppWithNoContext(0,"UploadPageFragment not attached to MainActivity"))
     }
 
     fun popStack() {

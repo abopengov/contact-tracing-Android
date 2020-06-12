@@ -2,6 +2,7 @@ package com.example.tracetogether
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Context
@@ -12,6 +13,8 @@ import android.provider.Settings
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.tracetogether.api.ErrorCode
+import com.example.tracetogether.api.Request
 import com.example.tracetogether.bluetooth.gatt.*
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.scheduler.Scheduler
@@ -327,6 +330,51 @@ object Utils {
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         return bluetoothAdapter != null &&
                 bluetoothAdapter.isEnabled && bluetoothAdapter.state == BluetoothAdapter.STATE_ON
+    }
+
+    //Checks if the application is registered in MFP
+    suspend fun checkIfAppRegistered() : Boolean {
+        var isRegistered = true
+        val request =
+            Request.runRequest("/adapters/smsOtpService/phone/isRegistered", Request.GET)
+            if(request.errorCode == ErrorCode.APPLICATION_DOES_NOT_EXIST) {
+                isRegistered = false
+            }
+        return isRegistered
+    }
+
+    fun buildWrongVersionDialog(context : Context, msg : String) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.setMessage(msg)
+        builder.setCancelable(false)
+        val alert = builder.create()
+        alert.show()
+    }
+
+    fun restartApp(context: Context, errorType: Int, errorMsg: String? = null) {
+        val intent = Intent(
+            context,
+            RestartActivity::class.java
+        )
+        errorMsg?.let {
+            intent.putExtra("error_msg", errorMsg)
+        }
+        intent.putExtra("error_type", errorType)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent)
+    }
+
+    fun restartAppWithNoContext(errorType: Int, errorMsg: String? = null) {
+        val intent = Intent(
+            TracerApp.AppContext,
+            RestartActivity::class.java
+        )
+        errorMsg?.let {
+            intent.putExtra("error_msg", errorMsg)
+        }
+        intent.putExtra("error_type", errorType)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        TracerApp.AppContext.startActivity(intent)
     }
 
 }

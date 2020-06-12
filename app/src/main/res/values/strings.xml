@@ -12,6 +12,7 @@
     <string name="i_want_to_help">Join the fight</string>
 
     <string name="restart_msg">Unfortunately something went wrong.</string>
+    <string name="wrong_version_msg">The version of the TraceTogether you are trying to access has been updated. Download the latest version from the App Store. For additional details please refer to the FAQs</string>
 
     <string name="tv_howitworks_title">How it works</string>
     <string name="tv_howitworks_explanation">Using your phone’s Bluetooth, your phone detects when it’s near another phone running this app. Your phone securely logs when you have been in close contact with other app users.</string>

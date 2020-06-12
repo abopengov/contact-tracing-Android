@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import com.example.tracetogether.Preference
 import com.example.tracetogether.RestartActivity
+import com.example.tracetogether.Utils
 import com.example.tracetogether.api.Request
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.logging.WFLog
@@ -196,13 +197,8 @@ object TempIDManager : CoroutineScope by MainScope() {
                 }
             } else {
                 CentralLog.d(TAG, "User is not logged in")
-                WFLog.logError("[TempID] Error getting Temporary IDs, no userId")
-                val intent = Intent(
-                    context.applicationContext,
-                    RestartActivity::class.java
-                )
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.applicationContext.startActivity(intent)            }
+                Utils.restartApp(context, 1,"[TempID] Error getting Temporary IDs, no userId")
+                }
         } catch (e: Exception) {
             CentralLog.d(TAG, "[TempID] Error getting Temporary IDs")
         }

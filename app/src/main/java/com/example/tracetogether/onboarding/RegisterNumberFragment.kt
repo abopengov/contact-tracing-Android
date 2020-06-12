@@ -47,8 +47,10 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
     }
 
     override fun onBackButtonClick(view: View) {
-        val onboardActivity = context as OnboardingActivity
-        onboardActivity.onBackPressed()
+        var onboardActivity = context as OnboardingActivity?
+        onboardActivity?.let{
+            it.onBackPressed()
+        }?:(Utils.restartAppWithNoContext(0,"RegisterNumberFragment not attached to OnboardingActivity"))
     }
 
     private fun disableButtonAndRequestOTP() {
@@ -59,15 +61,18 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
 
     private fun requestOTP() {
         mView?.let { view ->
-            phone_number_error.visibility = View.INVISIBLE
+            phone_number_error?.visibility = View.INVISIBLE
 
-            var numberText = getUnmaskedNumber(phone_number.text.toString())
+            var numberText = getUnmaskedNumber(phone_number?.text.toString())
             CentralLog.d(TAG, "The value retrieved: ${numberText}")
 
-            val onboardActivity = context as OnboardingActivity
+            val onboardActivity = context as OnboardingActivity?
             Preference.putPhoneNumber(TracerApp.AppContext, numberText)
-            onboardActivity.updatePhoneNumber(numberText)
-            onboardActivity.requestForOTP(numberText)
+            onboardActivity?.let {
+                it.updatePhoneNumber(numberText)
+                it.requestForOTP(numberText)
+            }?:(Utils.restartAppWithNoContext(0,"RegisterNumberFragment not attached to OnboardingActivity"))
+
         }
     }
 
@@ -131,7 +136,7 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
     }
 
     override fun onError(error: String) {
-        phone_number_error.let {
+        phone_number_error?.let {
             phone_number_error.visibility = View.VISIBLE
             phone_number_error.text = error
         }
@@ -173,14 +178,14 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
             if(phoneLength >= 6 && !backspaceFlag){
                 editFlag = true;
                 masked = "(" + phone.substring(0,3) + ") " + phone.substring(3,6) + "-" + phone.substring(6);
-                phone_number.setText(masked);
-                phone_number.setSelection(phone_number.text.length - selectionPointer)
+                phone_number?.setText(masked);
+                phone_number?.setSelection(phone_number.text.length - selectionPointer)
             }
             else if(phoneLength >=3 && !backspaceFlag){
                 editFlag = true;
                 masked = "(" + phone.substring(0,3) + ") " + phone.substring(3)
-                phone_number.setText(masked);
-                phone_number.setSelection(phone_number.text.length - selectionPointer)
+                phone_number?.setText(masked);
+                phone_number?.setSelection(phone_number.text.length - selectionPointer)
             }
         }
         else{

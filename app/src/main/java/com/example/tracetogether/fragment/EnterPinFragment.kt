@@ -125,8 +125,8 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
         val getUploadTokenResponse = Request.runRequest("/adapters/getUploadTokenAdapter/getUploadToken", Request.GET, queryParams=queryParams)
         val token = getUploadTokenResponse.data?.get("token") // if the service failed, it could return token as a JSON object with error instead of string: {"token":{"error":"Unable to get the upload token"}}
         if (!getUploadTokenResponse.isSuccess() || getUploadTokenResponse.status != 200 || token is JSONObject) {
-            enterPinFragmentErrorMessage.text = getString(R.string.failed_to_send_pin)
-            enterPinFragmentErrorMessage.visibility = View.VISIBLE
+            enterPinFragmentErrorMessage?.text = getString(R.string.failed_to_send_pin)
+            enterPinFragmentErrorMessage?.visibility = View.VISIBLE
         } else {
             uploadToken = token as String
         }
@@ -141,8 +141,8 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
         val jsonData = getEncounterJSON()
 
         if (jsonData.length() == 0) {
-            enterPinFragmentErrorMessage.text = getString(R.string.no_encounter_data_available)
-            enterPinFragmentErrorMessage.visibility = View.VISIBLE
+            enterPinFragmentErrorMessage?.text = getString(R.string.no_encounter_data_available)
+            enterPinFragmentErrorMessage?.visibility = View.VISIBLE
         } else {
             val queryParams = java.util.HashMap<String, String>()
             queryParams["userId"] = Preference.getUUID(context)
@@ -150,8 +150,8 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
             val uploadResponse = Request.runRequest("/adapters/uploadData/uploadData", Request.POST, data = jsonData, queryParams=queryParams)
             myParentFragment.turnOffLoadingProgress()
             if (!uploadResponse.isSuccess()) {
-                enterPinFragmentErrorMessage.text = getString(R.string.failed_to_upload_data)
-                enterPinFragmentErrorMessage.visibility = View.VISIBLE
+                enterPinFragmentErrorMessage?.text = getString(R.string.failed_to_upload_data)
+                enterPinFragmentErrorMessage?.visibility = View.VISIBLE
             } else {
                 // Successfully uploaded data, delete the temp file
                 // Note: leaving the temp file code here in case it's decided to make use of IBM JSONStorage sdk to upload a file
@@ -264,11 +264,11 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
         override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
             if(validateOtp(getOtp())){
                 Utils.hideKeyboardFrom(view.context, view)
-                enterPinActionButton.isEnabled = true
-                enterPinButtonText.text = getString(R.string.upload_button)
+                enterPinActionButton?.isEnabled = true
+                enterPinButtonText?.text = getString(R.string.upload_button)
             }else{
-                enterPinActionButton.isEnabled = false
-                enterPinButtonText.text = getString(R.string.submit_button)
+                enterPinActionButton?.isEnabled = false
+                enterPinButtonText?.text = getString(R.string.submit_button)
             }
         }
 

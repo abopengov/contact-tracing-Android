@@ -18,6 +18,7 @@ import com.example.tracetogether.R
 import com.example.tracetogether.Utils
 import com.example.tracetogether.logging.CentralLog
 import kotlinx.android.synthetic.main.fragment_otp.*
+import java.lang.Exception
 import kotlin.math.floor
 
 
@@ -73,18 +74,23 @@ class OTPFragment : OnboardingFragmentInterface() {
         CentralLog.d(TAG, "OnButtonClick 3B")
 
         val otp = getOtp()
-        val onboardActivity = context as OnboardingActivity
+
+        val onboardActivity = context as OnboardingActivity?
 
         if(timerHasFinished){
             resendCodeAndStartTimer()
         }else{
-            onboardActivity.validateOTP(otp)
+            onboardActivity?.let{
+                it.validateOTP(otp)
+            }?:(Utils.restartAppWithNoContext(0,"OTPFragment not attached to OnboardingActivity"))
         }
     }
 
     override fun onBackButtonClick(view: View) {
-        val onboardActivity = context as OnboardingActivity
-        onboardActivity.onBackPressed()
+        val onboardActivity = context as OnboardingActivity?
+        onboardActivity?.let{
+            it.onBackPressed()
+        }?:(Utils.restartAppWithNoContext(0,"OTPFragment not attached to OnboardingActivity"))
     }
 
     private fun getOtp(): String{
@@ -139,9 +145,12 @@ class OTPFragment : OnboardingFragmentInterface() {
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 Utils.hideKeyboardFrom(view.context, view)
                 val otp = getOtp()
-                val onboardActivity = context as OnboardingActivity
-                onboardActivity.validateOTP(otp)
-                true
+                val onboardActivity = context as OnboardingActivity?
+                onboardActivity?.let{
+                    it.validateOTP(otp)
+                    true
+                }?:(Utils.restartAppWithNoContext(0,"OTPFragment not attached to OnboardingActivity"))
+                false
             } else {
                 false
             }
@@ -150,7 +159,7 @@ class OTPFragment : OnboardingFragmentInterface() {
 
     override fun onUpdatePhoneNumber(num: String) {
         CentralLog.d(TAG, "onUpdatePhoneNumber $num")
-        sent_to.text = HtmlCompat.fromHtml(
+        sent_to?.text = HtmlCompat.fromHtml(
             getString(R.string.otp_sent, "${buildPhoneString(num)}"),
             HtmlCompat.FROM_HTML_MODE_LEGACY
         )
@@ -181,7 +190,7 @@ class OTPFragment : OnboardingFragmentInterface() {
 
             override fun onFinish() {
                 timer?.text = getString(R.string.otp_countdown_expired)
-                timer.setTextColor(colorError)
+                timer?.setTextColor(colorError)
                 setButtonText(getString(R.string.resend_button))
                 enableButton()
                 timerHasFinished = true;
@@ -192,8 +201,10 @@ class OTPFragment : OnboardingFragmentInterface() {
     }
 
     override fun onError(error: String) {
-        val onboardActivity = context as OnboardingActivity
-        onboardActivity.onBackPressed()
+        var onboardActivity = context as OnboardingActivity?
+        onboardActivity?.let{
+            it.onBackPressed()
+        }?:(Utils.restartAppWithNoContext(0,"OTPFragment not attached to OnboardingActivity"))
     }
 
     override fun onAttach(context: Context) {
@@ -238,9 +249,14 @@ class OTPFragment : OnboardingFragmentInterface() {
     }
 
     private fun resendCodeAndStartTimer(){
-        val onboardingActivity = activity as OnboardingActivity
-        clearInputs();
-        onboardingActivity.resendCode()
+        val onboardingActivity = activity as OnboardingActivity?
+
+        clearInputs()
+
+        onboardingActivity?.let{
+            it.resendCode()
+        }?:(Utils.restartAppWithNoContext(0,"OTPFragment not attached to OnboardingActivity"))
+
         resetTimer()
         startTimer()
     }

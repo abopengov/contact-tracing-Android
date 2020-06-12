@@ -7,6 +7,16 @@
     android:background="@color/white"
     tools:context=".onboarding.OnboardingActivity">
 
+
+    <View
+        android:id="@+id/transparent_layer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:clickable="true"
+        android:translationZ="1dp"
+        android:foreground="@color/transparent"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

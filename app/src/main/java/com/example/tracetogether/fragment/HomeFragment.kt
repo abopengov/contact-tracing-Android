@@ -127,10 +127,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun isShowRestartSetup(): Boolean {
-        if (canRequestBatteryOptimizerExemption()) {
-            if (iv_bluetooth.isSelected && iv_location.isSelected) return false
-        } else {
-            if (iv_bluetooth.isSelected && iv_location.isSelected) return false
+        iv_bluetooth?.let{
+            iv_location?.let{
+                if (iv_bluetooth.isSelected && iv_location.isSelected) return false
+            }
         }
         return true
     }
@@ -164,11 +164,11 @@ class HomeFragment : Fragment() {
         view?.let {
             //location permission
             val perms = Utils.getRequiredPermissions()
-            iv_location.isSelected =
+            iv_location?.isSelected =
                 EasyPermissions.hasPermissions(activity as MainActivity, *perms)
 
             //push notification
-            iv_push.isSelected =
+            iv_push?.isSelected =
                 NotificationManagerCompat.from(activity as MainActivity).areNotificationsEnabled()
 
 
@@ -182,16 +182,16 @@ class HomeFragment : Fragment() {
             val packageName = (activity as MainActivity).packageName
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                battery_card_view.visibility = View.VISIBLE
+//                battery_card_view?.visibility = View.VISIBLE
                 if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
-//                    switch_battery.isChecked = false
+//                    switch_battery?.isChecked = false
                     CentralLog.d(TAG, "Not on Battery Optimization whitelist")
                 } else {
-//                    switch_battery.isChecked = true
+//                    switch_battery?.isChecked = true
                     CentralLog.d(TAG, "On Battery Optimization whitelist")
                 }
             } else {
-//                battery_card_view.visibility = View.GONE
+//                battery_card_view?.visibility = View.GONE
             }
 
             showSetup()
@@ -228,11 +228,11 @@ class HomeFragment : Fragment() {
             if (action == BluetoothAdapter.ACTION_STATE_CHANGED) {
                 var state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1)
                 if (state == BluetoothAdapter.STATE_OFF) {
-                    iv_bluetooth.isSelected = false
+                    iv_bluetooth?.isSelected = false
                 } else if (state == BluetoothAdapter.STATE_TURNING_OFF) {
-                    iv_bluetooth.isSelected = false
+                    iv_bluetooth?.isSelected = false
                 } else if (state == BluetoothAdapter.STATE_ON) {
-                    iv_bluetooth.isSelected = true
+                    iv_bluetooth?.isSelected = true
                 }
 
                 showSetup()
@@ -279,7 +279,7 @@ class HomeFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // User chose not to enable Bluetooth.
         if (requestCode == REQUEST_ENABLE_BT) {
-            iv_bluetooth.isSelected = resultCode == Activity.RESULT_OK
+            iv_bluetooth?.isSelected = resultCode == Activity.RESULT_OK
         }
         showSetup()
         super.onActivityResult(requestCode, resultCode, data)
@@ -294,7 +294,7 @@ class HomeFragment : Fragment() {
         CentralLog.d(TAG, "[onRequestPermissionsResult]requestCode $requestCode")
         when (requestCode) {
             PERMISSION_REQUEST_ACCESS_LOCATION -> {
-                iv_location.isSelected = permissions.isNotEmpty()
+                iv_location?.isSelected = permissions.isNotEmpty()
             }
         }
 
@@ -309,15 +309,15 @@ class HomeFragment : Fragment() {
         }
 
     private fun clearAndHideAnnouncement() {
-        view_announcement.isVisible = false
+        view_announcement?.isVisible = false
         Preference.putAnnouncement(activity!!.applicationContext, "")
     }
 
     private fun showNonEmptyAnnouncement() {
         val new = Preference.getAnnouncement(activity!!.applicationContext)
         if (new.isEmpty()) return
-        tv_announcement.text = HtmlCompat.fromHtml(new, HtmlCompat.FROM_HTML_MODE_COMPACT)
-        tv_announcement.movementMethod = object : LinkMovementMethod() {
+        tv_announcement?.text = HtmlCompat.fromHtml(new, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        tv_announcement?.movementMethod = object : LinkMovementMethod() {
             override fun onTouchEvent(
                 widget: TextView?,
                 buffer: Spannable?,
@@ -338,44 +338,54 @@ class HomeFragment : Fragment() {
                 return super.onTouchEvent(widget, buffer, event)
             }
         }
-        view_announcement.isVisible = true
+        view_announcement?.isVisible = true
     }
     private fun updatedPremLabels(){
         var endTag = ""
         val yes = getString(R.string.yes)
         val no = getString(R.string.no)
 
-//        endTag = if(switch_battery.isChecked) yes else no
-//        tv_battery?.text = HtmlCompat.fromHtml(
-//            getString(
-//                R.string.battery_optimiser,
-//                "<b>$endTag</b>"
-//            ), HtmlCompat.FROM_HTML_MODE_LEGACY
-//        )
+//        tv_battery?.let {
+//            switch_battery?.let {
+//                endTag = if (switch_battery.isChecked) yes else no
+//                tv_battery.text = HtmlCompat.fromHtml(
+//                    getString(
+//                        R.string.battery_optimiser,
+//                        "<b>$endTag</b>"
+//                    ), HtmlCompat.FROM_HTML_MODE_LEGACY
+//                )
+//            }
+//        }
 
-        endTag = if(iv_location.isSelected) yes else no
-        tv_location?.text = HtmlCompat.fromHtml(
-            getString(
-                R.string.location_on,
-                "$endTag"
-            ), HtmlCompat.FROM_HTML_MODE_LEGACY
-        )
+        tv_location?.let{
+            endTag = if(iv_location.isSelected) yes else no
+            tv_location.text = HtmlCompat.fromHtml(
+                getString(
+                    R.string.location_on,
+                    "$endTag"
+                ), HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+        }
 
-        endTag = if(iv_bluetooth.isSelected) yes else no
-        tv_bluetooth?.text = HtmlCompat.fromHtml(
-            getString(
-                R.string.bluetooth_on,
-                "$endTag"
-            ), HtmlCompat.FROM_HTML_MODE_LEGACY
-        )
+        tv_bluetooth?.let {
+            endTag = if (iv_bluetooth.isSelected) yes else no
+            tv_bluetooth.text = HtmlCompat.fromHtml(
+                getString(
+                    R.string.bluetooth_on,
+                    "$endTag"
+                ), HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+        }
 
-        endTag = if(iv_push.isSelected) yes else no
-        tv_push?.text = HtmlCompat.fromHtml(
-            getString(
-                R.string.push_noti,
-                "$endTag"
-            ), HtmlCompat.FROM_HTML_MODE_LEGACY
-        )
+        tv_push?.let {
+            endTag = if (iv_push.isSelected) yes else no
+            tv_push.text = HtmlCompat.fromHtml(
+                getString(
+                    R.string.push_noti,
+                    "$endTag"
+                ), HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+        }
     }
 
     private fun alertDialog(desc: String?) {

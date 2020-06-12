@@ -17,6 +17,7 @@ object ErrorCode {
     val SERVER_ERROR = "SERVER_ERROR"
     val UNEXPECTED_ERROR = "UNEXPECTED_ERROR"
     val ADAPTER_DOES_NOT_EXIST = "ADAPTER_DOES_NOT_EXIST"
+    val APPLICATION_DOES_NOT_EXIST = "APPLICATION_DOES_NOT_EXIST"
 
     fun getStringForErrorCode(context: Context, errorCode: String? = "") : String {
         return when(errorCode) {

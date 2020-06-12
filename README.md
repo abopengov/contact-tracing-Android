@@ -1,13 +1,25 @@
 # ABTraceTogether Android app
 
 ABTraceTogether was adapted from the OpenTrace open source reference implementation of BlueTrace.
-BlueTrace is a privacy-preserving protocol for community-driven contact tracing across borders. It allows participating devices to log Bluetooth encounters with each other, in order to facilitate epidemiological contact tracing while protecting users’ personal data and privacy. Visit https://bluetrace.io to learn more.
+BlueTrace is a privacy-preserving protocol for community-driven contact tracing across borders. It allows participating devices to log Bluetooth encounters with each other, in order to facilitate epidemiological contact tracing while protecting usersï¿½ personal data and privacy. Visit https://bluetrace.io to learn more.
 The OpenTrace reference implementation comprises of:
 
 - Android app: [opentrace-community/opentrace-android](https://github.com/opentrace-community/opentrace-android)
 - iOS app: [opentrace-community/opentrace-ios](https://github.com/opentrace-community/opentrace-ios)
 - Cloud functions: [opentrace-community/opentrace-cloud-functions](https://github.com/opentrace-community/opentrace-cloud-functions)
 - Calibration: [opentrace-community/opentrace-calibration](https://github.com/opentrace-community/opentrace-calibration)
+
+ 
+## Note
+This is the open source release of ABTraceTogether, however any components considered sensitive and specific to Alberta Health Services have been removed. The following are the changes made for this release:
+
+1. All licensed artwork has been replace with the transparent images that are of the same resolution
+2. Changed package names
+3. Renamed files, variables, and references specific to Alberta Health
+4. Replaced font with an open source font
+5. Removed mfp certificate file in assets and commented out code that pins said certificate
+6. Removed all references to server names
+7. Replaced sample config and build file in README.md file to be more generic
 
 ## Setup of the app
 To get started on the app, setup and configure the following:
@@ -18,7 +30,7 @@ To get started on the app, setup and configure the following:
 4. Protocol version
 
 ---
-
+               
 ### Configs in gradle.properties
 
 Sample Configuration:
@@ -63,15 +75,15 @@ android.useAndroidX=true
 android.enableJetifier=true
 ```
 
-> SERVICE_UUID and V2_CHARACTERISTIC_ID must match the iOS version or no cross platform scanning will occur.
+SERVICE_UUID and V2_CHARACTERISTIC_ID must match the iOS version or no cross platform scanning will occur.
 
-> SCAN_DURATION and SCAN_INTERVAL should be close to the iOS version or cross platform communication will be one sided
+SCAN_DURATION and SCAN_INTERVAL should be close to the iOS version or cross platform communication will be one sided 
 
 ---
-
+               
 ### Build Configurations in build.gradle
-Change the package name and other configurations accordingly such as the `resValue` in  in the different settings in `buildTypes`
-For example,
+
+Change the package name and other configurations accordingly such as the resValue in in the different settings in buildTypes For example,
 ```groovy
     buildTypes {
         debug {
@@ -130,11 +142,11 @@ For more information visit [https://android-developers.googleblog.com/2020/04/go
 ---
 
 ### Acknowledgements
-TraceTogether uses the following [third party libraries / tools](./ATTRIBUTION.md).
+TraceTogether uses the following third party libraries / tools.
 
 ---
 
 ### ChangeLog
+[1.0.0] * First release of open source repo
 
-[1.0.0]
-*   First release of open source repo
+[1.1.0] * Added restart logic if app flow fails. Added null checking before accessing view elements. Added prompt to get user to update app if version is unsupported.

@@ -109,7 +109,7 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         pagerAdapter = ScreenSlidePagerAdapter(supportFragmentManager)
         pager.adapter = pagerAdapter
 
-        tabDots.setupWithViewPager(pager, true)
+        tabDots?.setupWithViewPager(pager, true)
 
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {

@@ -7,9 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.tracetogether.R
+import com.example.tracetogether.Utils
 import com.example.tracetogether.logging.CentralLog
-
-
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -34,7 +33,9 @@ class SetupFragment : OnboardingFragmentInterface() {
     override fun onButtonClick(view: View) {
         CentralLog.d(TAG, "OnButtonClick 2")
         val activity = context as OnboardingActivity?
-        activity?.enableBluetooth()
+        activity?.let {
+            it.enableBluetooth()
+        }?:(Utils.restartAppWithNoContext(0,"SetupFragment not attached to OnboardingActivity"))
     }
 
     override fun onBackButtonClick(view: View) {}

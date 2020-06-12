@@ -461,14 +461,7 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
         if (Preference.getUUID(applicationContext) == "" && Preference.isOnBoarded(applicationContext)) {
 
             CentralLog.d(TAG, "User is not logged in but has completed onboarding")
-            WFLog.logError("User is not logged in but has completed onboarding")
-            val intent = Intent(
-                applicationContext,
-                RestartActivity::class.java
-            )
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            applicationContext.startActivity(intent)
-
+            Utils.restartApp(applicationContext, 1,"User is not logged in but has completed onboarding")
         }
     }
 

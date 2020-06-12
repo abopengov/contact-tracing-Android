@@ -2,6 +2,7 @@ package com.example.tracetogether
 
 import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -10,12 +11,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.tracetogether.fragment.ForUseByOTCFragment
 import com.example.tracetogether.fragment.HomeFragment
 import com.example.tracetogether.fragment.HelpFragment
+import com.example.tracetogether.logging.CentralLog
+import com.example.tracetogether.onboarding.PreOnboardingActivity
 import kotlinx.android.synthetic.main.activity_main_new.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 /*
     Main activity when the user has been onboarded
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     private val TAG = "MainActivity"
 
@@ -74,6 +80,20 @@ class MainActivity : AppCompatActivity() {
         nav_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         goToHome()
 
+    }
+
+    override fun onResume(){
+        super.onResume()
+        showAppRegistrationStatus()
+    }
+
+    private fun showAppRegistrationStatus() = launch {
+        if (!Utils.checkIfAppRegistered()) {
+            CentralLog.i(TAG,"App version not supported, stopping BluetoothMonitoringService")
+            Utils.stopBluetoothMonitoringService(this@MainActivity)
+            startActivity(Intent(this@MainActivity, PreOnboardingActivity::class.java))
+            finish()
+        }
     }
 
     private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
