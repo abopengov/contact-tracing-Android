@@ -65,11 +65,11 @@ class TracerApp : Application() {
         }
 
         fun asPeripheralDevice(): PeripheralDevice {
-            return PeripheralDevice(Build.MODEL, "SELF")
+            return PeripheralDevice("Android", "SELF")
         }
 
         fun asCentralDevice(): CentralDevice {
-            return CentralDevice(Build.MODEL, "SELF")
+            return CentralDevice("Android", "SELF")
         }
     }
 }

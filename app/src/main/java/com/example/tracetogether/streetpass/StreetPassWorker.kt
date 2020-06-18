@@ -489,6 +489,11 @@ class StreetPassWorker(val context: Context) {
                         val characteristic = service.getCharacteristic(characteristicV2)
 
                         if (characteristic != null) {
+
+                            // Attempt to prevent bonding should the StreetPass characteristic
+                            // require authentication or encryption
+                            PairingFix.bypassAuthenticationRetry(gatt)
+
                             val readSuccess = gatt.readCharacteristic(characteristic)
                             CentralLog.i(
                                 TAG,
@@ -597,6 +602,11 @@ class StreetPassWorker(val context: Context) {
                     )
                     characteristic.value = writedata
                     val writeSuccess = gatt.writeCharacteristic(characteristic)
+
+                    // Attempt to prevent bonding should the StreetPass characteristic
+                    // require authentication or encryption
+                    PairingFix.bypassAuthenticationRetry(gatt)
+
                     CentralLog.i(
                         TAG,
                         "Attempt to write characteristic to our service on ${gatt.device.address}: $writeSuccess"

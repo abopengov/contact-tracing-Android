@@ -29,8 +29,8 @@ android {
         resValue "string", "build_config_package", "com.example.tracetogether"
         minSdkVersion 26
         targetSdkVersion 29
-        versionCode 4
-        versionName "1.0.1"
+        versionCode 7
+        versionName "1.2.0"
         buildConfigField "String", "GITHASH", "\"${getGitHash()}\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -171,5 +171,5 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.4.0'
 
     // IBM Mobile Foundation
-    implementation 'com.ibm.mobile.foundation:ibmmobilefirstplatformfoundation:8.0.+'
+    implementation 'com.ibm.mobile.foundation:ibmmobilefirstplatformfoundation:8.0.2020032409'
 }
