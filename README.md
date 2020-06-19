@@ -1,7 +1,7 @@
 # ABTraceTogether Android app
 
 ABTraceTogether was adapted from the OpenTrace open source reference implementation of BlueTrace.
-BlueTrace is a privacy-preserving protocol for community-driven contact tracing across borders. It allows participating devices to log Bluetooth encounters with each other, in order to facilitate epidemiological contact tracing while protecting users’ personal data and privacy. Visit https://bluetrace.io to learn more.
+BlueTrace is a privacy-preserving protocol for community-driven contact tracing across borders. It allows participating devices to log Bluetooth encounters with each other, in order to facilitate epidemiological contact tracing while protecting usersï¿½ personal data and privacy. Visit https://bluetrace.io to learn more.
 The OpenTrace reference implementation comprises of:
 
 - Android app: [opentrace-community/opentrace-android](https://github.com/opentrace-community/opentrace-android)
@@ -30,7 +30,7 @@ To get started on the app, setup and configure the following:
 4. Protocol version
 
 ---
-
+               
 ### Configs in gradle.properties
 
 Sample Configuration:
@@ -75,15 +75,15 @@ android.useAndroidX=true
 android.enableJetifier=true
 ```
 
-> SERVICE_UUID and V2_CHARACTERISTIC_ID must match the iOS version or no cross platform scanning will occur.
+SERVICE_UUID and V2_CHARACTERISTIC_ID must match the iOS version or no cross platform scanning will occur.
 
-> SCAN_DURATION and SCAN_INTERVAL should be close to the iOS version or cross platform communication will be one sided
+SCAN_DURATION and SCAN_INTERVAL should be close to the iOS version or cross platform communication will be one sided 
 
 ---
-
+               
 ### Build Configurations in build.gradle
-Change the package name and other configurations accordingly such as the `resValue` in  in the different settings in `buildTypes`
-For example,
+
+Change the package name and other configurations accordingly such as the resValue in in the different settings in buildTypes For example,
 ```groovy
     buildTypes {
         debug {
@@ -142,11 +142,13 @@ For more information visit [https://android-developers.googleblog.com/2020/04/go
 ---
 
 ### Acknowledgements
-TraceTogether uses the following [third party libraries / tools](./ATTRIBUTION.md).
+TraceTogether uses the following third party libraries / tools.
 
 ---
 
 ### ChangeLog
+[1.0.0] * First release of open source repo
 
-[1.0.0]
-*   First release of open source repo
+[1.1.0] * Added restart logic if app flow fails. Added null checking before accessing view elements. Added prompt to get user to update app if version is unsupported.
+
+[1.2.0] * Added vulnerability fix and anonymity hardening
