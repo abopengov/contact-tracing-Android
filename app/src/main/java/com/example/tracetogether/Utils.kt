@@ -31,12 +31,16 @@ import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.*
-
+import com.worklight.wlclient.api.WLClient
 
 object Utils {
 
     private const val TAG = "Utils"
 
+	    fun getServerURL(): String {
+        return WLClient.getInstance().serverUrl.toString()
+    }
+    
     fun getRequiredPermissions(): Array<String> {
         return arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
     }

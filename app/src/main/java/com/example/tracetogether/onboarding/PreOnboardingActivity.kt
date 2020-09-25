@@ -14,7 +14,10 @@ class PreOnboardingActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity_onboarding)
 
-        tv_app_version?.text = getString(R.string.app_version_label) + BuildConfig.VERSION_NAME
+          val versionSuffix = if(Utils.getServerURL().contains("stg")) ".S" else ""
+
+        tv_app_version?.text = getString(R.string.app_version_label) + BuildConfig.VERSION_NAME + versionSuffix
+
         btn_onboardingStart?.setOnClickListener {
             var intent = Intent(this, HowItWorksActivity::class.java)
             startActivity(intent)

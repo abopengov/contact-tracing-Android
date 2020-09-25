@@ -109,7 +109,10 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
                 false
             }
         }
-        tv_app_version?.text = getString(R.string.app_version_label) + BuildConfig.VERSION_NAME
+         val versionSuffix = if(Utils.getServerURL().contains("stg")) ".S" else ""
+
+        tv_app_version?.text = getString(R.string.app_version_label) + BuildConfig.VERSION_NAME + versionSuffix
+
 
         disableButton()
     }

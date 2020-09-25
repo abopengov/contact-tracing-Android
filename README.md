@@ -9,8 +9,8 @@ The OpenTrace reference implementation comprises of:
 - Cloud functions: [opentrace-community/opentrace-cloud-functions](https://github.com/opentrace-community/opentrace-cloud-functions)
 - Calibration: [opentrace-community/opentrace-calibration](https://github.com/opentrace-community/opentrace-calibration)
 
- 
 ## Note
+
 This is the open source release of ABTraceTogether, however any components considered sensitive and specific to Alberta Health Services have been removed. The following are the changes made for this release:
 
 1. All licensed artwork has been replace with the transparent images that are of the same resolution
@@ -22,6 +22,7 @@ This is the open source release of ABTraceTogether, however any components consi
 7. Replaced sample config and build file in README.md file to be more generic
 
 ## Setup of the app
+
 To get started on the app, setup and configure the following:
 
 1. ./gradle.properties
@@ -30,7 +31,7 @@ To get started on the app, setup and configure the following:
 4. Protocol version
 
 ---
-               
+
 ### Configs in gradle.properties
 
 Sample Configuration:
@@ -70,6 +71,7 @@ STAGING_SERVICE_UUID = "B82AB3FC-1595-4F6A-80F0-FE094CC218F9"
 V2_CHARACTERISTIC_ID = "117BDD58-57CE-4E7A-8E87-7CCCDDA2A804"
 
 PRODUCTION_SERVICE_UUID = "B82AB3FC-1595-4F6A-80F0-FE094CC218F9"
+IOS_BACKGROUND_SERVICE_UUID="AQAAAAAA="
 
 android.useAndroidX=true
 android.enableJetifier=true
@@ -77,13 +79,14 @@ android.enableJetifier=true
 
 SERVICE_UUID and V2_CHARACTERISTIC_ID must match the iOS version or no cross platform scanning will occur.
 
-SCAN_DURATION and SCAN_INTERVAL should be close to the iOS version or cross platform communication will be one sided 
+SCAN_DURATION and SCAN_INTERVAL should be close to the iOS version or cross platform communication will be one sided
 
 ---
-               
+
 ### Build Configurations in build.gradle
 
 Change the package name and other configurations accordingly such as the resValue in in the different settings in buildTypes For example,
+
 ```groovy
     buildTypes {
         debug {
@@ -112,29 +115,32 @@ Change the package name and other configurations accordingly such as the resValu
 
 Information for which MFP server each environment will access is stored in the corresponding locations:
 
->Debug: ./app/src/debug/assets/mfpclient.properties
+> Debug: ./app/src/debug/assets/mfpclient.properties
 
->Production: ./app/src/release/assets/mfpclient.properties
+> Production: ./app/src/release/assets/mfpclient.properties
 
 Pinning certificate for all environments is stored in the following location:
 
->./app/src/main/assets/mfpcertificate.cer
+> ./app/src/main/assets/mfpcertificate.cer
 
 ---
 
 ### Protocol Version
+
 Protocol version used should be 2 (or above).
 Version 1 of the protocol has been deprecated.
 
 ---
 
 ### Security Enhancements
+
 SSL pinning is not included as part of the repository.
 It is recommended to add in a check for SSL certificate returned by the backend.
 
 ---
 
 ### Statement from Google
+
 The following is a statement from Google:
 "At Google Play we take our responsibility to provide accurate and relevant information for our users very seriously. For that reason, we are currently only approving apps that reference COVID-19 or related terms in their store listing if the app is published, commissioned, or authorized by an official government entity or public health organization, and the app does not contain any monetization mechanisms such as ads, in-app products, or in-app donations. This includes references in places such as the app title, description, release notes, or screenshots.
 For more information visit [https://android-developers.googleblog.com/2020/04/google-play-updates-and-information.html](https://android-developers.googleblog.com/2020/04/google-play-updates-and-information.html)"
@@ -142,13 +148,15 @@ For more information visit [https://android-developers.googleblog.com/2020/04/go
 ---
 
 ### Acknowledgements
+
 TraceTogether uses the following third party libraries / tools.
 
 ---
 
 ### ChangeLog
-[1.0.0] * First release of open source repo
 
-[1.1.0] * Added restart logic if app flow fails. Added null checking before accessing view elements. Added prompt to get user to update app if version is unsupported.
+[1.0.0] \* First release of open source repo
 
-[1.2.0] * Added vulnerability fix and anonymity hardening
+[1.1.0] \* Added restart logic if app flow fails. Added null checking before accessing view elements. Added prompt to get user to update app if version is unsupported.
+
+[1.2.0] \* Added vulnerability fix and anonymity hardening

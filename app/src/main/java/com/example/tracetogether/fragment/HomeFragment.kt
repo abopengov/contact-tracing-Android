@@ -67,7 +67,10 @@ class HomeFragment : Fragment() {
                     }
                 }
             })
-        tv_app_version?.text = getString(R.string.app_version_label) + BuildConfig.VERSION_NAME
+         val versionSuffix = if(Utils.getServerURL().contains("stg")) ".S" else ""
+
+        tv_app_version?.text = getString(R.string.app_version_label) + BuildConfig.VERSION_NAME + versionSuffix
+
 
         //R2 it was decided to remove battery optimizer view, we may use it in the future
 //        switch_battery.setOnCheckedChangeListener { buttonView, isChecked ->

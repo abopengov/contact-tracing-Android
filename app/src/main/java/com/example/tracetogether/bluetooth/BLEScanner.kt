@@ -7,13 +7,23 @@ import android.bluetooth.le.ScanFilter
 import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.os.ParcelUuid
+import android.util.Base64
+import android.util.Base64.decode
+import ca.albertahealthservices.contacttracing.BuildConfig
 import com.example.tracetogether.Utils
+import ca.albertahealthservices.contacttracing.bluetooth.BLEScanner.FilterConstant.APPLE_MANUFACTURER_ID
+import ca.albertahealthservices.contacttracing.bluetooth.BLEScanner.FilterConstant.IOS_BACKGROUND_SERVICE_UUID
 import com.example.tracetogether.logging.CentralLog
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
 class BLEScanner constructor(context: Context, uuid: String, reportDelay: Long) {
+
+	    object FilterConstant {
+        const val APPLE_MANUFACTURER_ID = 76
+        val IOS_BACKGROUND_SERVICE_UUID: ByteArray = decode(BuildConfig.IOS_BACKGROUND_SERVICE_UUID, Base64.DEFAULT)
+    }
 
     private var serviceUUID: String by Delegates.notNull()
     private var context: Context by Delegates.notNull()
@@ -32,12 +42,23 @@ class BLEScanner constructor(context: Context, uuid: String, reportDelay: Long) 
     }
 
     fun startScan(scanCallback: ScanCallback) {
-        val filter = ScanFilter.Builder()
+        val mainFilter = ScanFilter.Builder()
             .setServiceUuid(ParcelUuid(UUID.fromString(serviceUUID)))
             .build()
 
+        //Filter to scan for iOS devices advertising in the background
+        val backgroundFilter = ScanFilter.Builder()
+            .setServiceUuid(null)
+            .setManufacturerData(
+                APPLE_MANUFACTURER_ID,
+                IOS_BACKGROUND_SERVICE_UUID
+            )
+            .build()
+
         val filters: ArrayList<ScanFilter> = ArrayList()
-        filters.add(filter)
+        filters.add(mainFilter)
+        filters.add(backgroundFilter)
+
 
         val settings = ScanSettings.Builder()
             .setReportDelay(reportDelay)

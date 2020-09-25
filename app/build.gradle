@@ -69,6 +69,7 @@ android {
         buildConfigField "long", "ADVERTISING_INTERVAL", ADVERTISING_INTERVAL
 
         buildConfigField "String", "V2_CHARACTERISTIC_ID", V2_CHARACTERISTIC_ID
+        buildConfigField "String", "IOS_BACKGROUND_SERVICE_UUID", IOS_BACKGROUND_SERVICE_UUID
 
     }
 
