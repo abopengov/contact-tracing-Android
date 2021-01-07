@@ -5,9 +5,11 @@ import android.bluetooth.BluetoothGatt.GATT_FAILURE
 import android.bluetooth.BluetoothGatt.GATT_SUCCESS
 import android.content.Context
 import com.example.tracetogether.Utils
+import ca.albertahealthservices.contacttracing.TracerApp
 import com.example.tracetogether.idmanager.TempIDManager
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.protocol.BlueTrace
+import ca.albertahealthservices.contacttracing.services.BluetoothMonitoringService
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -102,6 +104,12 @@ class GattServer constructor(val context: Context, serviceUUIDString: String) {
                                 0,
                                 ByteArray(0)
                             )
+                            var fetch = TempIDManager.retrieveTemporaryID(context)
+                            fetch?.let {
+                                CentralLog.i(TAG, "Grab New Temp ID")
+                                BluetoothMonitoringService.broadcastMessage = it
+                            }?: CentralLog.e(TAG, "Failed to grab new Temp ID")
+
                         }
                     }
 

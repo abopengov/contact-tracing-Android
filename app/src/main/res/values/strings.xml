@@ -57,7 +57,7 @@
     <string name="bluetooth">1. Bluetooth</string>
     <string name="location_permissions">2. Location Permissions</string>
     <string name="battery_optimiser_opt">3. Optimize Usage</string>
-    <string name="notes">Android needs Locations Permissions for Bluetooth to work. We don’t track your physical location.</string>
+    <string name="notes">Location services must be enabled (always in use) for Bluetooth to work. Location data is not captured, collected or shared by us, for any purpose</string>
     <string name="proceed">Proceed</string>
     <string name="continue_">Continue</string>
     <string name="get_otp">Get OTP</string>
