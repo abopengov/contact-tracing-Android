@@ -29,7 +29,7 @@ object TempIDManager : CoroutineScope by MainScope() {
 
     fun retrieveTemporaryID(context: Context): TemporaryID? {
         val file = File(context.filesDir, "tempIDs")
-        if (file.exists()) {
+        if (file.getAbsoluteFile().exists()) {
             val readback = file.readText()
             CentralLog.d(TAG, "[TempID] fetched broadcastmessage from file:  $readback")
             val tempIDArrayList =

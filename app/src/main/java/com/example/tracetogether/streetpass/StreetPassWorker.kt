@@ -616,6 +616,11 @@ class StreetPassWorker(val context: Context) {
                         TAG,
                         "Expired BM. Skipping attempt to write characteristic to our service on ${gatt.device.address}"
                     )
+                    var fetch = TempIDManager.retrieveTemporaryID(context)
+                    fetch?.let {
+                        CentralLog.i(TAG, "Grab New Temp ID")
+                        BluetoothMonitoringService.broadcastMessage = it
+                    }?: CentralLog.e(TAG, "Failed to grab new Temp ID")
 
                     endWorkConnection(gatt)
                 }
