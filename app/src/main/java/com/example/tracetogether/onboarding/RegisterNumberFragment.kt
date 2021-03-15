@@ -12,6 +12,9 @@ import android.view.inputmethod.EditorInfo
 import com.example.tracetogether.*
 import kotlinx.android.synthetic.main.fragment_register_number.*
 import com.example.tracetogether.logging.CentralLog
+import com.example.tracetogether.util.Extensions.getLocalizedText
+import com.example.tracetogether.util.Extensions.setLocalizedString
+import kotlinx.android.synthetic.main.button_and_progress.*
 
 /*
     Fragment for the mobile number register screen
@@ -32,9 +35,9 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
         val myActivity = this as OnboardingFragmentInterface
 
 
-        if(validateNumber(phone_number?.text.toString())){
+        if (validateNumber(phone_number?.text.toString())) {
             myActivity.enableButton()
-        }else{
+        } else {
             myActivity.disableButton()
         }
 
@@ -47,8 +50,13 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
     }
 
     override fun onBackButtonClick(view: View) {
-        val onboardActivity = context as OnboardingActivity
-        onboardActivity.onBackPressed()
+        var onboardActivity = context as OnboardingActivity?
+        onboardActivity?.let {
+            it.onBackPressed()
+        } ?: (Utils.restartAppWithNoContext(
+                0,
+                "RegisterNumberFragment not attached to OnboardingActivity"
+        ))
     }
 
     private fun disableButtonAndRequestOTP() {
@@ -59,15 +67,21 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
 
     private fun requestOTP() {
         mView?.let { view ->
-            phone_number_error.visibility = View.INVISIBLE
+            phone_number_error?.visibility = View.INVISIBLE
 
-            var numberText = getUnmaskedNumber(phone_number.text.toString())
+            var numberText = getUnmaskedNumber(phone_number?.text.toString())
             CentralLog.d(TAG, "The value retrieved: ${numberText}")
 
-            val onboardActivity = context as OnboardingActivity
+            val onboardActivity = context as OnboardingActivity?
             Preference.putPhoneNumber(TracerApp.AppContext, numberText)
-            onboardActivity.updatePhoneNumber(numberText)
-            onboardActivity.requestForOTP(numberText)
+            onboardActivity?.let {
+                it.updatePhoneNumber(numberText)
+                it.requestForOTP(numberText)
+            } ?: (Utils.restartAppWithNoContext(
+                    0,
+                    "RegisterNumberFragment not attached to OnboardingActivity"
+            ))
+
         }
     }
 
@@ -76,26 +90,38 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
         CentralLog.i(TAG, "View created")
         mView = view
 
+        tv_enter_number?.setLocalizedString("register_number")
+        tv_step?.setLocalizedString("register_number_step")
+        phone_number_desc1?.setLocalizedString("register_number_desc1")
+        phone_number_desc2?.setLocalizedString("register_number_desc2")
+        phone_number_error?.setLocalizedString("invalid_phone")
+        onboardingButtonText?.setLocalizedString("next_button")
+
         phone_number?.addTextChangedListener(object : PhoneNumberFormattingTextWatcher() {
             override fun afterTextChanged(s: Editable) {
                 applyMask(s.toString())
             }
+
             override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
+                    s: CharSequence, start: Int,
+                    count: Int, after: Int
             ) {
                 selectionPointer = s.length - phone_number.selectionStart
-                backspaceFlag = count>after
+                backspaceFlag = count > after
             }
 
             override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
+                    s: CharSequence, start: Int,
+                    before: Int, count: Int
             ) {
                 phone_number_error.visibility = View.GONE
-                if(validateNumber(s.toString())){
+                if (validateNumber(s.toString())) {
+
+                    if (context != null) {
+                        Utils.hideKeyboardFrom(context!!, phone_number)
+                    }
                     enableButton()
-                }else{
+                } else {
                     disableButton()
                 }
             }
@@ -109,14 +135,18 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
                 false
             }
         }
-        tv_app_version?.text = getString(R.string.app_version_label) + BuildConfig.VERSION_NAME
+
+        val versionSuffix = if (Utils.getServerURL().contains("stg")) ".S" else ""
+
+        tv_app_version?.text =
+                "app_version_label".getLocalizedText() + BuildConfig.VERSION_NAME + versionSuffix
 
         disableButton()
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         CentralLog.i(TAG, "Making view")
@@ -125,13 +155,12 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
     }
 
 
-
     override fun onUpdatePhoneNumber(num: String) {
         CentralLog.d(TAG, "onUpdatePhoneNumber $num")
     }
 
     override fun onError(error: String) {
-        phone_number_error.let {
+        phone_number_error?.let {
             phone_number_error.visibility = View.VISIBLE
             phone_number_error.text = error
         }
@@ -155,35 +184,36 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
         CentralLog.i(TAG, "Detached??")
     }
 
-    private fun validateNumber(num:String):Boolean{
+    private fun validateNumber(num: String): Boolean {
         val phone: String = getUnmaskedNumber(num)
         return phone.length == 10
     }
 
-    private fun getUnmaskedNumber(num:String):String{
+    private fun getUnmaskedNumber(num: String): String {
         return num.replace("[^\\d]".toRegex(), "")
     }
 
-    private fun applyMask(num: String){
+    private fun applyMask(num: String) {
         val phone: String = getUnmaskedNumber(num)
         val phoneLength: Int = phone.length
         var masked: String = ""
 
-        if(!editFlag){
-            if(phoneLength >= 6 && !backspaceFlag){
+        if (!editFlag) {
+            if (phoneLength >= 6 && !backspaceFlag) {
                 editFlag = true;
-                masked = "(" + phone.substring(0,3) + ") " + phone.substring(3,6) + "-" + phone.substring(6);
-                phone_number.setText(masked);
-                phone_number.setSelection(phone_number.text.length - selectionPointer)
-            }
-            else if(phoneLength >=3 && !backspaceFlag){
+                masked = "(" + phone.substring(0, 3) + ") " + phone.substring(
+                        3,
+                        6
+                ) + "-" + phone.substring(6);
+                phone_number?.setText(masked);
+                phone_number?.setSelection(phone_number.text.length - selectionPointer)
+            } else if (phoneLength >= 3 && !backspaceFlag) {
                 editFlag = true;
-                masked = "(" + phone.substring(0,3) + ") " + phone.substring(3)
-                phone_number.setText(masked);
-                phone_number.setSelection(phone_number.text.length - selectionPointer)
+                masked = "(" + phone.substring(0, 3) + ") " + phone.substring(3)
+                phone_number?.setText(masked);
+                phone_number?.setSelection(phone_number.text.length - selectionPointer)
             }
-        }
-        else{
+        } else {
             editFlag = false;
         }
     }

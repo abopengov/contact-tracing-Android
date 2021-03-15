@@ -29,6 +29,7 @@ import com.example.tracetogether.api.auth.SmsCodeChallengeHandler
 import com.example.tracetogether.idmanager.TempIDManager
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.services.BluetoothMonitoringService
+import com.example.tracetogether.util.Extensions.getLocalizedText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -50,11 +51,11 @@ private const val SETUP_DONE_INDEX = 4
     holds most of the functionality for the Onboarding fragments
  */
 class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
-    SetupFragment.OnFragmentInteractionListener,
-    SetupCompleteFragment.OnFragmentInteractionListener,
-    RegisterNumberFragment.OnFragmentInteractionListener,
-    OTPFragment.OnFragmentInteractionListener,
-    TOUFragment.OnFragmentInteractionListener {
+        SetupFragment.OnFragmentInteractionListener,
+        SetupCompleteFragment.OnFragmentInteractionListener,
+        RegisterNumberFragment.OnFragmentInteractionListener,
+        OTPFragment.OnFragmentInteractionListener,
+        TOUFragment.OnFragmentInteractionListener {
 
     private var TAG: String = "OnboardingActivity"
     private var pagerAdapter: ScreenSlidePagerAdapter? = null
@@ -69,12 +70,11 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
     private fun alertDialog(desc: String?) {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setMessage(desc)
-            .setCancelable(false)
-            .setPositiveButton(
-                getString(R.string.ok),
-                DialogInterface.OnClickListener { dialog, id ->
-                    dialog.dismiss()
-                })
+                .setCancelable(false)
+                .setPositiveButton("ok".getLocalizedText(),
+                        DialogInterface.OnClickListener { dialog, id ->
+                            dialog.dismiss()
+                        })
 
         val alert = dialogBuilder.create()
         alert.show()
@@ -85,8 +85,8 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         CentralLog.d(TAG, "requestTempIdsIfNeeded")
 
         if (BluetoothMonitoringService.broadcastMessage == null || TempIDManager.needToUpdate(
-                applicationContext
-            )
+                        applicationContext
+                )
         ) {
             getTemporaryID()
         }
@@ -109,7 +109,7 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         pagerAdapter = ScreenSlidePagerAdapter(supportFragmentManager)
         pager.adapter = pagerAdapter
 
-        tabDots.setupWithViewPager(pager, true)
+        tabDots?.setupWithViewPager(pager, true)
 
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -117,9 +117,9 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             }
 
             override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
             ) {
                 CentralLog.d(TAG, "OnPageScrolled")
             }
@@ -127,19 +127,19 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             override fun onPageSelected(position: Int) {
                 CentralLog.d(TAG, "position: $position")
                 val onboardingFragment: OnboardingFragmentInterface =
-                    pagerAdapter!!.getItem(position)
+                        pagerAdapter!!.getItem(position)
                 onboardingFragment.becomesVisible()
                 when (position) {
                     TOU_INDEX -> {
                         Preference.putCheckpoint(
-                            baseContext,
-                            position
+                                baseContext,
+                                position
                         )
                     }
                     REGISTER_INDEX -> {
                         Preference.putCheckpoint(
-                            baseContext,
-                            position
+                                baseContext,
+                                position
                         )
                     }
                     OTP_INDEX -> {
@@ -147,14 +147,14 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
                     }
                     SETUP_INDEX -> {
                         Preference.putCheckpoint(
-                            baseContext,
-                            position
+                                baseContext,
+                                position
                         )
                     }
                     SETUP_DONE_INDEX -> {
                         Preference.putCheckpoint(
-                            baseContext,
-                            position
+                                baseContext,
+                                position
                         )
                     }
                 }
@@ -204,7 +204,7 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         //Receive "sms code failed to verify"
         broadcastManager.registerReceiver(object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent) {
-                updateOTPError(getString(R.string.verification_failed))
+                updateOTPError("verification_failed".getLocalizedText())
             }
         }, IntentFilter(SmsCodeChallengeHandler.ACTION_VERIFY_SMS_CODE_FAIL))
 
@@ -265,8 +265,8 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             if (it.isDisabled) {
                 val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                 startActivityForResult(
-                    enableBtIntent,
-                    REQUEST_ENABLE_BT
+                        enableBtIntent,
+                        REQUEST_ENABLE_BT
                 )
             } else {
                 setupPermissionsAndSettings()
@@ -283,12 +283,12 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             if (EasyPermissions.hasPermissions(this, *perms)) {
                 // Already have permission, do the thing
                 initBluetooth()
-                excludeFromBatteryOptimization()
+                navigateToNextPage()
             } else {
                 // Do not have permissions, request them now
                 EasyPermissions.requestPermissions(
-                    this, getString(R.string.permission_location_rationale),
-                    PERMISSION_REQUEST_ACCESS_LOCATION, *perms
+                        this, "permission_location_rationale".getLocalizedText(),
+                        PERMISSION_REQUEST_ACCESS_LOCATION, *perms
                 )
             }
         } else {
@@ -308,40 +308,6 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             Utils.stopBluetoothMonitoringService(this)
         } else {
             bleSupported = true
-        }
-    }
-
-    private fun excludeFromBatteryOptimization() {
-        CentralLog.d(TAG, "[excludeFromBatteryOptimization] ")
-        val powerManager =
-            this.getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
-        val packageName = this.packageName
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val intent =
-                Utils.getBatteryOptimizerExemptionIntent(
-                    packageName
-                )
-
-            if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
-                CentralLog.d(TAG, "Not on Battery Optimization whitelist")
-                //check if there's any activity that can handle this
-                if (Utils.canHandleIntent(
-                        intent,
-                        packageManager
-                    )
-                ) {
-                    this.startActivityForResult(
-                        intent,
-                        BATTERY_OPTIMISER
-                    )
-                } else {
-                    //no way of handling battery optimizer
-                    navigateToNextPage()
-                }
-            } else {
-                CentralLog.d(TAG, "On Battery Optimization whitelist")
-                navigateToNextPage()
-            }
         }
     }
 
@@ -366,9 +332,9 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         CentralLog.d(TAG, "[onRequestPermissionsResult] requestCode $requestCode")
@@ -384,30 +350,28 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
                                 // build alert dialog
                                 val dialogBuilder = AlertDialog.Builder(this)
                                 // set message of alert dialog
-                                dialogBuilder.setMessage(getString(R.string.open_location_setting))
-                                    // if the dialog is cancelable
-                                    .setCancelable(false)
-                                    // positive button text and action
-                                    .setPositiveButton(
-                                        getString(R.string.ok),
-                                        DialogInterface.OnClickListener { dialog, id ->
-                                            CentralLog.d(TAG, "user also CHECKED never ask again")
-                                            mIsOpenSetting = true
-                                            var intent =
-                                                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                            var uri: Uri =
-                                                Uri.fromParts("package", packageName, null)
-                                            intent.data = uri
-                                            startActivity(intent)
+                                dialogBuilder.setMessage("open_location_setting".getLocalizedText())
+                                        // if the dialog is cancelable
+                                        .setCancelable(false)
+                                        // positive button text and action
+                                        .setPositiveButton("ok".getLocalizedText(),
+                                                DialogInterface.OnClickListener { dialog, id ->
+                                                    CentralLog.d(TAG, "user also CHECKED never ask again")
+                                                    mIsOpenSetting = true
+                                                    var intent =
+                                                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                    var uri: Uri =
+                                                            Uri.fromParts("package", packageName, null)
+                                                    intent.data = uri
+                                                    startActivity(intent)
 
-                                        })
-                                    // negative button text and action
-                                    .setNegativeButton(
-                                        getString(R.string.cancel),
-                                        DialogInterface.OnClickListener { dialog, id ->
-                                            dialog.cancel()
-                                        })
+                                                })
+                                        // negative button text and action
+                                        .setNegativeButton("cancel".getLocalizedText(),
+                                                DialogInterface.OnClickListener { dialog, id ->
+                                                    dialog.cancel()
+                                                })
 
                                 // create dialog box
                                 val alert = dialogBuilder.create()
@@ -463,7 +427,10 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         var continueToOtp = true
         if (!skipRegister) {
             // 1. Register the phone number
-            val authResponse = Request.runRequest("/adapters/smsOtpService/phone/register/${phoneNumber}", Request.POST)
+            val authResponse = Request.runRequest(
+                    "/adapters/smsOtpService/phone/register/${phoneNumber}",
+                    Request.POST
+            )
 
 
             if (authResponse.status != 200) {
@@ -476,17 +443,24 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         if (continueToOtp) {
             // 2. Call to trigger sms otp, this will trigger an sms challenge (See /auth/SmsCodeChallengeHandler)
             // Also see registerForSmsCodeChallengeBroadcasts function that handles the broadcasts received
-            val triggerSmsOTPResponse = Request.runRequest("/adapters/smsOtpService/phone/verifySmsOTP", Request.POST, data = JSONObject())
+            val triggerSmsOTPResponse = Request.runRequest(
+                    "/adapters/smsOtpService/phone/verifySmsOTP",
+                    Request.POST,
+                    data = JSONObject()
+            )
 
             if (!triggerSmsOTPResponse.isSuccess() || triggerSmsOTPResponse.status != 200 || triggerSmsOTPResponse.data == null) {
                 // No need to show an error for CHALLENGE_HANDLING_CANCELED, it means we cancelled the challenge in progress (via otp screen by either pressing back or click on "wrong number?")
                 if (triggerSmsOTPResponse.errorCode != ErrorCode.CHALLENGE_HANDLING_CANCELED) {
-                    updateOTPError(getString(R.string.invalid_otp))
+                    updateOTPError("invalid_otp".getLocalizedText())
                 }
                 enableFragmentbutton()
             } else {
                 try {
-                    Preference.putUUID(applicationContext, triggerSmsOTPResponse.data.getString("userId"))
+                    Preference.putUUID(
+                            applicationContext,
+                            triggerSmsOTPResponse.data.getString("userId")
+                    )
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -498,7 +472,7 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
     fun validateOTP(otp: String) {
 
         if (TextUtils.isEmpty(otp) || otp.length < 6) {
-            updateOTPError(getString(R.string.must_be_six_digit))
+            updateOTPError("must_be_six_digit".getLocalizedText())
             return
         }
         val intent = Intent()
@@ -521,13 +495,46 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         }
     }
 
+    private fun excludeFromBatteryOptimization() {
+        CentralLog.d(TAG, "[excludeFromBatteryOptimization] ")
+        val powerManager =
+                this.getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
+        val packageName = this.packageName
+        val intent =
+                Utils.getBatteryOptimizerExemptionIntent(
+                        packageName
+                )
+
+        if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
+            CentralLog.d(TAG, "Not on Battery Optimization whitelist")
+            //check if there's any activity that can handle this
+            if (Utils.canHandleIntent(
+                            intent,
+                            packageManager
+                    )
+            ) {
+                this.startActivityForResult(
+                        intent,
+                        BATTERY_OPTIMISER
+                )
+            } else {
+                //no way of handling battery optimizer
+                navigateToNextPage()
+            }
+        } else {
+            CentralLog.d(TAG, "On Battery Optimization whitelist")
+            navigateToNextPage()
+        }
+    }
+
     fun updatePhoneNumber(num: String) {
         val onboardingFragment: OnboardingFragmentInterface = pagerAdapter!!.getItem(OTP_INDEX)
         onboardingFragment.onUpdatePhoneNumber(num)
     }
 
     fun updatePhoneNumberError(error: String) {
-        val registerNumberFragment: OnboardingFragmentInterface = pagerAdapter!!.getItem(REGISTER_INDEX)
+        val registerNumberFragment: OnboardingFragmentInterface =
+                pagerAdapter!!.getItem(REGISTER_INDEX)
         registerNumberFragment.onError(error)
     }
 
@@ -542,7 +549,7 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
     }
 
     private inner class ScreenSlidePagerAdapter(fm: FragmentManager) :
-        FragmentStatePagerAdapter(fm) {
+            FragmentStatePagerAdapter(fm) {
 
         val fragmentMap: MutableMap<Int, OnboardingFragmentInterface> = HashMap()
 

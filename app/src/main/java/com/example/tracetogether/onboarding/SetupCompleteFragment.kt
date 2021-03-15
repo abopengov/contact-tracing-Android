@@ -11,6 +11,9 @@ import com.example.tracetogether.MainActivity
 import com.example.tracetogether.Preference
 import com.example.tracetogether.R
 import com.example.tracetogether.logging.CentralLog
+import com.example.tracetogether.util.Extensions.getLocalizedText
+import com.example.tracetogether.util.Extensions.setLocalizedString
+import kotlinx.android.synthetic.main.fragment_setup_complete.*
 
 /*
     Fragment for the onboarding complete screen
@@ -36,15 +39,18 @@ class SetupCompleteFragment : OnboardingFragmentInterface() {
     override fun onBackButtonClick(view: View) {}
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_setup_complete, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setButtonText(getString(R.string.finish_button))
+
+        tv_title?.setLocalizedString("app_permission_fully_setup")
+        tv_desc?.setLocalizedString("app_permission_fully_setup_desc")
+        setButtonText("finish_button".getLocalizedText())
         setButtonIcon(R.drawable.ic_checkmark_white)
     }
 

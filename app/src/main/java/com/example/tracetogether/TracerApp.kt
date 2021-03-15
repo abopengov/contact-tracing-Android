@@ -6,8 +6,6 @@ import android.os.Build
 import com.example.tracetogether.idmanager.TempIDManager
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.services.BluetoothMonitoringService
-import com.example.tracetogether.streetpass.CentralDevice
-import com.example.tracetogether.streetpass.PeripheralDevice
 import com.worklight.common.Logger
 import com.worklight.common.WLAnalytics
 import com.worklight.wlclient.api.WLClient
@@ -43,33 +41,27 @@ class TracerApp : Application() {
 
         lateinit var AppContext: Context
 
-        fun thisDeviceMsg(): String {
-            BluetoothMonitoringService.broadcastMessage?.let {
+        fun thisDeviceMsg(): String? {
+            return BluetoothMonitoringService.broadcastMessage?.let {
                 CentralLog.i(TAG, "Retrieved BM for storage: $it")
 
-                if (!it.isValidForCurrentTime()) {
+                return if (it.isValidForCurrentTime()) {
+                    it.tempID
+                } else {
+                    val fetch = TempIDManager.retrieveTemporaryID(AppContext)
 
-                    var fetch = TempIDManager.retrieveTemporaryID(AppContext)
-                    fetch?.let {
+                    if (fetch?.isValidForCurrentTime() == true) {
                         CentralLog.i(TAG, "Grab New Temp ID")
-                        BluetoothMonitoringService.broadcastMessage = it
-                    }
+                        BluetoothMonitoringService.broadcastMessage = fetch
+                        fetch.tempID
 
-                    if (fetch == null) {
-                        CentralLog.e(TAG, "Failed to grab new Temp ID")
+                    } else {
+                        CentralLog.e(TAG, "Failed to grab new valid Temp ID")
+                        null
                     }
-
                 }
             }
-            return BluetoothMonitoringService.broadcastMessage?.tempID ?: "Missing TempID"
-        }
-
-        fun asPeripheralDevice(): PeripheralDevice {
-            return PeripheralDevice("Android", "SELF")
-        }
-
-        fun asCentralDevice(): CentralDevice {
-            return CentralDevice("Android", "SELF")
         }
     }
 }
+

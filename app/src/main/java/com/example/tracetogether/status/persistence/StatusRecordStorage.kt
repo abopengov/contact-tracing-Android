@@ -23,3 +23,4 @@ class StatusRecordStorage(val context: Context) {
         statusDao.purgeOldRecords(before)
     }
 }
+

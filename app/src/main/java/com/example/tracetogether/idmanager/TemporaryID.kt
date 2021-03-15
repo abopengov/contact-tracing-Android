@@ -3,9 +3,9 @@ package com.example.tracetogether.idmanager
 import com.example.tracetogether.logging.CentralLog
 
 class TemporaryID(
-    val startTime: Long,
-    val tempID: String,
-    val expiryTime: Long
+        val startTime: Long,
+        val tempID: String,
+        val expiryTime: Long
 ) {
 
     fun isValidForCurrentTime(): Boolean {
@@ -17,12 +17,12 @@ class TemporaryID(
         var tempIDStartTime = startTime * 1000
         var tempIDExpiryTime = expiryTime * 1000
         CentralLog.d(
-            TAG,
-            "[TempID] Start time: ${tempIDStartTime}"
+                TAG,
+                "[TempID] Start time: ${tempIDStartTime}"
         )
         CentralLog.d(
-            TAG,
-            "[TempID] Expiry time: ${tempIDExpiryTime}"
+                TAG,
+                "[TempID] Expiry time: ${tempIDExpiryTime}"
         )
     }
 

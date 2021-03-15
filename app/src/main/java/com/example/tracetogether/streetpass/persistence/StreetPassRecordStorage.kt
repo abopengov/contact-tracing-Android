@@ -22,3 +22,4 @@ class StreetPassRecordStorage(val context: Context) {
         recordDao.purgeOldRecords(before)
     }
 }
+

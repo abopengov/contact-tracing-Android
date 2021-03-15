@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import com.example.tracetogether.Preference
 import com.example.tracetogether.RestartActivity
+import com.example.tracetogether.Utils
 import com.example.tracetogether.api.Request
+import com.example.tracetogether.herald.FairEfficacyInstrumentation
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.logging.WFLog
 import com.google.gson.Gson
@@ -28,29 +30,42 @@ object TempIDManager : CoroutineScope by MainScope() {
     }
 
     fun retrieveTemporaryID(context: Context): TemporaryID? {
+        if (FairEfficacyInstrumentation.enabled) {
+            Preference.putExpiryTimeInMillis(
+                    context,
+                    Long.MAX_VALUE
+            )
+
+            return TemporaryID(
+                    0,
+                    FairEfficacyInstrumentation.fixedTempId,
+                    Long.MAX_VALUE / 1000
+            )
+        }
+
         val file = File(context.filesDir, "tempIDs")
         if (file.getAbsoluteFile().exists()) {
             val readback = file.readText()
             CentralLog.d(TAG, "[TempID] fetched broadcastmessage from file:  $readback")
             val tempIDArrayList =
-                convertToTemporaryIDs(
-                    readback
-                )
+                    convertToTemporaryIDs(
+                            readback
+                    )
             val tempIDQueue =
-                convertToQueue(
-                    tempIDArrayList
-                )
+                    convertToQueue(
+                            tempIDArrayList
+                    )
             return getValidOrLastTemporaryID(
-                context,
-                tempIDQueue
+                    context,
+                    tempIDQueue
             )
         }
         return null
     }
 
     private fun getValidOrLastTemporaryID(
-        context: Context,
-        tempIDQueue: Queue<TemporaryID>
+            context: Context,
+            tempIDQueue: Queue<TemporaryID>
     ): TemporaryID {
 
         CentralLog.d(TAG, "[TempID] Retrieving Temporary ID")
@@ -82,8 +97,8 @@ object TempIDManager : CoroutineScope by MainScope() {
         CentralLog.d(TAG, "[TempID] Updating expiry time")
 
         Preference.putExpiryTimeInMillis(
-            context,
-            foundTempIDExpiryTime
+                context,
+                foundTempIDExpiryTime
         )
         return foundTempID
     }
@@ -93,8 +108,8 @@ object TempIDManager : CoroutineScope by MainScope() {
 
         val tempIDResult = gson.fromJson(tempIDString, Array<TemporaryID>::class.java)
         CentralLog.d(
-            TAG,
-            "[TempID] After GSON conversion: ${tempIDResult[0].tempID} ${tempIDResult[0].startTime}"
+                TAG,
+                "[TempID] After GSON conversion: ${tempIDResult[0].tempID} ${tempIDResult[0].startTime}"
         )
 
         return tempIDResult
@@ -121,16 +136,21 @@ object TempIDManager : CoroutineScope by MainScope() {
 
     fun getTemporaryIDs(context: Context) = launch {
 
+        if (FairEfficacyInstrumentation.enabled) {
+            updateFetchTime(context, Long.MAX_VALUE)
+            return@launch
+        }
+
         try {
             val userId = Preference.getUUID(context)
-            if(userId != "") {
+            if (userId != "") {
                 val queryParams = HashMap<String, String>()
                 queryParams["userId"] = userId
 
                 val tempIDsResponse = Request.runRequest(
-                    "/adapters/tempidsAdapter/tempIds",
-                    Request.GET,
-                    queryParams = queryParams
+                        "/adapters/tempidsAdapter/tempIds",
+                        Request.GET,
+                        queryParams = queryParams
                 )
                 CentralLog.d(TAG, tempIDsResponse.toString())
 
@@ -142,8 +162,8 @@ object TempIDManager : CoroutineScope by MainScope() {
                     responseText = responseText?.substring(0, responseText.length - 1)
 
                     var result: HashMap<String, Any> = Gson().fromJson(
-                        responseText,
-                        object : TypeToken<HashMap<String, Any>>() {}.getType()
+                            responseText,
+                            object : TypeToken<HashMap<String, Any>>() {}.getType()
                     )
 
                     val status = result["status"]
@@ -153,42 +173,35 @@ object TempIDManager : CoroutineScope by MainScope() {
                     when {
                         status != "SUCCESS" -> {
                             CentralLog.d(
-                                TAG,
-                                "[TempID] Error getting Temporary IDs - status not SUCCESS"
+                                    TAG,
+                                    "[TempID] Error getting Temporary IDs - status not SUCCESS"
                             )
                         }
                         tempIDs == null -> {
                             CentralLog.d(
-                                TAG,
-                                "[TempID] Error getting Temporary IDs - no temp IDs returned"
+                                    TAG,
+                                    "[TempID] Error getting Temporary IDs - no temp IDs returned"
                             )
                             WFLog.logError("[TempID] Error getting Temporary IDs - no temp IDs returned")
                         }
                         refreshTime == null -> {
                             CentralLog.d(
-                                TAG,
-                                "[TempID] Error getting Temporary IDs - no refreshTime returned"
+                                    TAG,
+                                    "[TempID] Error getting Temporary IDs - no refreshTime returned"
                             )
                             WFLog.logError("[TempID] Error getting Temporary IDs - no refreshTime returned")
                         }
                         else -> {
                             // Store the temp ids
                             val jsonByteArray =
-                                GsonBuilder().create().toJson(tempIDs).toByteArray(Charsets.UTF_8)
+                                    GsonBuilder().create().toJson(tempIDs).toByteArray(Charsets.UTF_8)
                             storeTemporaryIDs(
-                                context,
-                                jsonByteArray.toString(Charsets.UTF_8)
+                                    context,
+                                    jsonByteArray.toString(Charsets.UTF_8)
                             )
 
                             // Store the refresh time and last fetched time
-                            Preference.putNextFetchTimeInMillis(
-                                context,
-                                refreshTime.toLong() * 1000
-                            )
-                            Preference.putLastFetchTimeInMillis(
-                                context,
-                                System.currentTimeMillis() * 1000
-                            )
+                            updateFetchTime(context, refreshTime.toLong() * 1000)
                         }
                     }
                 } else {
@@ -196,34 +209,40 @@ object TempIDManager : CoroutineScope by MainScope() {
                 }
             } else {
                 CentralLog.d(TAG, "User is not logged in")
-                WFLog.logError("[TempID] Error getting Temporary IDs, no userId")
-                val intent = Intent(
-                    context.applicationContext,
-                    RestartActivity::class.java
-                )
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.applicationContext.startActivity(intent)            }
+                Utils.restartApp(context, 1,"[TempID] Error getting Temporary IDs, no userId")
+            }
         } catch (e: Exception) {
             CentralLog.d(TAG, "[TempID] Error getting Temporary IDs")
         }
     }
 
+    private fun updateFetchTime(context: Context, refreshTime: Long) {
+        Preference.putNextFetchTimeInMillis(
+                context,
+                refreshTime
+        )
+        Preference.putLastFetchTimeInMillis(
+                context,
+                System.currentTimeMillis()
+        )
+    }
+
     fun needToUpdate(context: Context): Boolean {
         val nextFetchTime =
-            Preference.getNextFetchTimeInMillis(context)
+                Preference.getNextFetchTimeInMillis(context)
         val currentTime = System.currentTimeMillis()
 
         val update = currentTime >= nextFetchTime
         CentralLog.i(
-            TAG,
-            "Need to update and fetch TemporaryIDs? $nextFetchTime vs $currentTime: $update"
+                TAG,
+                "Need to update and fetch TemporaryIDs? $nextFetchTime vs $currentTime: $update"
         )
         return update
     }
 
     fun needToRollNewTempID(context: Context): Boolean {
         val expiryTime =
-            Preference.getExpiryTimeInMillis(context)
+                Preference.getExpiryTimeInMillis(context)
         val currentTime = System.currentTimeMillis()
         val update = currentTime >= expiryTime
         CentralLog.d(TAG, "[TempID] Need to get new TempID? $expiryTime vs $currentTime: $update")

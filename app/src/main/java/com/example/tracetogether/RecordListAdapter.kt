@@ -12,7 +12,7 @@ import com.example.tracetogether.streetpass.view.StreetPassRecordViewModel
 
 
 class RecordListAdapter internal constructor(context: Context) :
-    RecyclerView.Adapter<RecordListAdapter.RecordViewHolder>() {
+        RecyclerView.Adapter<RecordListAdapter.RecordViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var records = emptyList<StreetPassRecordViewModel>() // Cached copy of records
     private var sourceData = emptyList<StreetPassRecord>()
@@ -47,18 +47,22 @@ class RecordListAdapter internal constructor(context: Context) :
         holder.msgView.text = current.msg
         holder.modelCView.text = current.modelC
         holder.modelPView.text = current.modelP
-        holder.findsView.text = "Detections: ${current.number}"
+        holder.findsView.text =
+                holder?.itemView?.context?.getString(R.string.detections, current.number)
         val readableDate = Utils.getDate(current.timeStamp)
         holder.timestampView.text = readableDate
-        holder.version.text = "v: ${current.version}"
-        holder.org.text = "ORG: ${current.org}"
+        holder.version.text =
+                holder?.itemView?.context?.getString(R.string.v, current.version)
+        holder.org.text = holder?.itemView?.context?.getString(R.string.org, current.org)
 
         holder.filterModelP.tag = current
         holder.filterModelC.tag = current
 
-        holder.signalStrengthView.text = "Signal Strength: ${current.rssi}"
+        holder.signalStrengthView.text =
+                holder?.itemView?.context?.getString(R.string.signal_strength, current.rssi)
 
-        holder.txpowerView.text = "Tx Power: ${current.transmissionPower}"
+        holder.txpowerView.text =
+                holder?.itemView?.context?.getString(R.string.tx_power, current.transmissionPower)
 
         holder.filterModelP.setOnClickListener {
             val model = it.tag as StreetPassRecordViewModel
@@ -81,8 +85,8 @@ class RecordListAdapter internal constructor(context: Context) :
     }
 
     private fun filterByModelC(
-        model: StreetPassRecordViewModel?,
-        words: List<StreetPassRecord>
+            model: StreetPassRecordViewModel?,
+            words: List<StreetPassRecord>
     ): List<StreetPassRecordViewModel> {
         if (model != null) {
             return prepareViewData(words.filter { it.modelC == model.modelC })
@@ -91,8 +95,8 @@ class RecordListAdapter internal constructor(context: Context) :
     }
 
     private fun filterByModelP(
-        model: StreetPassRecordViewModel?,
-        words: List<StreetPassRecord>
+            model: StreetPassRecordViewModel?,
+            words: List<StreetPassRecord>
     ): List<StreetPassRecordViewModel> {
 
         if (model != null) {
@@ -155,4 +159,5 @@ class RecordListAdapter internal constructor(context: Context) :
     }
 
     override fun getItemCount() = records.size
+
 }

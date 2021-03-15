@@ -70,6 +70,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_upload">Upload Data</string>
     <string name="menu_help">Help</string>
+    <string name="menu_statistics">Statistics</string>
+    <string name="menu_map">Map</string>
+    <string name="menu_guidance">Guidance</string>
 
     <string name="home_title">Help stop the spread of COVID-19</string>
     <string name="home_subtitle">by keeping your permissions enabled, especially when you are out, on public transport, at work or in public places.</string>
@@ -168,6 +171,12 @@
     <string name="delete">DELETE</string>
     <string name="nodelete">DON\'T DELETE</string>
 
+    <string name="signal_strength">Signal Strength: %1$d</string>
+    <string name="detections">Detections: %1$d</string>
+    <string name="tx_power">Tx Power: %1$d</string>
+    <string name="org">ORG: %1$s</string>
+    <string name="v">v: %1$d</string>
+
     <string name="country_code_canada">+1</string>
     <string name="failed_to_send_pin">Failed to send pin</string>
     <string name="no_encounter_data_available">No data available to upload.</string>
@@ -178,4 +187,8 @@
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    <string name="faq_url">https://placeholder/FAQ</string>
+    <string name="privacy_url">https://placeholder/Privacy</string>
+
 </resources>

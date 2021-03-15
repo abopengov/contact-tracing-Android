@@ -7,6 +7,16 @@
     android:background="@color/white"
     tools:context=".onboarding.OnboardingActivity">
 
+
+    <View
+        android:id="@+id/transparent_layer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:foreground="@color/transparent"
+        android:translationZ="1dp"
+        android:visibility="gone" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,87 +27,87 @@
             android:layout_height="match_parent">
 
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/on_boarding_banner"
-            style="@style/OnboardingImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_landing_illustration"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/on_boarding_banner"
+                style="@style/OnboardingImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_landing_illustration" />
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_title"
-            style="@style/OnboardingTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/tv_onboarding_title"
-            android:textAllCaps="true"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/on_boarding_banner" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                style="@style/OnboardingTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:gravity="center"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:textAllCaps="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/on_boarding_banner" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_desc"
-            style="@style/OnboardingDesc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:gravity="center"
-            android:text="@string/tv_onboarding_desc"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_desc"
+                style="@style/OnboardingDesc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
 
-    <FrameLayout
-        android:id="@+id/watermark_foot"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tv_desc"
-        app:layout_constraintBottom_toTopOf="@+id/tv_app_version">
+            <FrameLayout
+                android:id="@+id/watermark_foot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/tv_app_version"
+                app:layout_constraintTop_toBottomOf="@+id/tv_desc">
 
                 <include layout="@layout/watermark_foot" />
-        </FrameLayout>
+            </FrameLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_app_version"
-            style="@style/OnboardingDesc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="96dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_app_version"
+                style="@style/OnboardingDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="96dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-<LinearLayout
-    android:id="@+id/btn_onboardingStart"
-    style="@style/CustomButton"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent" >
-    <TextView
-        style="@style/CustomButtonText"
-        android:text="@string/i_want_to_help" />
-    <ImageView
-        style="@style/CustomButtonIcon"
-        android:src="@drawable/ic_arrow_forward_white" />
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_onboardingStart"
+        style="@style/CustomButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:id="@+id/tv_btn"
+            style="@style/CustomButtonText" />
+
+        <ImageView
+            style="@style/CustomButtonIcon"
+            android:src="@drawable/ic_arrow_forward_white" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,8 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAllCaps="true"
-            android:textColor="@color/primary_purple"
-            android:text="@string/webview_title" />
+            android:textColor="@color/primary_purple" />
     </LinearLayout>
 
     <WebView

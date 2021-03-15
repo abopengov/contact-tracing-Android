@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,23 +7,21 @@
     android:background="@color/white">
 
 
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title"
         style="@style/OnboardingTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="53dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
         android:layout_marginLeft="33dp"
+        android:layout_marginTop="53dp"
         android:layout_marginRight="33dp"
         android:gravity="center"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
         android:textAllCaps="true"
-        android:text="@string/upload_complete_title"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -32,16 +29,15 @@
         style="@style/OnboardingDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
         android:layout_marginLeft="33dp"
+        android:layout_marginTop="12dp"
         android:layout_marginRight="33dp"
         android:gravity="center"
-        android:text="@string/upload_complete_desc"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <ImageView
         style="@style/OnboardingImage"
@@ -54,7 +50,7 @@
         android:src="@drawable/ic_upoad_illustration"
         app:layout_constraintBottom_toBottomOf="@+id/uploadCompleteFragmentActionButton"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent" />
 
     <LinearLayout
         android:id="@+id/uploadCompleteFragmentActionButton"
@@ -64,8 +60,8 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <TextView
-            style="@style/CustomButtonText"
-            android:text="@string/finish_button" />
+            android:id="@+id/btn_finish"
+            style="@style/CustomButtonText" />
 
         <ImageView
             style="@style/CustomButtonIcon"

@@ -37,8 +37,8 @@ class PeekActivity : AppCompatActivity() {
         recyclerview.layoutManager = layoutManager
 
         val dividerItemDecoration = DividerItemDecoration(
-            recyclerview.context,
-            layoutManager.orientation
+                recyclerview.context,
+                layoutManager.orientation
         )
         recyclerview.addItemDecoration(dividerItemDecoration)
 
@@ -47,61 +47,61 @@ class PeekActivity : AppCompatActivity() {
             adapter.setSourceData(records)
         })
 
-        expand.setOnClickListener {
+        expand?.setOnClickListener {
             viewModel.allRecords.value?.let {
                 adapter.setMode(RecordListAdapter.MODE.ALL)
             }
         }
 
-        collapse.setOnClickListener {
+        collapse?.setOnClickListener {
             viewModel.allRecords.value?.let {
                 adapter.setMode(RecordListAdapter.MODE.COLLAPSE)
             }
         }
 
 
-        start.setOnClickListener {
+        start?.setOnClickListener {
             startService()
         }
 
-        stop.setOnClickListener {
+        stop?.setOnClickListener {
             stopService()
         }
 
-        delete.setOnClickListener { view ->
+        delete?.setOnClickListener { view ->
             view.isEnabled = false
 
             val builder = AlertDialog.Builder(this)
             builder
-                .setTitle(R.string.peekactivity_title)
-                .setCancelable(false)
-                .setMessage(R.string.delete_warn)
-                .setPositiveButton(R.string.delete) { dialog, which ->
-                    Observable.create<Boolean> {
-                        StreetPassRecordStorage(this).nukeDb()
-                        it.onNext(true)
-                    }
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe { result ->
-                            Toast.makeText(this, "Database nuked: $result", Toast.LENGTH_SHORT)
-                                .show()
-                            view.isEnabled = true
-                            dialog.cancel()
+                    .setTitle(R.string.peekactivity_title)
+                    .setCancelable(false)
+                    .setMessage(R.string.delete_warn)
+                    .setPositiveButton(R.string.delete) { dialog, which ->
+                        Observable.create<Boolean> {
+                            StreetPassRecordStorage(this).nukeDb()
+                            it.onNext(true)
                         }
-                }
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribeOn(Schedulers.io())
+                                .subscribe { result ->
+                                    Toast.makeText(this, "Database nuked: $result", Toast.LENGTH_SHORT)
+                                            .show()
+                                    view.isEnabled = true
+                                    dialog.cancel()
+                                }
+                    }
 
-                .setNegativeButton(R.string.nodelete) { dialog, which ->
-                    view.isEnabled = true
-                    dialog.cancel()
-                }
+                    .setNegativeButton(R.string.nodelete) { dialog, which ->
+                        view.isEnabled = true
+                        dialog.cancel()
+                    }
 
             val dialog: AlertDialog = builder.create()
             dialog.show()
 
         }
 
-        plot.setOnClickListener { view ->
+        plot?.setOnClickListener { view ->
             val intent = Intent(this, PlotActivity::class.java)
             intent.putExtra("time_period", nextTimePeriod())
             startActivity(intent)
@@ -109,13 +109,13 @@ class PeekActivity : AppCompatActivity() {
 
         val uid = Preference.getUUID(applicationContext)
         val serviceUUID = BuildConfig.BLE_SSID
-        info.text =
-            "UID: ${uid.substring(uid.length - 4)}   SSID: ${serviceUUID.substring(serviceUUID.length - 4)}"
+        info?.text =
+                "UID: ${uid.substring(uid.length - 4)}   SSID: ${serviceUUID.substring(serviceUUID.length - 4)}"
 
         if (!BuildConfig.DEBUG) {
-            start.visibility = View.GONE
-            stop.visibility = View.GONE
-            delete.visibility = View.GONE
+            start?.visibility = View.GONE
+            stop?.visibility = View.GONE
+            delete?.visibility = View.GONE
         }
     }
 

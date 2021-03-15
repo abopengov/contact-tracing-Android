@@ -18,6 +18,8 @@ import com.example.tracetogether.status.persistence.StatusRecord
 import com.example.tracetogether.status.persistence.StatusRecordStorage
 import com.example.tracetogether.streetpass.persistence.StreetPassRecord
 import com.example.tracetogether.streetpass.persistence.StreetPassRecordStorage
+import com.example.tracetogether.util.Extensions.setLocalizedString
+import com.example.tracetogether.util.Extensions.toJSONObject
 import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,6 +37,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -45,7 +48,8 @@ import kotlin.coroutines.suspendCoroutine
     retrieving encounter log from storage,
     and encounter log upload
  */
-class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
+class EnterPinFragment(private val isFirstStep: Boolean) : Fragment(),
+        CoroutineScope by MainScope() {
 
     companion object {
         const val TAG = "UploadFragment"
@@ -58,9 +62,9 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
     private var otpInputs: MutableList<EditText> = mutableListOf()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_upload_enterpin, container, false)
     }
@@ -69,7 +73,12 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
         super.onViewCreated(view, savedInstanceState)
 
         clearInputs()
-        enterPinActionButton?.isEnabled = false;
+        enterPinActionButton?.isEnabled = false
+
+        tv_title?.setLocalizedString("enter_pin_title")
+        tv_desc?.setLocalizedString("enter_pin_desc")
+        enterPinFragmentErrorMessage?.setLocalizedString("invalid_pin")
+        enterPinButtonText?.setLocalizedString("upload_button")
 
         otpInputs.add(otp_et1)
         otpInputs.add(otp_et2)
@@ -86,23 +95,25 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
         otp_et5?.addTextChangedListener(OTPTextWatcher(otp_et5));
         otp_et6?.addTextChangedListener(OTPTextWatcher(otp_et6));
 
-        if (uploadToken == null) {
-            getUploadToken()
-        }
-
         enterPinActionButton?.setOnClickListener {
             if (uploadToken?.equals(getOtp()) == true) {
                 enterPinFragmentErrorMessage.visibility = View.INVISIBLE
                 uploadData()
             } else {
                 clearInputs()
-                enterPinFragmentErrorMessage.text = getString(R.string.invalid_pin)
+                enterPinFragmentErrorMessage?.setLocalizedString("invalid_pin")
                 enterPinFragmentErrorMessage.visibility = View.VISIBLE
             }
         }
+
         enterPinBackButton?.setOnClickListener {
             var myParentFragment: UploadPageFragment = (parentFragment as UploadPageFragment)
-            myParentFragment.popStack()
+
+            if (isFirstStep) {
+                myParentFragment.navigateToOTCFragment()
+            } else {
+                myParentFragment.popStack()
+            }
         }
     }
 
@@ -113,7 +124,6 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
     }
 
     private fun getUploadToken() = launch {
-
         CentralLog.d("EnterPinFragment", "Fetching upload token")
 
         val myParentFragment: UploadPageFragment = (parentFragment as UploadPageFragment)
@@ -122,14 +132,26 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
         val queryParams = java.util.HashMap<String, String>()
         queryParams["userId"] = Preference.getUUID(context)
 
-        val getUploadTokenResponse = Request.runRequest("/adapters/getUploadTokenAdapter/getUploadToken", Request.GET, queryParams=queryParams)
-        val token = getUploadTokenResponse.data?.get("token") // if the service failed, it could return token as a JSON object with error instead of string: {"token":{"error":"Unable to get the upload token"}}
-        if (!getUploadTokenResponse.isSuccess() || getUploadTokenResponse.status != 200 || token is JSONObject) {
-            enterPinFragmentErrorMessage.text = getString(R.string.failed_to_send_pin)
-            enterPinFragmentErrorMessage.visibility = View.VISIBLE
+        val getUploadTokenResponse = Request.runRequest(
+                "/adapters/getUploadTokenAdapter/getUploadToken",
+                Request.GET,
+                queryParams = queryParams
+        )
+        val token =
+                getUploadTokenResponse.data?.get("token") // if the service failed, it could return token as a JSON object with error instead of string: {"token":{"error":"Unable to get the upload token"}}
+        if (!getUploadTokenResponse.isSuccess() || getUploadTokenResponse.status != 200 || token is JSONObject || token == null) {
+            enterPinFragmentErrorMessage?.setLocalizedString("failed_to_send_pin")
+            enterPinFragmentErrorMessage?.visibility = View.VISIBLE
+
+            if (getUploadTokenResponse.status == 401 || token == null) {
+                enterPinActionButton?.isEnabled = false
+            }
+
         } else {
             uploadToken = token as String
+            enterPinActionButton?.isEnabled = true
         }
+
         myParentFragment.turnOffLoadingProgress()
     }
 
@@ -141,17 +163,23 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
         val jsonData = getEncounterJSON()
 
         if (jsonData.length() == 0) {
-            enterPinFragmentErrorMessage.text = getString(R.string.no_encounter_data_available)
-            enterPinFragmentErrorMessage.visibility = View.VISIBLE
+            enterPinFragmentErrorMessage?.setLocalizedString("no_encounter_data_available")
+            enterPinFragmentErrorMessage?.visibility = View.VISIBLE
         } else {
             val queryParams = java.util.HashMap<String, String>()
             queryParams["userId"] = Preference.getUUID(context)
 
-            val uploadResponse = Request.runRequest("/adapters/uploadData/uploadData", Request.POST, data = jsonData, queryParams=queryParams)
+            val uploadResponse = Request.runRequest(
+                    "/adapters/uploadData/uploadData",
+                    Request.POST,
+                    0,
+                    data = jsonData,
+                    queryParams = queryParams
+            )
             myParentFragment.turnOffLoadingProgress()
             if (!uploadResponse.isSuccess()) {
-                enterPinFragmentErrorMessage.text = getString(R.string.failed_to_upload_data)
-                enterPinFragmentErrorMessage.visibility = View.VISIBLE
+                enterPinFragmentErrorMessage?.setLocalizedString("failed_to_upload_data")
+                enterPinFragmentErrorMessage?.visibility = View.VISIBLE
             } else {
                 // Successfully uploaded data, delete the temp file
                 // Note: leaving the temp file code here in case it's decided to make use of IBM JSONStorage sdk to upload a file
@@ -166,8 +194,8 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
         }
     }
 
-    private suspend fun getEncounterJSON() : JSONObject =
-        suspendCoroutine { cont ->
+    private suspend fun getEncounterJSON(): JSONObject =
+            suspendCoroutine { cont ->
                 var observableStreetRecords = Observable.create<List<StreetPassRecord>> {
                     val result = StreetPassRecordStorage(TracerApp.AppContext).getAllRecords()
                     it.onNext(result)
@@ -179,38 +207,33 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
 
                 disposeObj = Observable.zip(observableStreetRecords, observableStatusRecords,
 
-                    BiFunction<List<StreetPassRecord>, List<StatusRecord>, ExportData> { records, status ->
-                        ExportData(
-                            records,
-                            status
-                        )
-                    }
+                        BiFunction<List<StreetPassRecord>, List<StatusRecord>, ExportData> { records, status ->
+                            ExportData(
+                                    records,
+                                    status
+                            )
+                        }
 
                 )
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe { exportedData ->
-                        CentralLog.d(TAG, "records: ${exportedData.recordList}")
-                        CentralLog.d(TAG, "status: ${exportedData.statusList}")
+                        .subscribeOn(Schedulers.io())
+                        .subscribe { exportedData ->
+                            CentralLog.d(TAG, "records: ${exportedData.recordList}")
+                            CentralLog.d(TAG, "status: ${exportedData.statusList}")
 
-                        var gson = Gson()
+                            val updatedDeviceList = exportedData.recordList.map {
+                                it.timestamp = it.timestamp / 1000
+                                return@map it.toJSONObject()
+                            }
 
-                        var updatedDeviceList = exportedData.recordList.map {
-                            it.timestamp = it.timestamp / 1000
-                            return@map it
-                        }
+                            val updatedStatusList = exportedData.statusList.map {
+                                it.timestamp = it.timestamp / 1000
+                                return@map it.toJSONObject()
+                            }
 
-                        var updatedStatusList = exportedData.statusList.map {
-                            it.timestamp = it.timestamp / 1000
-                            return@map it
-                        }
-
-                        var map: MutableMap<String, Any> = HashMap()
-                        map["token"] = uploadToken as Any
-                        map["records"] = updatedDeviceList as Any
-                        map["events"] = updatedStatusList as Any
-
-                        val mapString = gson.toJson(map)
+                            val jsonObject = JSONObject()
+                            jsonObject.put("token", uploadToken)
+                            jsonObject.put("records", JSONArray(updatedDeviceList))
+                            jsonObject.put("events", JSONArray(updatedStatusList))
 //                        Note: leaving the temp file code here in case it's decided to make use of IBM JSONStorage sdk to upload a file
 //                        context?.openFileOutput(TEMP_UPLOAD_FILE_NAME, Context.MODE_PRIVATE).use {
 //                            it?.write(mapString.toByteArray())
@@ -220,12 +243,11 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
 //                            TAG,
 //                            "File $TEMP_UPLOAD_FILE_NAME written to internal storage."
 //                        )
+                            cont.resume(jsonObject)
+                        }
+            }
 
-                        cont.resume(JSONObject(mapString))
-                    }
-        }
-
-    private fun clearInputs(){
+    private fun clearInputs() {
         otp_et6?.setText("")
         otp_et5?.setText("")
         otp_et4?.setText("")
@@ -234,15 +256,15 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
         otp_et1?.setText("")
     }
 
-    private fun getOtp(): String{
+    private fun getOtp(): String {
         var otp = ""
-        for(input in otpInputs){
+        for (input in otpInputs) {
             otp += input.text
         }
         return otp
     }
 
-    private fun validateOtp(otp:String):Boolean{
+    private fun validateOtp(otp: String): Boolean {
         return otp.length >= 6
     }
 
@@ -257,18 +279,27 @@ class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
                 R.id.otp_et3 -> if (text.length == 1) otpInputs[3].requestFocus() else if (text.isEmpty()) otpInputs[1].requestFocus()
                 R.id.otp_et4 -> if (text.length == 1) otpInputs[4].requestFocus() else if (text.isEmpty()) otpInputs[2].requestFocus()
                 R.id.otp_et5 -> if (text.length == 1) otpInputs[5].requestFocus() else if (text.isEmpty()) otpInputs[3].requestFocus()
-                R.id.otp_et6 -> if (text.isEmpty()) otpInputs[4].requestFocus()
+                R.id.otp_et6 -> {
+                    if (text.isEmpty()) otpInputs[4].requestFocus()
+
+                    if (otp_et1.text.isNotEmpty() && otp_et2.text.isNotEmpty() && otp_et3.text.isNotEmpty()
+                            && otp_et4.text.isNotEmpty() && otp_et5.text.isNotEmpty() && otp_et6.text.isNotEmpty()
+                    ) {
+                        getUploadToken()
+                    }
+                }
             }
         }
+
         override fun beforeTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {}
         override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
-            if(validateOtp(getOtp())){
+            if (validateOtp(getOtp())) {
                 Utils.hideKeyboardFrom(view.context, view)
-                enterPinActionButton.isEnabled = true
-                enterPinButtonText.text = getString(R.string.upload_button)
-            }else{
-                enterPinActionButton.isEnabled = false
-                enterPinButtonText.text = getString(R.string.submit_button)
+                enterPinActionButton?.isEnabled = true
+                enterPinButtonText?.setLocalizedString("upload_button")
+            } else {
+                enterPinActionButton?.isEnabled = false
+                enterPinButtonText?.setLocalizedString("submit_button")
             }
         }
 

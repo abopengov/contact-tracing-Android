@@ -1,14 +1,8 @@
 # ABTraceTogether Android app
 
-ABTraceTogether was adapted from the OpenTrace open source reference implementation of BlueTrace.
-BlueTrace is a privacy-preserving protocol for community-driven contact tracing across borders. It allows participating devices to log Bluetooth encounters with each other, in order to facilitate epidemiological contact tracing while protecting users� personal data and privacy. Visit https://bluetrace.io to learn more.
-The OpenTrace reference implementation comprises of:
+ABTraceTogether is the Government of Alberta's Contact Tracing application that uses Herald.
 
-- Android app: [opentrace-community/opentrace-android](https://github.com/opentrace-community/opentrace-android)
-- iOS app: [opentrace-community/opentrace-ios](https://github.com/opentrace-community/opentrace-ios)
-- Cloud functions: [opentrace-community/opentrace-cloud-functions](https://github.com/opentrace-community/opentrace-cloud-functions)
-- Calibration: [opentrace-community/opentrace-calibration](https://github.com/opentrace-community/opentrace-calibration)
-
+Herald provides reliable Bluetooth communication and range finding across a wide range of mobile devices, allowing Contact Tracing and other applications to have regular and accurate information to make them highly effective. More information is available [here](./herald/Herald.md).
  
 ## Note
 This is the open source release of ABTraceTogether, however any components considered sensitive and specific to Alberta Health Services have been removed. The following are the changes made for this release:
@@ -122,12 +116,6 @@ Pinning certificate for all environments is stored in the following location:
 
 ---
 
-### Protocol Version
-Protocol version used should be 2 (or above).
-Version 1 of the protocol has been deprecated.
-
----
-
 ### Security Enhancements
 SSL pinning is not included as part of the repository.
 It is recommended to add in a check for SSL certificate returned by the backend.
@@ -152,3 +140,5 @@ TraceTogether uses the following third party libraries / tools.
 [1.1.0] * Added restart logic if app flow fails. Added null checking before accessing view elements. Added prompt to get user to update app if version is unsupported.
 
 [1.2.0] * Added vulnerability fix and anonymity hardening
+
+[2.0.0] * Added Herald for Bluetooth communication

@@ -6,26 +6,26 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "record_table")
 class StreetPassRecord constructor(
-    @ColumnInfo(name = "v")
-    var v: Int,
+        @ColumnInfo(name = "v")
+        var v: Int,
 
-    @ColumnInfo(name = "msg")
-    var msg: String,
+        @ColumnInfo(name = "msg")
+        var msg: String,
 
-    @ColumnInfo(name = "org")
-    var org: String,
+        @ColumnInfo(name = "org")
+        var org: String,
 
-    @ColumnInfo(name = "modelP")
-    val modelP: String,
+        @ColumnInfo(name = "modelP")
+        val modelP: String,
 
-    @ColumnInfo(name = "modelC")
-    val modelC: String,
+        @ColumnInfo(name = "modelC")
+        val modelC: String,
 
-    @ColumnInfo(name = "rssi")
-    val rssi: Int,
+        @ColumnInfo(name = "rssi")
+        val rssi: Int,
 
-    @ColumnInfo(name = "txPower")
-    val txPower: Int?
+        @ColumnInfo(name = "txPower")
+        val txPower: Int?
 
 ) {
 

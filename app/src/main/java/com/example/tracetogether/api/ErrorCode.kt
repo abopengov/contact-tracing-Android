@@ -2,6 +2,7 @@ package com.example.tracetogether.api
 
 import android.content.Context
 import com.example.tracetogether.R
+import com.example.tracetogether.util.Extensions.getLocalizedText
 
 object ErrorCode {
 
@@ -17,14 +18,15 @@ object ErrorCode {
     val SERVER_ERROR = "SERVER_ERROR"
     val UNEXPECTED_ERROR = "UNEXPECTED_ERROR"
     val ADAPTER_DOES_NOT_EXIST = "ADAPTER_DOES_NOT_EXIST"
+    val APPLICATION_DOES_NOT_EXIST = "APPLICATION_DOES_NOT_EXIST"
 
     fun getStringForErrorCode(context: Context, errorCode: String? = "") : String {
         return when(errorCode) {
-            AUTHORIZATION_FAILURE -> context.getString(R.string.auth_error)
-            REQUEST_TIMEOUT -> context.getString(R.string.timeout_error)
-            SERVER_ERROR -> context.getString(R.string.unknown_error)
-            UNEXPECTED_ERROR, CHALLENGE_HANDLING_CANCELED, LOGIN_ALREADY_IN_PROCESS, LOGOUT_ALREADY_IN_PROCESS  -> context.getString(R.string.unknown_error)
-            else -> context.getString(R.string.unexpected_error) // APPLICATION_NOT_REGISTERED, ILLEGAL_ARGUMENT_EXCEPTION, MINIMUM_SERVER, MISSING_CHALLENGE_HANDLER, ADAPTER_DOES_NOT_EXIST
+            AUTHORIZATION_FAILURE -> "auth_error".getLocalizedText()
+            REQUEST_TIMEOUT -> "timeout_error".getLocalizedText()
+            SERVER_ERROR -> "unknown_error".getLocalizedText()
+            UNEXPECTED_ERROR, CHALLENGE_HANDLING_CANCELED, LOGIN_ALREADY_IN_PROCESS, LOGOUT_ALREADY_IN_PROCESS  -> "unknown_error".getLocalizedText()
+            else -> "unexpected_error".getLocalizedText()// APPLICATION_NOT_REGISTERED, ILLEGAL_ARGUMENT_EXCEPTION, MINIMUM_SERVER, MISSING_CHALLENGE_HANDLER, ADAPTER_DOES_NOT_EXIST
         }
     }
 }

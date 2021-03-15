@@ -27,62 +27,62 @@ object Request : CoroutineScope by MainScope() {
     const val OPTIONS = "OPTIONS"
 
     suspend fun runRequest(
-        path: String,
-        method: String,
-        timeout: Int = 3000,
-        scope: String? = null,
-        data: JSONObject? = null,
-        queryParams: HashMap<String, String>? = null
+            path: String,
+            method: String,
+            timeout: Int = 3000,
+            scope: String? = null,
+            data: JSONObject? = null,
+            queryParams: HashMap<String, String>? = null
     ): Response =
-        suspendCoroutine { cont ->
-            val request = WLResourceRequest(URI(path), method, timeout, scope)
+            suspendCoroutine { cont ->
+                val request = WLResourceRequest(URI(path), method, timeout, scope)
 
-            CentralLog.d("Request", "method=${request.method} - url=${request.url}")
+                CentralLog.d("Request", "method=${request.method} - url=${request.url}")
 
-            if (queryParams != null) {
-                request.setQueryParameters(queryParams)
-            }
-
-            val listener = object : WLResponseListener {
-                override fun onSuccess(response: WLResponse?) {
-                    CentralLog.d("Request", "Request.onSuccess url=${request.url} - response=${response?.responseJSON}")
-                    cont.resume(
-                        Response(
-                            response?.status,
-                            response?.responseText,
-                            response?.responseJSON
-                        )
-                    )
+                if (queryParams != null) {
+                    request.setQueryParameters(queryParams)
                 }
 
-                override fun onFailure(response: WLFailResponse?) {
-                    CentralLog.d("Request", "Request.onFailure url=${request.url} -  response=$response")
-                    WFLog.logError("Request.onFailure request=${request} -  response=$response")
-                    response?.errorMsg?.let {
-                        CentralLog.d(
-                            "Request",
-                            "${response.errorStatusCode} - ${response.errorMsg}"
+                val listener = object : WLResponseListener {
+                    override fun onSuccess(response: WLResponse?) {
+                        CentralLog.d("Request", "Request.onSuccess url=${request.url} - response=${response?.responseJSON}")
+                        cont.resume(
+                                Response(
+                                        response?.status,
+                                        response?.responseText,
+                                        response?.responseJSON
+                                )
                         )
                     }
-                    cont.resume(
-                        Response(
-                            response?.status,
-                            response?.responseText,
-                            response?.responseJSON,
-                            ErrorCode.getStringForErrorCode(
-                                TracerApp.AppContext,
-                                response?.errorStatusCode ?: ""
-                            ),
-                            response?.errorStatusCode ?: ""
+
+                    override fun onFailure(response: WLFailResponse?) {
+                        CentralLog.d("Request", "Request.onFailure url=${request.url} -  response=$response")
+                        WFLog.logError("Request.onFailure request=${request} -  response=$response")
+                        response?.errorMsg?.let {
+                            CentralLog.d(
+                                    "Request",
+                                    "${response.errorStatusCode} - ${response.errorMsg}"
+                            )
+                        }
+                        cont.resume(
+                                Response(
+                                        response?.status,
+                                        response?.responseText,
+                                        response?.responseJSON,
+                                        ErrorCode.getStringForErrorCode(
+                                                TracerApp.AppContext,
+                                                response?.errorStatusCode ?: ""
+                                        ),
+                                        response?.errorStatusCode ?: ""
+                                )
                         )
-                    )
+                    }
+                }
+
+                if (data == null) {
+                    request.send(listener)
+                } else {
+                    request.send(data, listener)
                 }
             }
-
-            if (data == null) {
-                request.send(listener)
-            } else {
-                request.send(data, listener)
-            }
-        }
 }

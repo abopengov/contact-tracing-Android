@@ -66,9 +66,12 @@
             android:name="com.example.tracetogether.onboarding.HowItWorksActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.example.tracetogether.onboarding.ExplanationActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.example.tracetogether.onboarding.PreOnboardingActivity"
             android:screenOrientation="portrait" />
-        
+
         <activity
             android:name="com.example.tracetogether.onboarding.WebViewActivity"
             android:screenOrientation="portrait" />
@@ -82,11 +85,6 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name="com.example.tracetogether.permissions.RequestFileWritePermission"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />
 
         <service
             android:name="com.example.tracetogether.services.BluetoothMonitoringService"
