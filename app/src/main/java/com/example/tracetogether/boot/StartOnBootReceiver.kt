@@ -15,7 +15,7 @@ class StartOnBootReceiver : BroadcastReceiver() {
             try {
                 //can i try a scheduled service start here?
                 CentralLog.d("StartOnBootReceiver", "Attempting to start service")
-                Utils.scheduleStartMonitoringService(context, 500)
+                Utils.startBluetoothMonitoringService(context)
             } catch (e: Throwable) {
                 CentralLog.e("StartOnBootReceiver", e.localizedMessage)
                 e.printStackTrace()

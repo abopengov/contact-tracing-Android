@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "status_table")
 class StatusRecord constructor(
 
-    @ColumnInfo(name = "msg")
-    var msg: String
+        @ColumnInfo(name = "msg")
+        var msg: String
 ) {
 
     @PrimaryKey(autoGenerate = true)

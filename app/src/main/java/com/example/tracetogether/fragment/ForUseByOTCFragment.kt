@@ -9,12 +9,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.tracetogether.MainActivity
 import com.example.tracetogether.R
+import com.example.tracetogether.Utils
 
 class ForUseByOTCFragment : Fragment() {
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_forusebyotc, container, false)
     }
@@ -30,13 +31,16 @@ class ForUseByOTCFragment : Fragment() {
         childFragTrans.commit()
     }
 
-    fun goToUploadFragment() {
-        val parentActivity: MainActivity = activity as MainActivity
-        parentActivity.openFragment(
-            parentActivity.LAYOUT_MAIN_ID,
-            UploadPageFragment(),
-            UploadPageFragment::class.java.name,
-            0
-        )
+    fun goToUploadFragment(isEnterPin: Boolean) {
+        val parentActivity: MainActivity? = activity as MainActivity?
+        parentActivity?.let{
+            it.openFragment(
+                    parentActivity.LAYOUT_MAIN_ID,
+                    UploadPageFragment(isEnterPin),
+                    UploadPageFragment::class.java.name,
+                    0
+            )
+        }?:(Utils.restartAppWithNoContext(0,"ForUseByOTCFragment not attached to MainActivity"))
+
     }
 }

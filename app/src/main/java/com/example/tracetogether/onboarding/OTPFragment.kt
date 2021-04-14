@@ -1,6 +1,7 @@
 package com.example.tracetogether.onboarding
 
 import android.content.Context
+import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -17,6 +18,9 @@ import com.example.tracetogether.Preference
 import com.example.tracetogether.R
 import com.example.tracetogether.Utils
 import com.example.tracetogether.logging.CentralLog
+import com.example.tracetogether.util.Extensions.getLocalizedText
+import com.example.tracetogether.util.Extensions.setLocalizedString
+import kotlinx.android.synthetic.main.button_and_progress.*
 import kotlinx.android.synthetic.main.fragment_otp.*
 import kotlin.math.floor
 
@@ -73,43 +77,58 @@ class OTPFragment : OnboardingFragmentInterface() {
         CentralLog.d(TAG, "OnButtonClick 3B")
 
         val otp = getOtp()
-        val onboardActivity = context as OnboardingActivity
 
-        if(timerHasFinished){
+        val onboardActivity = context as OnboardingActivity?
+
+        if (timerHasFinished) {
             resendCodeAndStartTimer()
-        }else{
-            onboardActivity.validateOTP(otp)
+        } else {
+            onboardActivity?.let {
+                it.validateOTP(otp)
+            } ?: (Utils.restartAppWithNoContext(
+                    0,
+                    "OTPFragment not attached to OnboardingActivity"
+            ))
         }
     }
 
     override fun onBackButtonClick(view: View) {
-        val onboardActivity = context as OnboardingActivity
-        onboardActivity.onBackPressed()
+        val onboardActivity = context as OnboardingActivity?
+        onboardActivity?.let {
+            it.onBackPressed()
+        } ?: (Utils.restartAppWithNoContext(0, "OTPFragment not attached to OnboardingActivity"))
     }
 
-    private fun getOtp(): String{
+    private fun getOtp(): String {
         var otp = ""
-        for(input in otpInputs){
+        for (input in otpInputs) {
             otp += input.text
         }
         return otp
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_otp, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        onboardingButtonText?.setLocalizedString("next_button")
         sent_to?.text = HtmlCompat.fromHtml(
-            getString(
-                R.string.otp_sent,
-                "${buildPhoneString(Preference.getPhoneNumber(context!!))}"
-            ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                "otp_sent".getLocalizedText()
+                        .replace("%s", buildPhoneString(Preference.getPhoneNumber(context!!)))
+                , HtmlCompat.FROM_HTML_MODE_LEGACY
         )
+
+        tv_step_two?.setLocalizedString("otp_step")
+        tv_enter_otp?.setLocalizedString("enter_otp")
+
+        tv_receive_code?.setLocalizedString("resend_code_label")
+        resendCode?.setLocalizedString("resend_code")
+        resendCode.paintFlags = resendCode.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         colorError = ContextCompat.getColor(context!!, R.color.error)
         colorText = ContextCompat.getColor(context!!, R.color.grey_3)
@@ -122,12 +141,12 @@ class OTPFragment : OnboardingFragmentInterface() {
         otpInputs.add(otp_et6)
 
 
-        otp_et1?.addTextChangedListener(OTPTextWatcher(otp_et1,otpInputs));
-        otp_et2?.addTextChangedListener(OTPTextWatcher(otp_et2,otpInputs));
-        otp_et3?.addTextChangedListener(OTPTextWatcher(otp_et3,otpInputs));
-        otp_et4?.addTextChangedListener(OTPTextWatcher(otp_et4,otpInputs));
-        otp_et5?.addTextChangedListener(OTPTextWatcher(otp_et5,otpInputs));
-        otp_et6?.addTextChangedListener(OTPTextWatcher(otp_et6,otpInputs));
+        otp_et1?.addTextChangedListener(OTPTextWatcher(otp_et1, otpInputs));
+        otp_et2?.addTextChangedListener(OTPTextWatcher(otp_et2, otpInputs));
+        otp_et3?.addTextChangedListener(OTPTextWatcher(otp_et3, otpInputs));
+        otp_et4?.addTextChangedListener(OTPTextWatcher(otp_et4, otpInputs));
+        otp_et5?.addTextChangedListener(OTPTextWatcher(otp_et5, otpInputs));
+        otp_et6?.addTextChangedListener(OTPTextWatcher(otp_et6, otpInputs));
 
         resendCode?.setOnClickListener {
             CentralLog.d(TAG, "resend pressed")
@@ -139,9 +158,15 @@ class OTPFragment : OnboardingFragmentInterface() {
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 Utils.hideKeyboardFrom(view.context, view)
                 val otp = getOtp()
-                val onboardActivity = context as OnboardingActivity
-                onboardActivity.validateOTP(otp)
-                true
+                val onboardActivity = context as OnboardingActivity?
+                onboardActivity?.let {
+                    it.validateOTP(otp)
+                    true
+                } ?: (Utils.restartAppWithNoContext(
+                        0,
+                        "OTPFragment not attached to OnboardingActivity"
+                ))
+                false
             } else {
                 false
             }
@@ -150,10 +175,12 @@ class OTPFragment : OnboardingFragmentInterface() {
 
     override fun onUpdatePhoneNumber(num: String) {
         CentralLog.d(TAG, "onUpdatePhoneNumber $num")
-        sent_to.text = HtmlCompat.fromHtml(
-            getString(R.string.otp_sent, "${buildPhoneString(num)}"),
-            HtmlCompat.FROM_HTML_MODE_LEGACY
+        sent_to?.text = HtmlCompat.fromHtml(
+                "otp_sent".getLocalizedText()
+                        .replace("%s", buildPhoneString(num))
+                , HtmlCompat.FROM_HTML_MODE_LEGACY
         )
+
         phoneNumber = num
     }
 
@@ -171,18 +198,20 @@ class OTPFragment : OnboardingFragmentInterface() {
                 } else {
                     finalNumberOfSecondsString = "$numberOfSecondsInt"
                 }
+
                 timer?.text = HtmlCompat.fromHtml(
-                    getString(
-                        R.string.otp_countdown,
-                        "<b>$numberOfMinsInt:$finalNumberOfSecondsString</b>"
-                    ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                        "otp_countdown".getLocalizedText().replace(
+                                "%s",
+                                "<b>$numberOfMinsInt:$finalNumberOfSecondsString</b>"
+                        ),
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
                 )
             }
 
             override fun onFinish() {
-                timer?.text = getString(R.string.otp_countdown_expired)
-                timer.setTextColor(colorError)
-                setButtonText(getString(R.string.resend_button))
+                timer?.setLocalizedString("otp_countdown_expired")
+                timer?.setTextColor(colorError)
+                setButtonText("resend_button".getLocalizedText())
                 enableButton()
                 timerHasFinished = true;
             }
@@ -192,8 +221,10 @@ class OTPFragment : OnboardingFragmentInterface() {
     }
 
     override fun onError(error: String) {
-        val onboardActivity = context as OnboardingActivity
-        onboardActivity.onBackPressed()
+        var onboardActivity = context as OnboardingActivity?
+        onboardActivity?.let {
+            it.onBackPressed()
+        } ?: (Utils.restartAppWithNoContext(0, "OTPFragment not attached to OnboardingActivity"))
     }
 
     override fun onAttach(context: Context) {
@@ -218,17 +249,20 @@ class OTPFragment : OnboardingFragmentInterface() {
     }
 
     private fun buildPhoneString(phone: String): String {
-        if(phone.length < 6){
+        if (phone.length < 6) {
             return phone
         }
-        return "+1 " + phone.substring(0,3) + "-" + phone.substring(3,6) + "-" + phone.substring(6);
+        return "+1 " + phone.substring(0, 3) + "-" + phone.substring(
+                3,
+                6
+        ) + "-" + phone.substring(6);
     }
 
-    private fun validateNumber(num:String):Boolean{
+    private fun validateNumber(num: String): Boolean {
         return num.length >= 6
     }
 
-    private fun clearInputs(){
+    private fun clearInputs() {
         otp_et6?.setText("")
         otp_et5?.setText("")
         otp_et4?.setText("")
@@ -237,10 +271,15 @@ class OTPFragment : OnboardingFragmentInterface() {
         otp_et1?.setText("")
     }
 
-    private fun resendCodeAndStartTimer(){
-        val onboardingActivity = activity as OnboardingActivity
-        clearInputs();
-        onboardingActivity.resendCode()
+    private fun resendCodeAndStartTimer() {
+        val onboardingActivity = activity as OnboardingActivity?
+
+        clearInputs()
+
+        onboardingActivity?.let {
+            it.resendCode()
+        } ?: (Utils.restartAppWithNoContext(0, "OTPFragment not attached to OnboardingActivity"))
+
         resetTimer()
         startTimer()
     }
@@ -265,15 +304,16 @@ class OTPFragment : OnboardingFragmentInterface() {
                 R.id.otp_et6 -> if (text.isEmpty()) inputs[4].requestFocus()
             }
         }
+
         override fun beforeTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {}
         override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
-            if(validateNumber(getOtp())){
+            if (validateNumber(getOtp())) {
                 Utils.hideKeyboardFrom(view.context, view)
                 enableButton()
-                setButtonText(getString(R.string.submit_button))
-            }else{
+                setButtonText("submit_button".getLocalizedText())
+            } else {
                 disableButton()
-                setButtonText(getString(R.string.next_button))
+                setButtonText("next_button".getLocalizedText())
             }
         }
 

@@ -9,6 +9,9 @@ buildscript {
     repositories {
         google()
         jcenter()
+        flatDir {
+            dir 'libs'
+        }
     }
 }
 
@@ -70,6 +73,7 @@ android {
 
         buildConfigField "String", "V2_CHARACTERISTIC_ID", V2_CHARACTERISTIC_ID
 
+        buildConfigField "Boolean", "TEST_EFFICACY_ENABLED", project.findProperty("TEST_EFFICACY_ENABLED") ?: "false"
     }
 
     buildTypes {

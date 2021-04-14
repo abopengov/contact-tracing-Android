@@ -7,13 +7,17 @@
         android:title="@string/menu_home" />
 
     <item
-        android:id="@+id/navigation_upload"
-        android:icon="@drawable/ic_upload"
-        android:title="@string/menu_upload" />
+        android:id="@+id/navigation_statistics"
+        android:icon="@drawable/ic_statistics"
+        android:title="@string/menu_statistics" />
 
     <item
         android:id="@+id/navigation_help"
         android:icon="@drawable/ic_help"
         android:title="@string/menu_help" />
 
+    <item
+        android:id="@+id/navigation_guidance"
+        android:icon="@drawable/ic_guidance"
+        android:title="@string/menu_guidance" />
 </menu>

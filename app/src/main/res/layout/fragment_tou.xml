@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".onboarding.OnboardingActivity">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,36 +15,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_title"
                 style="@style/OnboardingTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="12dp"
-                android:gravity="start"
-                android:text="@string/privacy_policy_title"
-                android:visibility="visible"
-                android:textAllCaps="true" />
+                android:textAllCaps="true"
+                android:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/privacy_desc1"
                 style="@style/OnboardingDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="12dp"
-                android:gravity="start"
-                android:text="@string/privacy_policy_text1"
                 android:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -51,13 +49,12 @@
                 style="@style/OnboardingDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="12dp"
-                android:gravity="start"
-                android:text="@string/privacy_policy_text2"
                 android:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -65,13 +62,12 @@
                 style="@style/OnboardingDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="12dp"
-                android:gravity="start"
-                android:text="@string/privacy_policy_text3"
                 android:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -79,13 +75,12 @@
                 style="@style/OnboardingDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="12dp"
-                android:gravity="start"
-                android:text="@string/privacy_policy_text4"
                 android:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -93,13 +88,12 @@
                 style="@style/OnboardingDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="12dp"
-                android:gravity="start"
-                android:text="@string/privacy_policy_text5"
                 android:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -107,99 +101,144 @@
                 style="@style/OnboardingDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="12dp"
-                android:gravity="start"
-                android:text="@string/privacy_policy_text6"
                 android:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/privacy_desc7"
-            style="@style/OnboardingDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="12dp"
-            android:gravity="start"
-            android:text="@string/privacy_policy_text7"
-            android:visibility="visible" />
+                android:id="@+id/privacy_desc7"
+                style="@style/OnboardingDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:visibility="visible" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/privacy_desc8"
-            style="@style/OnboardingDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="12dp"
-            android:gravity="start"
-            android:text="@string/privacy_policy_text8"
-            android:visibility="visible" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/privacy_desc8"
+                style="@style/OnboardingDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/privacy_desc9"
+                style="@style/OnboardingDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/privacy_desc10"
+                style="@style/OnboardingDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/privacy_desc11"
+                style="@style/OnboardingDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/privacy_desc12"
+                style="@style/OnboardingDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:visibility="visible" />
 
             <Button
                 android:id="@+id/privacy_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_outlined_button"
-                android:layout_marginTop="42dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="42dp"
                 android:layout_marginRight="10dp"
+                android:background="@drawable/custom_outlined_button"
                 android:textColor="@color/final_blue"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="@string/view_privacy"
-                />
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/faq_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_outlined_button"
-                android:layout_marginTop="12dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginRight="10dp"
+                android:background="@drawable/custom_outlined_button"
                 android:textColor="@color/final_blue"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="@string/view_faq"
-                />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="46dp"
-                android:layout_marginBottom="128dp">
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="128dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_agreement"
                     style="@style/OnboardingDesc"
-                    android:layout_margin="0dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
                     android:paddingLeft="0dp"
                     android:paddingRight="0dp"
-                    android:text="@string/agreement"
-                    android:layout_weight="1"
                     android:visibility="visible" />
 
                 <Switch
                     android:id="@+id/checkbox_agreement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="false"
                     android:paddingLeft="0dp"
                     android:paddingRight="0dp"
-                    android:checked="false"
                     android:theme="@style/SwitchThemePrivacy" />
             </LinearLayout>
         </LinearLayout>
@@ -209,13 +248,12 @@
         android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white"
         android:paddingTop="8dp"
-        android:background="@color/white">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <include layout="@layout/button_and_progress" />
     </FrameLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

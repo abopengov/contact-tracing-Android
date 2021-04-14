@@ -49,7 +49,6 @@
         <item name="android:minWidth">200dp</item>
     </style>
 
-
     <style name="OnboardingImage">
         <item name="android:layout_marginLeft">26dp</item>
         <item name="android:layout_marginTop">12dp</item>
@@ -63,6 +62,28 @@
         <item name="android:textSize">19sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+
+    <style name="OnboardingLabelSectionTitle" parent="AppFont">
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="OnboardingSubLabel" parent="AppFont">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textColor">@color/onboarding_dark_gray</item>
+    </style>
+
+    <style name="OnboardingInfoLabel" parent="AppFont">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textColor">@color/onboarding_info_gray</item>
     </style>
 
     <style name="OnboardingDesc" parent="AppFont">
@@ -129,6 +150,10 @@
         <item name="android:layout_gravity">center_horizontal|bottom</item>
     </style>
 
+    <style name="CustomButton.Outline">
+        <item name="android:background">@drawable/custom_outlined_button</item>
+    </style>
+
     <style name="CustomButtonText">
         <item name="android:fontFamily">@font/font</item>
         <item name="fontFamily">@font/font</item>
@@ -142,11 +167,19 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
+    <style name="CustomButtonText.Outline">
+        <item name="android:textColor">#0070C4</item>
+    </style>
+
     <style name="CustomButtonIcon">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="CustomButtonIcon.Outline">
+        <item name="android:tint">#0070C4</item>
     </style>
 
     <style name="SwitchTheme" parent="Theme.AppCompat.Light">
@@ -160,8 +193,6 @@
     <style name="PremCard">
         <item name="android:paddingLeft">11dp</item>
         <item name="android:paddingRight">11dp</item>
-<!--        <item name="android:paddingTop">12dp</item>-->
-<!--        <item name="android:paddingBottom">12dp</item>-->
         <item name="android:layout_height">64dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:orientation">horizontal</item>
@@ -202,6 +233,15 @@
         <item name="android:letterSpacing">0.2</item>
     </style>
 
+    <style name="TabItem">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@drawable/tab_item_selector</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 
 
 </resources>

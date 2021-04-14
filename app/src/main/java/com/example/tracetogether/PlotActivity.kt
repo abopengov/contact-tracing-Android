@@ -47,97 +47,97 @@ class PlotActivity : AppCompatActivity() {
         }
 
         val zipResult = Observable.zip(observableStreetRecords, observableStatusRecords,
-            BiFunction<List<StreetPassRecord>, List<StatusRecord>, ExportData> { records, status -> ExportData(records, status) }
+                BiFunction<List<StreetPassRecord>, List<StatusRecord>, ExportData> { records, status -> ExportData(records, status) }
         )
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe { exportedData ->
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe { exportedData ->
 
-                if (exportedData.recordList.isEmpty()) {
-                    return@subscribe
-                }
+                    if (exportedData.recordList.isEmpty()) {
+                        return@subscribe
+                    }
 
-                val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-                // Use the date of the last record as the end time (Epoch time in seconds)
-                val endTime =
-                    exportedData.recordList.sortedByDescending { it.timestamp }[0].timestamp / 1000 + 1 * 60
-                val endTimeString = dateFormatter.format(Date(endTime * 1000))
+                    // Use the date of the last record as the end time (Epoch time in seconds)
+                    val endTime =
+                            exportedData.recordList.sortedByDescending { it.timestamp }[0].timestamp / 1000 + 1 * 60
+                    val endTimeString = dateFormatter.format(Date(endTime * 1000))
 
-                val startTime =
-                    endTime - displayTimePeriod * 3600 // ignore records older than X hour(s)
-                val startTimeString = dateFormatter.format(Date(startTime * 1000))
+                    val startTime =
+                            endTime - displayTimePeriod * 3600 // ignore records older than X hour(s)
+                    val startTimeString = dateFormatter.format(Date(startTime * 1000))
 
-                val filteredRecords = exportedData.recordList.filter {
-                    it.timestamp / 1000 >= startTime && it.timestamp / 1000 <= endTime
-                }
+                    val filteredRecords = exportedData.recordList.filter {
+                        it.timestamp / 1000 >= startTime && it.timestamp / 1000 <= endTime
+                    }
 
-                if (filteredRecords.isNotEmpty()) {
-                    val dataByModelC = filteredRecords.groupBy { it.modelC }
-                    val dataByModelP = filteredRecords.groupBy { it.modelP }
+                    if (filteredRecords.isNotEmpty()) {
+                        val dataByModelC = filteredRecords.groupBy { it.modelC }
+                        val dataByModelP = filteredRecords.groupBy { it.modelP }
 
-                    // get all models
-                    val allModelList = dataByModelC.keys union dataByModelP.keys.toList()
-                    Log.d(TAG, "allModels: ${allModelList}")
+                        // get all models
+                        val allModelList = dataByModelC.keys union dataByModelP.keys.toList()
+                        Log.d(TAG, "allModels: ${allModelList}")
 
-                    // sort the list by the models that appear the most frequently
-                    val sortedModelList =
-                        allModelList.sortedWith(Comparator { a: String, b: String ->
-                            val aSize = (dataByModelC[a]?.size ?: 0) + (dataByModelP[a]?.size ?: 0)
-                            val bSize = (dataByModelC[b]?.size ?: 0) + (dataByModelP[b]?.size ?: 0)
+                        // sort the list by the models that appear the most frequently
+                        val sortedModelList =
+                                allModelList.sortedWith(Comparator { a: String, b: String ->
+                                    val aSize = (dataByModelC[a]?.size ?: 0) + (dataByModelP[a]?.size ?: 0)
+                                    val bSize = (dataByModelC[b]?.size ?: 0) + (dataByModelP[b]?.size ?: 0)
 
-                            bSize - aSize
-                        })
+                                    bSize - aSize
+                                })
 
-                    // for each model form the data for that model
-                    // e.g.:
-                    //    var data1 = [];
-                    //    var data1a = {
-                    //        name: 'central',
-                    //        x: ["2020-02-20 13:49"],
-                    //        y: [-97],
-                    //        xaxis: 'x1',
-                    //        yaxis: 'y1',
-                    //        mode: 'markers',
-                    //        type: 'scatter',
-                    //        line: {color: 'blue'}
-                    //    };
-                    //    data1 = data1.concat(data1a);
-                    //    var data1b = {
-                    //        name: 'peripheral',
-                    //        x: ["2020-02-20 13:49", "2020-02-20 13:50", "2020-02-20 13:51", "2020-02-20 13:51", "2020-02-20 13:52", "2020-02-20 13:53", "2020-02-20 13:53", "2020-02-20 13:53"],
-                    //        y: [-91, -94, -91, -98, -93, -101, -101, -97],
-                    //        xaxis: 'x1',
-                    //        yaxis: 'y1',
-                    //        mode: 'markers',
-                    //        type: 'scatter',
-                    //        line: {color: 'red'}
-                    //    };
-                    //    data1 = data1.concat(data1b);
-                    //
-                    val individualData = sortedModelList.map { model ->
-                        val index = sortedModelList.indexOf(model) + 1
+                        // for each model form the data for that model
+                        // e.g.:
+                        //    var data1 = [];
+                        //    var data1a = {
+                        //        name: 'central',
+                        //        x: ["2020-02-20 13:49"],
+                        //        y: [-97],
+                        //        xaxis: 'x1',
+                        //        yaxis: 'y1',
+                        //        mode: 'markers',
+                        //        type: 'scatter',
+                        //        line: {color: 'blue'}
+                        //    };
+                        //    data1 = data1.concat(data1a);
+                        //    var data1b = {
+                        //        name: 'peripheral',
+                        //        x: ["2020-02-20 13:49", "2020-02-20 13:50", "2020-02-20 13:51", "2020-02-20 13:51", "2020-02-20 13:52", "2020-02-20 13:53", "2020-02-20 13:53", "2020-02-20 13:53"],
+                        //        y: [-91, -94, -91, -98, -93, -101, -101, -97],
+                        //        xaxis: 'x1',
+                        //        yaxis: 'y1',
+                        //        mode: 'markers',
+                        //        type: 'scatter',
+                        //        line: {color: 'red'}
+                        //    };
+                        //    data1 = data1.concat(data1b);
+                        //
+                        val individualData = sortedModelList.map { model ->
+                            val index = sortedModelList.indexOf(model) + 1
 
-                        val hasC = dataByModelC.containsKey(model)
-                        val hasP = dataByModelP.containsKey(model)
+                            val hasC = dataByModelC.containsKey(model)
+                            val hasP = dataByModelP.containsKey(model)
 
-                        val x1 = dataByModelC[model]?.map {
-                            dateFormatter.format(Date(it.timestamp))
-                        }?.joinToString(separator = "\", \"", prefix = "[\"", postfix = "\"]")
+                            val x1 = dataByModelC[model]?.map {
+                                dateFormatter.format(Date(it.timestamp))
+                            }?.joinToString(separator = "\", \"", prefix = "[\"", postfix = "\"]")
 
-                        val y1 = dataByModelC[model]?.map { it.rssi }
-                            ?.joinToString(separator = ", ", prefix = "[", postfix = "]")
+                            val y1 = dataByModelC[model]?.map { it.rssi }
+                                    ?.joinToString(separator = ", ", prefix = "[", postfix = "]")
 
-                        val x2 = dataByModelP[model]?.map {
-                            dateFormatter.format(Date(it.timestamp))
-                        }?.joinToString(separator = "\", \"", prefix = "[\"", postfix = "\"]")
+                            val x2 = dataByModelP[model]?.map {
+                                dateFormatter.format(Date(it.timestamp))
+                            }?.joinToString(separator = "\", \"", prefix = "[\"", postfix = "\"]")
 
-                        val y2 = dataByModelP[model]?.map { it.rssi }
-                            ?.joinToString(separator = ", ", prefix = "[", postfix = "]")
+                            val y2 = dataByModelP[model]?.map { it.rssi }
+                                    ?.joinToString(separator = ", ", prefix = "[", postfix = "]")
 
-                        val dataHead = "var data${index} = [];"
+                            val dataHead = "var data${index} = [];"
 
-                        val dataA = if (!hasC) "" else """
+                            val dataA = if (!hasC) "" else """
                             var data${index}a = {
                               name: 'central',
                               x: ${x1},
@@ -151,7 +151,7 @@ class PlotActivity : AppCompatActivity() {
                             data${index} = data${index}.concat(data${index}a);
                         """.trimIndent()
 
-                        val dataB = if (!hasP) "" else """
+                            val dataB = if (!hasP) "" else """
                             var data${index}b = {
                               name: 'peripheral',
                               x: ${x2},
@@ -165,50 +165,50 @@ class PlotActivity : AppCompatActivity() {
                             data${index} = data${index}.concat(data${index}b);
                         """.trimIndent()
 
-                        val data = dataHead + dataA + dataB
+                            val data = dataHead + dataA + dataB
 
-                        data
+                            data
 
-                    }.joinToString(separator = "\n")
+                        }.joinToString(separator = "\n")
 
-                    val top = 20
+                        val top = 20
 
-                    // Combine data of all the models
-                    // e.g.
-                    //    var data = [];
-                    //    data = data.concat(data1);
-                    //    data = data.concat(data2);
-                    //    data = data.concat(data3);
-                    //    data = data.concat(data4);
-                    //    data = data.concat(data5);
-                    //    data = data.concat(data6);
-                    //    data = data.concat(data7);
-                    //
-                    val combinedData = sortedModelList.map { model ->
-                        val index = sortedModelList.indexOf(model) + 1
-                        if (index < top) """
+                        // Combine data of all the models
+                        // e.g.
+                        //    var data = [];
+                        //    data = data.concat(data1);
+                        //    data = data.concat(data2);
+                        //    data = data.concat(data3);
+                        //    data = data.concat(data4);
+                        //    data = data.concat(data5);
+                        //    data = data.concat(data6);
+                        //    data = data.concat(data7);
+                        //
+                        val combinedData = sortedModelList.map { model ->
+                            val index = sortedModelList.indexOf(model) + 1
+                            if (index < top) """
                             data = data.concat(data${index});
                         """.trimIndent() else ""
-                    }.joinToString(separator = "\n")
+                        }.joinToString(separator = "\n")
 
-                    // Get definition for all xAxes
-                    // e.g.
-                    //    xaxis1: {
-                    //        type: 'date',
-                    //        tickformat: '%H:%M',
-                    //        range: ['2020-02-20 13:00', '2020-02-20 14:00'],
-                    //        dtick: 5 * 60 * 1000
-                    //    },
-                    //    xaxis2: {
-                    //        type: 'date',
-                    //        tickformat: '%H:%M',
-                    //        range: ['2020-02-20 13:00', '2020-02-20 14:00'],
-                    //        dtick: 5 * 60 * 1000
-                    //    }
-                    //
-                    val xAxis = sortedModelList.map { model ->
-                        val index = sortedModelList.indexOf(model) + 1
-                        if (index < top) """
+                        // Get definition for all xAxes
+                        // e.g.
+                        //    xaxis1: {
+                        //        type: 'date',
+                        //        tickformat: '%H:%M',
+                        //        range: ['2020-02-20 13:00', '2020-02-20 14:00'],
+                        //        dtick: 5 * 60 * 1000
+                        //    },
+                        //    xaxis2: {
+                        //        type: 'date',
+                        //        tickformat: '%H:%M',
+                        //        range: ['2020-02-20 13:00', '2020-02-20 14:00'],
+                        //        dtick: 5 * 60 * 1000
+                        //    }
+                        //
+                        val xAxis = sortedModelList.map { model ->
+                            val index = sortedModelList.indexOf(model) + 1
+                            if (index < top) """
                                   xaxis${index}: {
                                     type: 'date',
                                     tickformat: '%H:%M:%S',
@@ -216,30 +216,30 @@ class PlotActivity : AppCompatActivity() {
                                     dtick: ${displayTimePeriod * 5} * 60 * 1000
                                   }
                         """.trimIndent() else ""
-                    }.joinToString(separator = ",\n")
+                        }.joinToString(separator = ",\n")
 
-                    // Get definition for all xAxes
-                    // e.g.
-                    //    yaxis1: {
-                    //        range: [-100, -30],
-                    //        ticks: 'outside',
-                    //        dtick: 10,
-                    //        title: {
-                    //            text: "SM-N960F"
-                    //        }
-                    //    },
-                    //    yaxis2: {
-                    //        range: [-100, -30],
-                    //        ticks: 'outside',
-                    //        dtick: 10,
-                    //        title: {
-                    //            text: "POCOPHONE F1"
-                    //        }
-                    //    }
-                    //
-                    val yAxis = sortedModelList.map { model ->
-                        val index = sortedModelList.indexOf(model) + 1
-                        if (index < top) """
+                        // Get definition for all xAxes
+                        // e.g.
+                        //    yaxis1: {
+                        //        range: [-100, -30],
+                        //        ticks: 'outside',
+                        //        dtick: 10,
+                        //        title: {
+                        //            text: "SM-N960F"
+                        //        }
+                        //    },
+                        //    yaxis2: {
+                        //        range: [-100, -30],
+                        //        ticks: 'outside',
+                        //        dtick: 10,
+                        //        title: {
+                        //            text: "POCOPHONE F1"
+                        //        }
+                        //    }
+                        //
+                        val yAxis = sortedModelList.map { model ->
+                            val index = sortedModelList.indexOf(model) + 1
+                            if (index < top) """
                                   yaxis${index}: {
                                     range: [-100, -30],
                                     ticks: 'outside',
@@ -249,10 +249,10 @@ class PlotActivity : AppCompatActivity() {
                                     }
                                   }
                         """.trimIndent() else ""
-                    }.joinToString(separator = ",\n")
+                        }.joinToString(separator = ",\n")
 
-                    // Form the complete HTML
-                    val customHtml = """
+                        // Form the complete HTML
+                        val customHtml = """
                         <head>
                             <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
                         </head>
@@ -266,8 +266,8 @@ class PlotActivity : AppCompatActivity() {
                                 
                                 var layout = {
                                   title: 'Activities from <b>${startTimeString.substring(11..15)}</b> to <b>${endTimeString.substring(
-                        11..15
-                    )}</b>   <span style="color:blue">central</span> <span style="color:red">peripheral</span>',
+                                11..15
+                        )}</b>   <span style="color:blue">central</span> <span style="color:red">peripheral</span>',
                                   height: 135 * ${allModelList.size},
                                   showlegend: false,
                                   grid: {rows: ${allModelList.size}, columns: 1, pattern: 'independent'},
@@ -294,16 +294,16 @@ class PlotActivity : AppCompatActivity() {
                         </body>
                     """.trimIndent()
 
-                    Log.d(TAG, "customHtml: ${customHtml}")
-                    webView.loadData(customHtml, "text/html", "UTF-8")
-                } else {
-                    webView.loadData(
-                        "No data received in the last ${displayTimePeriod} hour(s) or more.",
-                        "text/html",
-                        "UTF-8"
-                    )
+                        Log.d(TAG, "customHtml: ${customHtml}")
+                        webView.loadData(customHtml, "text/html", "UTF-8")
+                    } else {
+                        webView.loadData(
+                                "No data received in the last ${displayTimePeriod} hour(s) or more.",
+                                "text/html",
+                                "UTF-8"
+                        )
+                    }
                 }
-            }
         Log.d(TAG, "zipResult: ${zipResult}")
 
         webView.loadData("Loading...", "text/html", "UTF-8")

@@ -12,10 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_arrow_back"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        app:srcCompat="@drawable/ic_arrow_back" />
 
     <LinearLayout
         android:id="@+id/topLayout"
@@ -28,24 +27,24 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_step"
             style="@style/StepText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/register_number_step" />
+            android:gravity="center" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_enter_number"
             style="@style/OnboardingTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/register_number"
+            android:layout_gravity="center"
             android:layout_marginLeft="40dp"
+            android:layout_marginTop="0dp"
             android:layout_marginRight="40dp"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
             android:textAllCaps="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -54,11 +53,11 @@
         android:id="@+id/middleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
         android:layout_marginTop="28dp"
+        android:layout_marginRight="18dp"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topLayout">
@@ -68,32 +67,31 @@
             android:id="@+id/phone_number"
             android:layout_width="324dp"
             android:layout_height="46dp"
-            android:drawableBottom="#b0b0b0"
             android:background="@drawable/input_border"
+            android:drawableBottom="#b0b0b0"
+            android:hint="@string/register_number_example"
             android:imeOptions="actionGo"
             android:inputType="phone"
-            android:maxEms="8"
-            android:textSize="18sp"
-            android:paddingStart="14dp"
             android:lines="1"
+            android:maxEms="8"
             android:maxLength="14"
-            android:hint="@string/register_number_example"
-            app:layout_constraintTop_toTopOf="parent"
+            android:paddingStart="14dp"
+            android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/phone_number_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/invalid_phone"
-            android:textSize="14sp"
             android:textAlignment="center"
             android:textColor="@color/error"
+            android:textSize="14sp"
             android:visibility="invisible"
-            app:layout_constraintTop_toBottomOf="@id/phone_number"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phone_number" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/phone_number_desc1"
@@ -102,10 +100,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="68dp"
             android:gravity="center"
-            android:text="@string/register_number_desc1"
-            app:layout_constraintTop_toBottomOf="@+id/phone_number"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone_number" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/phone_number_desc2"
@@ -114,10 +111,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:gravity="center"
-            android:text="@string/register_number_desc2"
-            app:layout_constraintTop_toBottomOf="@+id/phone_number_desc1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone_number_desc1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -126,9 +122,9 @@
         style="@style/OnboardingDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="22dp"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/footer"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

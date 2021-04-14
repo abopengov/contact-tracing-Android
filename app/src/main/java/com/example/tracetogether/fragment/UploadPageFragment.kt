@@ -10,17 +10,18 @@ import androidx.fragment.app.FragmentTransaction
 import kotlinx.android.synthetic.main.fragment_upload_page.*
 import com.example.tracetogether.MainActivity
 import com.example.tracetogether.R
+import com.example.tracetogether.Utils
 import com.example.tracetogether.status.persistence.StatusRecord
 import com.example.tracetogether.streetpass.persistence.StreetPassRecord
 
 
 data class ExportData(val recordList: List<StreetPassRecord>, val statusList: List<StatusRecord>)
 
-class UploadPageFragment : Fragment() {
+class UploadPageFragment(private val isEnterPin: Boolean = false) : Fragment() {
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_upload_page, container, false)
     }
@@ -30,7 +31,7 @@ class UploadPageFragment : Fragment() {
 
         val childFragMan: FragmentManager = childFragmentManager
         val childFragTrans: FragmentTransaction = childFragMan.beginTransaction()
-        val fragB = VerifyCallerFragment()
+        val fragB = if (isEnterPin) EnterPinFragment(true) else VerifyCallerFragment()
         childFragTrans.add(R.id.fragment_placeholder, fragB)
         childFragTrans.addToBackStack("VerifyCaller")
         childFragTrans.commit()
@@ -47,15 +48,17 @@ class UploadPageFragment : Fragment() {
     fun navigateToUploadPin() {
         val childFragMan: FragmentManager = childFragmentManager
         val childFragTrans: FragmentTransaction = childFragMan.beginTransaction()
-        val fragB = EnterPinFragment()
+        val fragB = EnterPinFragment(false)
         childFragTrans.add(R.id.fragment_placeholder, fragB)
         childFragTrans.addToBackStack("C")
         childFragTrans.commit()
     }
 
     fun goBackToHome() {
-        var parentActivity = activity as MainActivity
-        parentActivity.goToHome()
+        var parentActivity = activity as MainActivity?
+        parentActivity?.let {
+            it.goToHome()
+        }?:(Utils.restartAppWithNoContext(0,"UploadPageFragment not attached to MainActivity"))
     }
 
     fun navigateToUploadComplete() {
@@ -68,11 +71,13 @@ class UploadPageFragment : Fragment() {
     }
 
     fun navigateToOTCFragment(){
-        val parentActivity: MainActivity = activity as MainActivity
-        parentActivity.openFragment(
-            parentActivity.LAYOUT_MAIN_ID, ForUseByOTCFragment(),
-            ForUseByOTCFragment::class.java.name, 0
-        )
+        val parentActivity: MainActivity? = activity as MainActivity?
+        parentActivity?.let {
+            it.openFragment(
+                    parentActivity.LAYOUT_MAIN_ID, ForUseByOTCFragment(),
+                    ForUseByOTCFragment::class.java.name, 0
+            )
+        }?:(Utils.restartAppWithNoContext(0,"UploadPageFragment not attached to MainActivity"))
     }
 
     fun popStack() {

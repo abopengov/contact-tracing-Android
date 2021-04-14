@@ -29,8 +29,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginTop="30dp"
+                    android:orientation="vertical"
 
                     android:visibility="visible">
 
@@ -39,85 +39,168 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
+                        android:scaleType="centerCrop"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:scaleType="centerCrop"
+                        app:lottie_imageAssetsFolder="images"
                         app:lottie_loop="false"
-                        app:lottie_rawRes="@raw/animated_home"
-                        app:lottie_imageAssetsFolder="images" />
+                        app:lottie_rawRes="@raw/animated_home" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_home_title"
                         style="@style/OnboardingTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
                         android:paddingLeft="13dp"
                         android:paddingRight="155dp"
-                        android:text="@string/home_title"
                         android:textAllCaps="true"
                         android:visibility="visible"
-                        android:layout_marginTop="0dp"
-                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                         />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_home_subtitle"
                         style="@style/OnboardingDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/home_subtitle"
+                        android:layout_marginTop="0dp"
                         android:paddingLeft="13dp"
                         android:paddingRight="163dp"
-                        android:layout_marginTop="0dp"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_home_title"
-                        app:layout_constraintLeft_toLeftOf="parent" />
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_home_title" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_last_update"
                         style="@style/OnboardingDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="13dp"
                         android:layout_marginTop="13dp"
                         android:layout_marginBottom="0dp"
+                        android:paddingLeft="13dp"
                         android:visibility="invisible"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_home_subtitle"
-                        app:layout_constraintLeft_toLeftOf="parent" />
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_home_subtitle" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_app_version"
                         style="@style/OnboardingDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="13dp"
                         android:layout_marginTop="0dp"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_last_update"
-                        app:layout_constraintLeft_toLeftOf="parent" />
+                        android:paddingLeft="13dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_last_update" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/highlights_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginRight="13dp"
+                    android:background="@color/transparent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/highlights"
+                            style="@style/OnboardingTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:textAllCaps="true" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvUpdatedHighlights"
+                            style="@style/OnboardingDesc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="26dp"
+                            android:layout_marginTop="0dp"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvErrorWebView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                    <ProgressBar
+                        android:id="@+id/pgWebView"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <WebView
+                        android:id="@+id/wvHighlights"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="WebViewLayout" />
+
+                    <LinearLayout
+                        android:id="@+id/btnSeeAllStats"
+                        style="@style/CustomButton"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_see_stats"
+                            style="@style/CustomButtonText" />
+
+                        <ImageView
+                            style="@style/CustomButtonIcon"
+                            android:src="@drawable/ic_arrow_forward_white" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/permission_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent"
-                    android:orientation="vertical"
-                    android:layout_marginTop="18dp"
                     android:layout_marginLeft="13dp"
-                    android:layout_marginRight="13dp">
+                    android:layout_marginTop="18dp"
+                    android:layout_marginRight="13dp"
+                    android:background="@color/transparent"
+                    android:orientation="vertical">
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingLeft="0dp"
-                        android:paddingRight="0dp"
                         android:layout_marginLeft="0dp"
                         android:layout_marginRight="0dp"
                         android:layout_marginBottom="12dp"
-                        >
+                        android:orientation="horizontal"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_title"
@@ -132,7 +215,6 @@
                             android:gravity="center_vertical"
                             android:paddingLeft="0dp"
                             android:paddingRight="0dp"
-                            android:text="@string/app_permission_status"
                             android:textAllCaps="true" />
 
                         <ImageView
@@ -141,54 +223,54 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="11dp"
-                            android:clickable="true"
-                            android:background="@drawable/ic_info" />
+                            android:background="@drawable/ic_info"
+                            android:clickable="true" />
                     </LinearLayout>
 
-<!--                    <androidx.cardview.widget.CardView-->
-<!--                        android:id="@+id/battery_card_view"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:visibility="visible"-->
-<!--                        card_view:cardBackgroundColor="@color/white"-->
-<!--                        card_view:cardMaxElevation="2dp"-->
-<!--                        card_view:contentPadding="0dp">-->
+                    <!--                    <androidx.cardview.widget.CardView-->
+                    <!--                        android:id="@+id/battery_card_view"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:visibility="visible"-->
+                    <!--                        card_view:cardBackgroundColor="@color/white"-->
+                    <!--                        card_view:cardMaxElevation="2dp"-->
+                    <!--                        card_view:contentPadding="0dp">-->
 
-<!--                        <LinearLayout-->
-<!--                            style="@style/PremCard">-->
+                    <!--                        <LinearLayout-->
+                    <!--                            style="@style/PremCard">-->
 
-<!--                            <LinearLayout-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:orientation="vertical"-->
-<!--                                style="@style/PremCardTextContainer"-->
-<!--                                android:layout_gravity="center_vertical"-->
-<!--                                >-->
-<!--                                <androidx.appcompat.widget.AppCompatTextView-->
-<!--                                    android:id="@+id/tv_battery"-->
-<!--                                    style="@style/PremCardTextOnly"-->
-<!--                                    android:text="@string/battery_optimiser" />-->
-<!--                                <androidx.appcompat.widget.AppCompatTextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:textSize="12sp"-->
-<!--                                    android:textStyle="italic"-->
-<!--                                    android:textColor="@color/grey_3"-->
-<!--                                    android:text="Turn off at home to prolong battery life" />-->
+                    <!--                            <LinearLayout-->
+                    <!--                                android:layout_width="wrap_content"-->
+                    <!--                                android:layout_height="wrap_content"-->
+                    <!--                                android:orientation="vertical"-->
+                    <!--                                style="@style/PremCardTextContainer"-->
+                    <!--                                android:layout_gravity="center_vertical"-->
+                    <!--                                >-->
+                    <!--                                <androidx.appcompat.widget.AppCompatTextView-->
+                    <!--                                    android:id="@+id/tv_battery"-->
+                    <!--                                    style="@style/PremCardTextOnly"-->
+                    <!--                                    android:text="@string/battery_optimiser" />-->
+                    <!--                                <androidx.appcompat.widget.AppCompatTextView-->
+                    <!--                                    android:layout_width="wrap_content"-->
+                    <!--                                    android:layout_height="wrap_content"-->
+                    <!--                                    android:textSize="12sp"-->
+                    <!--                                    android:textStyle="italic"-->
+                    <!--                                    android:textColor="@color/grey_3"-->
+                    <!--                                    android:text="Turn off at home to prolong battery life" />-->
 
-<!--                            </LinearLayout>-->
+                    <!--                            </LinearLayout>-->
 
-<!--                            <Switch-->
-<!--                                android:id="@+id/switch_battery"-->
-<!--                                android:layout_gravity="center_vertical"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:checked="false"-->
-<!--                                android:theme="@style/SwitchTheme" />-->
+                    <!--                            <Switch-->
+                    <!--                                android:id="@+id/switch_battery"-->
+                    <!--                                android:layout_gravity="center_vertical"-->
+                    <!--                                android:layout_width="wrap_content"-->
+                    <!--                                android:layout_height="wrap_content"-->
+                    <!--                                android:checked="false"-->
+                    <!--                                android:theme="@style/SwitchTheme" />-->
 
-<!--                        </LinearLayout>-->
+                    <!--                        </LinearLayout>-->
 
-<!--                    </androidx.cardview.widget.CardView>-->
+                    <!--                    </androidx.cardview.widget.CardView>-->
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/location_card_view"
@@ -196,13 +278,11 @@
                         android:layout_height="wrap_content"
                         card_view:cardBackgroundColor="@color/white">
 
-                        <LinearLayout
-                            style="@style/PremCard">
+                        <LinearLayout style="@style/PremCard">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/tv_location"
-                                style="@style/PremCardText"
-                                android:text="@string/location_on" />
+                                style="@style/PremCardText" />
 
                             <ImageView
                                 android:id="@+id/iv_location"
@@ -224,13 +304,11 @@
                         android:layout_marginRight="0dp"
                         card_view:cardBackgroundColor="@color/white">
 
-                        <LinearLayout
-                            style="@style/PremCard">
+                        <LinearLayout style="@style/PremCard">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/tv_bluetooth"
-                                style="@style/PremCardText"
-                                android:text="@string/bluetooth_on" />
+                                style="@style/PremCardText" />
 
                             <ImageView
                                 android:id="@+id/iv_bluetooth"
@@ -251,13 +329,11 @@
                         card_view:cardBackgroundColor="@color/white">
 
 
-                        <LinearLayout
-                            style="@style/PremCard">
+                        <LinearLayout style="@style/PremCard">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/tv_push"
-                                style="@style/PremCardText"
-                                android:text="@string/push_noti" />
+                                style="@style/PremCardText" />
 
                             <ImageView
                                 android:id="@+id/iv_push"
@@ -273,62 +349,128 @@
 
                 </LinearLayout>
 
-                <androidx.cardview.widget.CardView
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/uploadData"
+                    style="@style/OnboardingTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="26dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="13dp"
+                    android:paddingRight="0dp"
+                    android:textAllCaps="true" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/upload_card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="13dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginRight="13dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
                         android:background="@drawable/card_border"
                         android:orientation="vertical">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop ="0dp"
-                            app:srcCompat="@drawable/ic_physical_distance_illustration"
-                            />
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/upload_image" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_home_upload"
+                            style="@style/OnboardingDesc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="14dp"
+                            android:layout_marginRight="20dp"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp" />
+
+                        <LinearLayout
+                            android:id="@+id/btnUploadData"
+                            style="@style/CustomButton"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="20dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent">
+
+                            <TextView
+                                android:id="@+id/btn_uplaod_data"
+                                style="@style/CustomButtonText" />
+
+                            <ImageView
+                                style="@style/CustomButtonIcon"
+                                android:src="@drawable/ic_arrow_forward_white" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginRight="13dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/card_border"
+                        android:orientation="vertical"
+                        android:paddingTop="0dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            app:srcCompat="@drawable/ic_physical_distance_illustration" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/info_title"
                             style="@style/OnboardingTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="0dp"
-                            android:paddingRight="0dp"
-                            android:paddingTop="0dp"
-                            android:layout_marginTop="12dp"
                             android:layout_marginLeft="22dp"
+                            android:layout_marginTop="12dp"
                             android:layout_marginRight="22dp"
-                            android:textAllCaps="true"
-                            android:text="@string/info_title" />
+                            android:paddingLeft="0dp"
+                            android:paddingTop="0dp"
+                            android:paddingRight="0dp"
+                            android:textAllCaps="true" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/info_desc_1"
                             style="@style/OnboardingDesc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="0dp"
-                            android:paddingRight="0dp"
-                            android:paddingTop="0dp"
-                            android:layout_marginTop="12dp"
                             android:layout_marginLeft="22dp"
+                            android:layout_marginTop="12dp"
                             android:layout_marginRight="22dp"
-                            android:text="@string/info_desc_1" />
+                            android:paddingLeft="0dp"
+                            android:paddingTop="0dp"
+                            android:paddingRight="0dp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/info_desc_2"
                             style="@style/OnboardingDesc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="22dp"
+                            android:layout_marginRight="22dp"
                             android:layout_marginBottom="22dp"
                             android:paddingLeft="0dp"
-                            android:paddingRight="0dp"
-                            android:layout_marginLeft="22dp"
-                            android:layout_marginRight="22dp"
-                            android:text="@string/info_desc_2" />
+                            android:paddingRight="0dp" />
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -366,6 +508,7 @@
                         android:src="@drawable/ic_opentrace_blue_transparent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/setup_incomplete"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
@@ -374,13 +517,13 @@
                         android:gravity="center"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:text="@string/setup_incomplete"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:visibility="visible" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/help_us_identify"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
@@ -388,7 +531,6 @@
                         android:gravity="center"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:text="@string/help_us_identify"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="normal"
@@ -404,7 +546,6 @@
                         android:layout_marginRight="10dp"
                         android:background="@drawable/gradient"
                         android:minWidth="200dp"
-                        android:text="@string/restart_app_setup"
                         android:textAllCaps="false"
                         android:textColor="#fff"
                         android:textFontWeight="600"
@@ -418,8 +559,8 @@
                 android:id="@+id/share_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
                 android:layout_marginLeft="13dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginRight="13dp">
 
                 <LinearLayout
@@ -430,35 +571,35 @@
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/share_this_app"
                         style="@style/OnboardingTitle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingTop="0dp"
-                        android:paddingLeft="0dp"
-                        android:paddingRight="0dp"
-                        android:layout_marginTop="13dp"
                         android:layout_marginLeft="22dp"
+                        android:layout_marginTop="13dp"
                         android:layout_marginRight="22dp"
                         android:drawableLeft="@drawable/ic_share"
-                        android:drawableTint="@color/grey_3"
                         android:drawablePadding="16dp"
+                        android:drawableTint="@color/grey_3"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
                         android:textAllCaps="true"
-                        android:text="@string/share_this_app"
                         android:visibility="visible" />
 
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/ask_friend"
                         style="@style/OnboardingDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="0dp"
-                        android:paddingLeft="0dp"
-                        android:paddingRight="0dp"
-                        android:layout_marginTop="12dp"
                         android:layout_marginLeft="22dp"
+                        android:layout_marginTop="12dp"
                         android:layout_marginRight="22dp"
                         android:layout_marginBottom="22dp"
-                        android:text="@string/ask_friend"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
                         android:visibility="visible" />
 
                 </LinearLayout>
@@ -484,9 +625,9 @@
         android:id="@+id/view_announcement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/primary_purple"
         android:orientation="vertical"
         android:visibility="gone"
-        android:background="@color/primary_purple"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -494,28 +635,27 @@
             android:id="@+id/tv_announcement"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="No news"
-            android:textColor="@color/white"
-            android:textSize="14sp"
             android:clickable="true"
             android:linksClickable="true"
-            android:textColorLink="@color/white"
             android:paddingLeft="16dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/white"
+            android:textColorLink="@color/white"
+            android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/btn_announcement_close" />
+            app:layout_constraintRight_toLeftOf="@id/btn_announcement_close"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/btn_announcement_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00000000"
-            android:src="@drawable/ic_cross"
             android:paddingLeft="8dp"
-            android:paddingRight="16dp"
             android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/ic_cross"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -3,7 +3,6 @@ package com.example.tracetogether.logging
 import com.worklight.common.Logger
 import org.json.JSONObject
 
-
 class WFLog {
 
     companion object {
@@ -16,7 +15,7 @@ class WFLog {
         }
 
         fun logErrorWithException(message: String, e: Throwable?) {
-            Logger.getInstance(TAG).error(message,JSONObject(), e)
+            Logger.getInstance(TAG).error(message, JSONObject(), e)
             Logger.send()
         }
 

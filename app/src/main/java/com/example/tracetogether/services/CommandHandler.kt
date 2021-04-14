@@ -29,30 +29,4 @@ class CommandHandler(val service: WeakReference<BluetoothMonitoringService>) : H
     fun startBluetoothMonitoringService() {
         sendCommandMsg(BluetoothMonitoringService.Command.ACTION_START)
     }
-
-    fun scheduleNextScan(timeInMillis: Long) {
-        cancelNextScan()
-        sendCommandMsg(BluetoothMonitoringService.Command.ACTION_SCAN, timeInMillis)
-    }
-
-    fun cancelNextScan() {
-        removeMessages(BluetoothMonitoringService.Command.ACTION_SCAN.index)
-    }
-
-    fun hasScanScheduled(): Boolean {
-        return hasMessages(BluetoothMonitoringService.Command.ACTION_SCAN.index)
-    }
-
-    fun scheduleNextAdvertise(timeInMillis: Long) {
-        cancelNextAdvertise()
-        sendCommandMsg(BluetoothMonitoringService.Command.ACTION_ADVERTISE, timeInMillis)
-    }
-
-    fun cancelNextAdvertise() {
-        removeMessages(BluetoothMonitoringService.Command.ACTION_ADVERTISE.index)
-    }
-
-    fun hasAdvertiseScheduled(): Boolean {
-        return hasMessages(BluetoothMonitoringService.Command.ACTION_ADVERTISE.index)
-    }
 }
