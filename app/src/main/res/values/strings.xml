@@ -1,164 +1,22 @@
 <resources>
-    <string name="see_connections">See connections</string>
-    <string name="stop">Stop</string>
-    <string name="permission_location_rationale">Please allow Location Permissions - Google requires this for your phone to scan for another phone’s Bluetooth. We do not use or store your location.</string>
-    <string name="permission_write_rationale">This app needs save files for logs (Debug builds only)</string>
-    <string name="ble_not_supported">This device does not support BLE</string>
 
-    <string name="tv_onboarding_title">Help stop the spread of COVID-19 using your mobile phone</string>
-    <string name="tv_onboarding_desc">Your Bluetooth connection can help track your potential COVID-19 exposure.</string>
-    <string name="tv_uuid_retry_error">Unfortunately something went wrong. Please uninstall this application from your device and reinstall it from the app store to correct this error.</string>
-    <string name="tv_onboarding_desc_sub">Brought to you by *INSERT ORG*</string>
-    <string name="i_want_to_help">Join the fight</string>
-
-    <string name="restart_msg">Unfortunately something went wrong.</string>
-
-    <string name="tv_howitworks_title">How it works</string>
-    <string name="tv_howitworks_explanation">Using your phone’s Bluetooth, your phone detects when it’s near another phone running this app. Your phone securely logs when you have been in close contact with other app users.</string>
-
-    <string name="privacy_policy_title">Collection of your Information</string>
-    <string name="privacy_policy_text1">This is a placeholder paragraph.</string>
-    <string name="privacy_policy_text2">This is a placeholder paragraph.</string>
-    <string name="privacy_policy_text3">This is a placeholder paragraph.</string>
-    <string name="privacy_policy_text4">This is a placeholder paragraph. Here is a example of a inline link to open a webview %s.</string>
-    <string name="privacy_policy_text5">This is a placeholder paragraph.</string>
-    <string name="privacy_policy_text6">This is a placeholder paragraph.</string>
-    <string name="privacy_policy_text7">This is a placeholder paragraph. Here is a example of a inline link to open an email %s.</string>
-    <string name="privacy_policy_text8">This is a placeholder paragraph. Here is a example of a inline link to open an email %s.</string>
-
-    <string name="help_desk_email">exampleEmail@exampleDomain.org</string>
-    <string name="privacy_statement_label">Inline Link</string>
-
-    <string name="view_privacy">View Privacy Policy Online</string>
-    <string name="view_faq">View FAQ</string>
-    <string name="agreement">I agree to the privacy policy</string>
-
-    <string name="mobile_number">Mobile number</string>
-    <string name="register_number">Enter your mobile number</string>
-    <string name="register_number_step">Step 1 of 3</string>
-    <string name="register_number_desc1">You’ll receive a text message from *INSERT ORG* with a six-digit code.</string>
-    <string name="register_number_desc2">Once you get the text, please enter the code on the next screen.</string>
-    <string name="invalid_number">Please enter a valid mobile number</string>
-    <string name="number_used">That mobile number has already been used</string>
+    <string name="help_desk_email">help@example.com</string>
+    <string name="privacy_statement_label">https://example.com/privacy</string>
+    <string name="faq_statement_label">https://example.com/faq</string>
     <string name="register_number_example">(780) 456-7890</string>
-
-
-    <string name="otp_step">Step 2 of 3</string>
-    <string name="enter_otp">Enter the code</string>
-    <string name="otp_sent">We\'ve sent a text to %s with a confirmation code. Please enter the six-digit code above.</string>
-    <string name="otp_countdown">Your code will expire in %s</string>
-    <string name="otp_countdown_expired">Your code has expired.</string>
-    <string name="resend_code_label">Didn\'t receive a code?</string>
-    <string name="resend_code"><u>Request another.</u></string>
-
-    <string name="setup_step">Step 3 of 3</string>
-    <string name="setup_app_permission">Enable app permissions</string>
-    <string name="setup_app_permission_title">Select \'<b>Yes</b>\' or \'<b>Allow</b>\' for the next few screens.</string>
-    <string name="bluetooth">1. Bluetooth</string>
-    <string name="location_permissions">2. Location Permissions</string>
-    <string name="battery_optimiser_opt">3. Optimize Usage</string>
-    <string name="notes">Location services must be enabled (always in use) for Bluetooth to work. Location data is not captured, collected or shared by us, for any purpose</string>
-    <string name="proceed">Proceed</string>
-    <string name="continue_">Continue</string>
-    <string name="get_otp">Get OTP</string>
-    <string name="wrong_number"><u>Wrong Number?</u></string>
-    <string name="app_permission_fully_setup">Registration successful!</string>
-    <string name="app_permission_fully_setup_desc">You\'re all set up.</string>
-
-    <string name="send_otp">We\'ll text you a One-Time Pin (OTP)</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_upload">Upload Data</string>
-    <string name="menu_help">Help</string>
+    <string name="menu_learn_more">Learn More</string>
     <string name="menu_statistics">Statistics</string>
     <string name="menu_map">Map</string>
     <string name="menu_guidance">Guidance</string>
 
-    <string name="home_title">Help stop the spread of COVID-19</string>
-    <string name="home_subtitle">by keeping your permissions enabled, especially when you are out, on public transport, at work or in public places.</string>
-    <string name="info_title">Physical distancing makes a big difference.</string>
-    <string name="info_desc_1">Physical distancing can help limit the spread of COVID-19 and reduce the risk of getting sick. If you do venture outside, avoid close contact with others and use this app.</string>
-    <string name="info_desc_2">If you are exposed to COVID-19, contact tracers will use the information logged using this app to contact you using the mobile number you registered.</string>
-
-    <string name="faq_webview_title">FAQ</string>
-    <string name="privacy_policy_webview_title">Privacy Policy</string>
-    <string name="webview_title">Webview</string>
-
-    <string name="app_permission_hint">Your app permissions need to be on for this app to work. If they’re off, please go to your device settings and turn them on.</string>
-    <string name="turn_off_battery">To turn off battery optimiser go to Settings > Apps &amp; Notifications</string>
-    <string name="app_permission_status">App Permissions Status</string>
-    <string name="bluetooth_on">Bluetooth Enabled: %s</string>
-    <string name="location_on">Permissions Enabled: %s</string>
-    <string name="battery_optimiser">Battery Optimisation: %s</string>
-    <string name="push_noti">Push Notifications: %s</string>
-    <string name="share_this_app">Share this app</string>
-    <string name="share_message">I am using this app to combat COVID-19! Download it from the Apple App Store or Google Play to join the fight. Find more information on the link below. \n\n</string>
-
-    <string name="ask_friend">Help flatten the curve faster: invite your  family and friends to use the app.</string>
-    <string name="help_us_identify">Help stop the virus spread by allowing all permissions</string>
-    <string name="restart_app_setup">Complete app setup</string>
-    <string name="upload_data">Upload Data</string>
-    <string name="for_official_use">For use by contact tracers</string>
-    <string name="data_uploaded">Data has been uploaded to contact tracers</string>
-    <string name="upload_agreement">By uploading, you agree to share your proximity data for the past 21 days with OTC. <b>We do not collect any geolocation or personal data.</b></string>
-    <string name="enter_code">Enter Code</string>
     <string name="submit">Submit</string>
-    <string name="open_location_setting">Application needs location permission in order to work. Do you want to enable location permission?</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
-    <string name="setup_incomplete">Setup is incomplete!</string>
-    <string name="ack_title">Your consent is needed for the following:</string>
-    <string name="ack_mobile">Store your number in a secured registry</string>
-    <string name="ack_data">Allow users to provide OTC with information regarding encounters with you, should they be a confirmed or suspected COVID-19 case</string>
-    <string name="otp">Please enter the OTP sent to your mobile phone via sms</string>
-    <string name="keep_push_on">Keep push notifications on too, so we can alert you if the app is not scanning.</string>
-    <string name="verification_failed">Verification failed. Please try again</string>
-    <string name="invalid_otp">The one time pin you entered was not correct. Please try again.</string>
-    <string name="unknown_error">An error has occurred. Please try again</string>
-    <string name="timeout_error">Could not reach the server. Please try again</string>
-    <string name="unexpected_error">Unfortunately something went wrong. Please try again.</string>
-    <string name="auth_error">Not able to authorize user. Please try again later or contact support.</string>
-    <string name="must_be_six_digit">Must be a 6-digit number</string>
-    <string name="invalid_user">Your account has been disabled. Please contact support.</string>
-    <string name="too_many_requests">Too many requests. Please try again later.</string>
-
-    <string name="privacy_safeguards"><u>privacy safeguards</u></string>
-
-    <string name="service_ok_title">This app is scanning to keep you safe!</string>
-    <string name="service_ok_body">Restart phone if this notification disappears.</string>
-
-    <string name="service_not_ok_title">This app is not scanning.</string>
-    <string name="service_not_ok_body">Please check app to start scanning again.</string>
-    <string name="service_not_ok_action">Check app now.</string>
-
-    <string name="for_use">For use by OTC</string>
-    <string name="help">Help</string>
-    <string name="last_update">Last update: X:XX XX</string>
-    <string name="invalid_phone">Phone number invalid</string>
-    <string name="read">Read our</string>
-
-    <string name="step_one">STEP 1</string>
-    <string name="verify">Verify your code</string>
-    <string name="code_match">Please confirm the code listed below matches the one read out to you by the caller from *INSERT ORG*</string>
-    <string name="verification_code">"Verification code: "</string>
-    <string name="step_two">STEP 2</string>
-    <string name="enter_pin_title">Upload contact tracing data</string>
-    <string name="enter_pin_desc">*INSERT ORG* will send you a one-time PIN so you can upload your data.</string>
-    <string name="invalid_pin">Please enter a valid code</string>
-
-    <string name="upload_complete_title">Thanks for doing your part</string>
-    <string name="upload_complete_desc">Your data has been successfully uploaded and our contact tracers are working to identify people to check up on in your community.</string>
 
     <string name="next_button">Next</string>
-    <string name="upload_button">Upload</string>
-    <string name="submit_button">Submit</string>
-    <string name="resend_button">Resend Code</string>
-    <string name="finish_button">Finish</string>
-    <string name="org_only">HAS *INSERT ORG* ASKED YOU TO UPLOAD  YOUR DATA?</string>
-    <string name="tap_next">Don’t tap ‘Next’ unless a contact tracer from *INSERT ORG* has instructed you to do so.</string>
-    <string name="upload_contact">Upload data for contact tracing</string>
-    <string name="upload_confirm">Your data has been uploaded to OTC</string>
-    <string name="great_button">Get started</string>
+
+    <!--    peek activity-->
     <string name="payload">Payload:</string>
     <string name="central">Central</string>
     <string name="central_model">MODEL_C</string>
@@ -177,18 +35,10 @@
     <string name="org">ORG: %1$s</string>
     <string name="v">v: %1$d</string>
 
-    <string name="country_code_canada">+1</string>
-    <string name="failed_to_send_pin">Failed to send pin</string>
-    <string name="no_encounter_data_available">No data available to upload.</string>
-    <string name="failed_to_upload_data">Failed to upload data.</string>
-
-    <string name="app_version_label">App Version: </string>
-    <string name="last_updated_label">Last updated: </string>
-
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-
-    <string name="faq_url">https://placeholder/FAQ</string>
-    <string name="privacy_url">https://placeholder/Privacy</string>
+    <string name="faq_url">https://example.com/faq</string>
+    <string name="privacy_url">https://example.com/privacy</string>
+    <string name="close_contacts_faq_url">https://example.com/close-contacts-faq</string>
+    <string name="stats_url">https://example.com/statistics</string>
+    <string name="highlights_url">https://example.com/highlights</string>
 
 </resources>

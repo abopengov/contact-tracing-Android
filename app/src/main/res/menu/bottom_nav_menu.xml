@@ -12,9 +12,9 @@
         android:title="@string/menu_statistics" />
 
     <item
-        android:id="@+id/navigation_help"
-        android:icon="@drawable/ic_help"
-        android:title="@string/menu_help" />
+        android:id="@+id/navigation_learn_more"
+        android:icon="@drawable/ic_learn_more"
+        android:title="@string/menu_learn_more" />
 
     <item
         android:id="@+id/navigation_guidance"

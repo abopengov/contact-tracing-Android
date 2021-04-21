@@ -31,6 +31,7 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:allowBackup"
         android:extractNativeLibs="true"
+        android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config">
 
         <provider
@@ -61,22 +62,22 @@
 
         <activity
             android:name="com.example.tracetogether.onboarding.OnboardingActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.tracetogether.onboarding.HowItWorksActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.tracetogether.onboarding.ExplanationActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.example.tracetogether.onboarding.PreOnboardingActivity"
             android:screenOrientation="portrait" />
-
+        
         <activity
             android:name="com.example.tracetogether.onboarding.WebViewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.tracetogether.MainActivity"
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustNothing"
             android:screenOrientation="portrait" />
 
         <receiver android:name="com.example.tracetogether.boot.StartOnBootReceiver">
@@ -93,12 +94,12 @@
         <activity
             android:name="com.example.tracetogether.PeekActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DebugNoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name="com.example.tracetogether.PlotActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.DebugNoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver android:name="com.example.tracetogether.receivers.UpgradeReceiver">
             <intent-filter>

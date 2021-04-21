@@ -14,14 +14,15 @@ import android.view.ViewGroup
 import com.example.tracetogether.R
 import com.example.tracetogether.Utils
 import com.example.tracetogether.logging.CentralLog
-import com.example.tracetogether.util.AppConstants.KEY_FAQ
 import com.example.tracetogether.util.AppConstants.KEY_HELP
-import com.example.tracetogether.util.AppConstants.KEY_PRIVACY
 import com.example.tracetogether.util.Extensions.getLocalizedText
 import com.example.tracetogether.util.Extensions.getUrl
 import com.example.tracetogether.util.Extensions.setLocalizedString
 import kotlinx.android.synthetic.main.button_and_progress.*
 import kotlinx.android.synthetic.main.fragment_tou.*
+import kotlinx.android.synthetic.main.fragment_tou.checkbox_agreement
+import kotlinx.android.synthetic.main.fragment_tou.tv_agreement
+import kotlinx.android.synthetic.main.fragment_tou.tv_title
 
 
 private const val ARG_PARAM1 = "param1"
@@ -65,8 +66,8 @@ class TOUFragment : OnboardingFragmentInterface() {
     override fun onBackButtonClick(view: View) {}
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_tou, container, false)
     }
@@ -114,12 +115,12 @@ class TOUFragment : OnboardingFragmentInterface() {
         }
 
         privacy_desc6?.text = createSpannableStringByText(
-                "privacy_policy_text6".getLocalizedText(), "privacy_policy_text6_key".getLocalizedText(),
-                privacyClickableSpan
+            "privacy_policy_text6".getLocalizedText(), "privacy_policy_text6_key".getLocalizedText(),
+            privacyClickableSpan
         )
         privacy_desc9?.text = createSpannableStringByText(
-                "privacy_policy_text9".getLocalizedText(), "privacy_policy_text9_key".getLocalizedText(),
-                faqClickableSpan
+            "privacy_policy_text9".getLocalizedText(), "privacy_policy_text9_key".getLocalizedText(),
+            faqClickableSpan
         )
 
         val emailClickableSpan: ClickableSpan = object : ClickableSpan() {
@@ -131,18 +132,18 @@ class TOUFragment : OnboardingFragmentInterface() {
 
 
         privacy_desc10?.text =
-                createSpannableString(
-                        "privacy_policy_text10".getLocalizedText().replace(".","") + " %s",
-                        "$helpEmail.",
-                        emailClickableSpan
-                )
+            createSpannableString(
+                "privacy_policy_text10".getLocalizedText().replace(".","") + " %s",
+                "$helpEmail.",
+                emailClickableSpan
+            )
         privacy_desc11?.setLocalizedString("privacy_policy_text11")
         privacy_desc12?.text =
-                createSpannableString(
-                        "privacy_policy_text12".getLocalizedText() + " %s",
-                        "$helpEmail.",
-                        emailClickableSpan
-                )
+            createSpannableString(
+                "privacy_policy_text12".getLocalizedText() + " %s",
+                "$helpEmail.",
+                emailClickableSpan
+            )
 
         checkbox_agreement?.setOnCheckedChangeListener { buttonView, isChecked ->
             if (checkbox_agreement.isChecked) enableButton() else disableButton()
@@ -152,6 +153,10 @@ class TOUFragment : OnboardingFragmentInterface() {
         privacy_desc9?.setMovementMethod(LinkMovementMethod.getInstance())
         privacy_desc10?.setMovementMethod(LinkMovementMethod.getInstance())
         privacy_desc12?.setMovementMethod(LinkMovementMethod.getInstance())
+
+        tv_agreement?.setOnClickListener {
+            checkbox_agreement.toggle()
+        }
 
         tv_agreement?.setLocalizedString("agreement")
 
@@ -191,9 +196,9 @@ class TOUFragment : OnboardingFragmentInterface() {
     }
 
     private fun createSpannableString(
-            string: String,
-            span: String,
-            clickableSpan: ClickableSpan
+        string: String,
+        span: String,
+        clickableSpan: ClickableSpan
     ): SpannableString {
         val spanIndex = string.indexOf("%s")
         val newString = string.replaceFirst(Regex("\\%s\\b"), span)
@@ -202,10 +207,10 @@ class TOUFragment : OnboardingFragmentInterface() {
 
         if (spanIndex > 0) {
             ss.setSpan(
-                    clickableSpan,
-                    spanIndex,
-                    spanIndex + span.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                clickableSpan,
+                spanIndex,
+                spanIndex + span.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
 
@@ -213,19 +218,19 @@ class TOUFragment : OnboardingFragmentInterface() {
     }
 
     private fun createSpannableStringByText(
-            string: String,
-            span: String,
-            clickableSpan: ClickableSpan
+        string: String,
+        span: String,
+        clickableSpan: ClickableSpan
     ): SpannableString {
         val spanIndex = string.indexOf(span)
         val ss = SpannableString(string)
 
         if (spanIndex > 0) {
             ss.setSpan(
-                    clickableSpan,
-                    spanIndex,
-                    spanIndex + span.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                clickableSpan,
+                spanIndex,
+                spanIndex + span.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
 

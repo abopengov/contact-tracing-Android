@@ -7,12 +7,15 @@ import android.os.Handler
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.tracetogether.api.Request
+import com.example.tracetogether.BuildConfig
+import com.example.tracetogether.R
 import com.example.tracetogether.herald.FairEfficacyInstrumentation
-import com.example.tracetogether.util.AppConstants
-import com.example.tracetogether.util.Extensions.setLocalizedString
-import com.example.tracetogether.util.LocalizationHandler
+import com.example.tracetogether.api.Request
 import com.example.tracetogether.onboarding.PreOnboardingActivity
+import com.example.tracetogether.util.AppConstants.KEY_MHR
+import com.example.tracetogether.util.AppConstants.LANG_EN
+import com.example.tracetogether.util.LocalizationHandler
+import com.example.tracetogether.util.Extensions.setLocalizedString
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -56,7 +59,7 @@ class SplashActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         var lastSysLang = Preference.getSystemLang(this)
         var currentLang = Locale.getDefault().language
 
-        if (currentLang.equals(AppConstants.LANG_EN, true) || lastSysLang.equals(currentLang, true)) {
+        if (currentLang.equals(LANG_EN, true) || lastSysLang.equals(currentLang, true)) {
             LocalizationHandler.getInstance().loadJSONFromAsset(applicationContext)
             LocalizationHandler.getInstance().getUpdatedData(applicationContext)
 
@@ -84,19 +87,20 @@ class SplashActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (FairEfficacyInstrumentation.enabled) {
             FairEfficacyInstrumentation.onRequestPermissionsResult(
-                    requestCode,
-                    permissions,
-                    grantResults
+                requestCode,
+                permissions,
+                grantResults
             )
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 
@@ -119,11 +123,11 @@ class SplashActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         queryParams["lang"] = Locale.getDefault().language
 
         val authResponse =
-                Request.runRequest(
-                        "/adapters/applicationDataAdapter/getContent",
-                        Request.GET,
-                        queryParams = queryParams
-                )
+            Request.runRequest(
+                "/adapters/applicationDataAdapter/getContent",
+                Request.GET,
+                queryParams = queryParams
+            )
 
         if (authResponse.isSuccess() && !TextUtils.isEmpty(authResponse?.data?.toString())) {
             val file = File(applicationContext?.filesDir, fileName)
@@ -141,19 +145,19 @@ class SplashActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         val queryParams = HashMap<String, String>()
         queryParams["lang"] = Locale.getDefault().language
         val authResponse =
-                Request.runRequest(
-                        "/adapters/applicationDataAdapter/getUrls",
-                        Request.GET,
-                        queryParams = queryParams
-                )
+            Request.runRequest(
+                "/adapters/applicationDataAdapter/getUrls",
+                Request.GET,
+                queryParams = queryParams
+            )
 
         if (authResponse.isSuccess() && !TextUtils.isEmpty(authResponse?.data?.toString())) {
             Preference.setFeatureMHR(
-                    applicationContext,
-                    authResponse.data?.optBoolean(AppConstants.KEY_MHR) ?: false
+                applicationContext,
+                authResponse.data?.optBoolean(KEY_MHR) ?: false
             )
             Preference.putUrlData(
-                    applicationContext, authResponse?.data?.toString() ?: ""
+                applicationContext, authResponse?.data?.toString() ?: ""
             )
 
         }

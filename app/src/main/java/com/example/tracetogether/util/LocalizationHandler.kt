@@ -16,6 +16,7 @@ import java.util.*
 
 class LocalizationHandler : CoroutineScope by MainScope() {
     private var json: JSONObject? = null
+    private var defaultJson: JSONObject? = null
     private var fileName: String = "strings-" + Locale.getDefault().language + ".json"
 
     companion object {
@@ -33,7 +34,6 @@ class LocalizationHandler : CoroutineScope by MainScope() {
                 return instance
             }
         }
-
     }
 
     fun loadJSONFromAsset(context: Context?) {
@@ -45,23 +45,26 @@ class LocalizationHandler : CoroutineScope by MainScope() {
             writeJSON(file, context)
         }
         readData(context)
-
+        defaultJson = JSONObject(loadDefaultJSON(context))
     }
 
+    private fun loadDefaultJSON(context: Context?): String {
+        val stream: InputStream? = try {
+            context?.assets?.open(fileName)
+        } catch (e: FileNotFoundException) {
+            context?.assets?.open("strings-en.json")
+        }
+        val size: Int? = stream?.available()
+
+        val buffer = ByteArray(size ?: 0)
+        stream?.read(buffer)
+        stream?.close()
+        return String(buffer, Charsets.UTF_8)
+    }
 
     private fun writeJSON(file: File, context: Context?) {
         try {
-            var stream: InputStream? = try {
-                context?.assets?.open(fileName)
-            } catch (e: FileNotFoundException) {
-                context?.assets?.open("strings-en.json")
-            }
-            var size: Int? = stream?.available()
-
-            val buffer = ByteArray(size ?: 0)
-            stream?.read(buffer)
-            stream?.close()
-            val jsonString = String(buffer, Charsets.UTF_8)
+            val jsonString = loadDefaultJSON(context);
             file.writeText(jsonString)
 
             json = JSONObject(jsonString)
@@ -100,7 +103,11 @@ class LocalizationHandler : CoroutineScope by MainScope() {
 
 
     fun getString(key: String): String? {
-        return json?.optString(key, "")
+        return json?.optString(key, getDefaultString(key))
+    }
+
+    fun getDefaultString(key: String): String? {
+        return defaultJson?.optString(key, "")
     }
 
     private fun shouldFetchData(context: Context): Boolean {

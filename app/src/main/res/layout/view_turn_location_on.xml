@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_turn_location_on"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_rounded_border_pink">
+
+    <TextView
+        android:id="@+id/tv_location_instructions_title"
+        style="@style/PremInstructionTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="How to turn your Location ON" />
+
+    <ImageView
+        android:id="@+id/iv_enabled_location_step1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="22dp"
+        android:src="@drawable/ic_red_icon_01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_location_instructions_title" />
+
+    <TextView
+        android:id="@+id/tv_location_instructions_step1"
+        style="@style/PremInstructionText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_enabled_location_step1"
+        app:layout_constraintTop_toBottomOf="@id/tv_location_instructions_title"
+        tools:text="Tap on the link below to go to your Settings" />
+
+    <ImageView
+        android:id="@+id/iv_enabled_location_step2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_red_icon_02"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_location_instructions_step1" />
+
+    <TextView
+        android:id="@+id/tv_location_instructions_step2"
+        style="@style/PremInstructionText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_enabled_location_step2"
+        app:layout_constraintTop_toBottomOf="@id/tv_location_instructions_step1"
+        tools:text="Go to your Location Settings" />
+
+    <ImageView
+        android:id="@+id/iv_enabled_location_step3"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_red_icon_03"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_location_instructions_step2" />
+
+    <TextView
+        android:id="@+id/tv_location_instructions_step3"
+        style="@style/PremInstructionText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_enabled_location_step3"
+        app:layout_constraintTop_toBottomOf="@id/tv_location_instructions_step2"
+        tools:text="Set “Use Location” toggle to ON" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_location_settings"
+        style="@style/RoundedOutlineButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_location_instructions_step3"
+        tools:text="Go to to Settings" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

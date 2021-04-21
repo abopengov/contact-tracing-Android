@@ -24,9 +24,9 @@ class PreOnboardingActivity : FragmentActivity(), CoroutineScope by MainScope() 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity_onboarding)
 
-        val versionSuffix = if (Utils.getServerURL().contains("stg")) ".S" else ""
+        val versionLabel = "app_version_label".getLocalizedText() + BuildConfig.VERSION_NAME + Utils.getVersionSuffix()
 
-        tv_app_version?.text ="app_version_label".getLocalizedText() + BuildConfig.VERSION_NAME + versionSuffix
+        tv_app_version?.text = versionLabel
         tv_title?.setLocalizedString("tv_onboarding_title")
         tv_desc?.setLocalizedString("tv_onboarding_desc")
         tv_btn?.setLocalizedString("i_want_to_help")
@@ -54,8 +54,8 @@ class PreOnboardingActivity : FragmentActivity(), CoroutineScope by MainScope() 
             CentralLog.i(TAG, "App version not supported")
             transparent_layer?.visibility = View.VISIBLE
             Utils.buildWrongVersionDialog(
-                    this@PreOnboardingActivity,
-                    "wrong_version_msg".getLocalizedText()
+                this@PreOnboardingActivity,
+                "wrong_version_msg".getLocalizedText()
             )
         }
     }

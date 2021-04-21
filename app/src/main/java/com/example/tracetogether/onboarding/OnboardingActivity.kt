@@ -41,21 +41,22 @@ private const val PERMISSION_REQUEST_ACCESS_LOCATION = 456
 private const val BATTERY_OPTIMISER = 789
 
 private const val TOU_INDEX = 0
-private const val REGISTER_INDEX = 1
-private const val OTP_INDEX = 2
-private const val SETUP_INDEX = 3
-private const val SETUP_DONE_INDEX = 4
+private const val DISCLOSURE_INDEX = 1
+private const val REGISTER_INDEX = 2
+private const val OTP_INDEX = 3
+private const val SETUP_INDEX = 4
+private const val SETUP_DONE_INDEX = 5
 
 /*
     Activity used for the Onboarding flow,
     holds most of the functionality for the Onboarding fragments
  */
 class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
-        SetupFragment.OnFragmentInteractionListener,
-        SetupCompleteFragment.OnFragmentInteractionListener,
-        RegisterNumberFragment.OnFragmentInteractionListener,
-        OTPFragment.OnFragmentInteractionListener,
-        TOUFragment.OnFragmentInteractionListener {
+    SetupFragment.OnFragmentInteractionListener,
+    SetupCompleteFragment.OnFragmentInteractionListener,
+    RegisterNumberFragment.OnFragmentInteractionListener,
+    OTPFragment.OnFragmentInteractionListener,
+    TOUFragment.OnFragmentInteractionListener {
 
     private var TAG: String = "OnboardingActivity"
     private var pagerAdapter: ScreenSlidePagerAdapter? = null
@@ -70,11 +71,11 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
     private fun alertDialog(desc: String?) {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setMessage(desc)
-                .setCancelable(false)
-                .setPositiveButton("ok".getLocalizedText(),
-                        DialogInterface.OnClickListener { dialog, id ->
-                            dialog.dismiss()
-                        })
+            .setCancelable(false)
+            .setPositiveButton("ok".getLocalizedText(),
+                DialogInterface.OnClickListener { dialog, id ->
+                    dialog.dismiss()
+                })
 
         val alert = dialogBuilder.create()
         alert.show()
@@ -85,8 +86,8 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         CentralLog.d(TAG, "requestTempIdsIfNeeded")
 
         if (BluetoothMonitoringService.broadcastMessage == null || TempIDManager.needToUpdate(
-                        applicationContext
-                )
+                applicationContext
+            )
         ) {
             getTemporaryID()
         }
@@ -117,9 +118,9 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             }
 
             override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
             ) {
                 CentralLog.d(TAG, "OnPageScrolled")
             }
@@ -127,19 +128,25 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             override fun onPageSelected(position: Int) {
                 CentralLog.d(TAG, "position: $position")
                 val onboardingFragment: OnboardingFragmentInterface =
-                        pagerAdapter!!.getItem(position)
+                    pagerAdapter!!.getItem(position)
                 onboardingFragment.becomesVisible()
                 when (position) {
                     TOU_INDEX -> {
                         Preference.putCheckpoint(
-                                baseContext,
-                                position
+                            baseContext,
+                            position
+                        )
+                    }
+                    DISCLOSURE_INDEX -> {
+                        Preference.putCheckpoint(
+                            baseContext,
+                            position
                         )
                     }
                     REGISTER_INDEX -> {
                         Preference.putCheckpoint(
-                                baseContext,
-                                position
+                            baseContext,
+                            position
                         )
                     }
                     OTP_INDEX -> {
@@ -147,14 +154,14 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
                     }
                     SETUP_INDEX -> {
                         Preference.putCheckpoint(
-                                baseContext,
-                                position
+                            baseContext,
+                            position
                         )
                     }
                     SETUP_DONE_INDEX -> {
                         Preference.putCheckpoint(
-                                baseContext,
-                                position
+                            baseContext,
+                            position
                         )
                     }
                 }
@@ -164,7 +171,7 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
 
         //disable swiping
         pager.setPagingEnabled(false)
-        pager.offscreenPageLimit = 5
+        pager.offscreenPageLimit = 6
 
         val extras = intent.extras
         if (extras != null) {
@@ -265,8 +272,8 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             if (it.isDisabled) {
                 val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                 startActivityForResult(
-                        enableBtIntent,
-                        REQUEST_ENABLE_BT
+                    enableBtIntent,
+                    REQUEST_ENABLE_BT
                 )
             } else {
                 setupPermissionsAndSettings()
@@ -287,8 +294,8 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             } else {
                 // Do not have permissions, request them now
                 EasyPermissions.requestPermissions(
-                        this, "permission_location_rationale".getLocalizedText(),
-                        PERMISSION_REQUEST_ACCESS_LOCATION, *perms
+                    this, "permission_location_rationale".getLocalizedText(),
+                    PERMISSION_REQUEST_ACCESS_LOCATION, *perms
                 )
             }
         } else {
@@ -332,9 +339,9 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         CentralLog.d(TAG, "[onRequestPermissionsResult] requestCode $requestCode")
@@ -351,27 +358,27 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
                                 val dialogBuilder = AlertDialog.Builder(this)
                                 // set message of alert dialog
                                 dialogBuilder.setMessage("open_location_setting".getLocalizedText())
-                                        // if the dialog is cancelable
-                                        .setCancelable(false)
-                                        // positive button text and action
-                                        .setPositiveButton("ok".getLocalizedText(),
-                                                DialogInterface.OnClickListener { dialog, id ->
-                                                    CentralLog.d(TAG, "user also CHECKED never ask again")
-                                                    mIsOpenSetting = true
-                                                    var intent =
-                                                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                                    var uri: Uri =
-                                                            Uri.fromParts("package", packageName, null)
-                                                    intent.data = uri
-                                                    startActivity(intent)
+                                    // if the dialog is cancelable
+                                    .setCancelable(false)
+                                    // positive button text and action
+                                    .setPositiveButton("ok".getLocalizedText(),
+                                        DialogInterface.OnClickListener { dialog, id ->
+                                            CentralLog.d(TAG, "user also CHECKED never ask again")
+                                            mIsOpenSetting = true
+                                            var intent =
+                                                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                            var uri: Uri =
+                                                Uri.fromParts("package", packageName, null)
+                                            intent.data = uri
+                                            startActivity(intent)
 
-                                                })
-                                        // negative button text and action
-                                        .setNegativeButton("cancel".getLocalizedText(),
-                                                DialogInterface.OnClickListener { dialog, id ->
-                                                    dialog.cancel()
-                                                })
+                                        })
+                                    // negative button text and action
+                                    .setNegativeButton("cancel".getLocalizedText(),
+                                        DialogInterface.OnClickListener { dialog, id ->
+                                            dialog.cancel()
+                                        })
 
                                 // create dialog box
                                 val alert = dialogBuilder.create()
@@ -428,8 +435,8 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         if (!skipRegister) {
             // 1. Register the phone number
             val authResponse = Request.runRequest(
-                    "/adapters/smsOtpService/phone/register/${phoneNumber}",
-                    Request.POST
+                "/adapters/smsOtpService/phone/register/${phoneNumber}",
+                Request.POST
             )
 
 
@@ -444,9 +451,9 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             // 2. Call to trigger sms otp, this will trigger an sms challenge (See /auth/SmsCodeChallengeHandler)
             // Also see registerForSmsCodeChallengeBroadcasts function that handles the broadcasts received
             val triggerSmsOTPResponse = Request.runRequest(
-                    "/adapters/smsOtpService/phone/verifySmsOTP",
-                    Request.POST,
-                    data = JSONObject()
+                "/adapters/smsOtpService/phone/verifySmsOTP",
+                Request.POST,
+                data = JSONObject()
             )
 
             if (!triggerSmsOTPResponse.isSuccess() || triggerSmsOTPResponse.status != 200 || triggerSmsOTPResponse.data == null) {
@@ -458,8 +465,8 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             } else {
                 try {
                     Preference.putUUID(
-                            applicationContext,
-                            triggerSmsOTPResponse.data.getString("userId")
+                        applicationContext,
+                        triggerSmsOTPResponse.data.getString("userId")
                     )
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -498,24 +505,24 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
     private fun excludeFromBatteryOptimization() {
         CentralLog.d(TAG, "[excludeFromBatteryOptimization] ")
         val powerManager =
-                this.getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
+            this.getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
         val packageName = this.packageName
         val intent =
-                Utils.getBatteryOptimizerExemptionIntent(
-                        packageName
-                )
+            Utils.getBatteryOptimizerExemptionIntent(
+                packageName
+            )
 
         if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
             CentralLog.d(TAG, "Not on Battery Optimization whitelist")
             //check if there's any activity that can handle this
             if (Utils.canHandleIntent(
-                            intent,
-                            packageManager
-                    )
+                    intent,
+                    packageManager
+                )
             ) {
                 this.startActivityForResult(
-                        intent,
-                        BATTERY_OPTIMISER
+                    intent,
+                    BATTERY_OPTIMISER
                 )
             } else {
                 //no way of handling battery optimizer
@@ -534,7 +541,7 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
 
     fun updatePhoneNumberError(error: String) {
         val registerNumberFragment: OnboardingFragmentInterface =
-                pagerAdapter!!.getItem(REGISTER_INDEX)
+            pagerAdapter!!.getItem(REGISTER_INDEX)
         registerNumberFragment.onError(error)
     }
 
@@ -549,11 +556,11 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
     }
 
     private inner class ScreenSlidePagerAdapter(fm: FragmentManager) :
-            FragmentStatePagerAdapter(fm) {
+        FragmentStatePagerAdapter(fm) {
 
         val fragmentMap: MutableMap<Int, OnboardingFragmentInterface> = HashMap()
 
-        override fun getCount(): Int = 5
+        override fun getCount(): Int = 6
 
         override fun getItem(position: Int): OnboardingFragmentInterface {
             return fragmentMap.getOrPut(position, { createFragAtIndex(position) })
@@ -562,6 +569,7 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         private fun createFragAtIndex(index: Int): OnboardingFragmentInterface {
             return when (index) {
                 TOU_INDEX -> return TOUFragment()
+                DISCLOSURE_INDEX -> return InAppDisclosureFragment()
                 REGISTER_INDEX -> return RegisterNumberFragment()
                 OTP_INDEX -> return OTPFragment()
                 SETUP_INDEX -> return SetupFragment()

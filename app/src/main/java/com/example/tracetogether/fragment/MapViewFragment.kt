@@ -17,7 +17,6 @@ import com.example.tracetogether.util.Extensions.getUrl
 import com.example.tracetogether.util.Extensions.hide
 import com.example.tracetogether.util.Extensions.setLocalizedString
 import kotlinx.android.synthetic.main.fragment_mapview.*
-import kotlinx.android.synthetic.main.fragment_webview.*
 import kotlinx.android.synthetic.main.fragment_webview.pgWebView
 import kotlinx.android.synthetic.main.fragment_webview.tvErrorWebView
 import kotlinx.android.synthetic.main.fragment_webview.tv_title

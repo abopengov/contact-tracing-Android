@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import com.example.tracetogether.MainActivity
 import com.example.tracetogether.Preference
 import com.example.tracetogether.R
@@ -30,17 +31,19 @@ class SetupCompleteFragment : OnboardingFragmentInterface() {
         CentralLog.d(TAG, "OnButtonClick 2")
         Preference.putCheckpoint(view.context, 0)
         Preference.putIsOnBoarded(view.context, true)
-        var intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         context?.startActivity(intent)
-        (context as OnboardingActivity?)?.finish()
+        (context as? OnboardingActivity)?.let {
+            ActivityCompat.finishAffinity(it)
+        }
     }
 
     override fun onBackButtonClick(view: View) {}
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_setup_complete, container, false)
     }

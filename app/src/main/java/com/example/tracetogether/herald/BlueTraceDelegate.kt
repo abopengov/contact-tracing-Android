@@ -12,7 +12,7 @@ class BlueTraceDelegate(
 ) :
     DefaultSensorDelegate() {
 
-    internal val recentContactEvents = mutableMapOf<String, Date>()
+    internal val recentContactEvents = mutableMapOf<String, Long>()
 
     override fun sensor(
         sensor: SensorType?,
@@ -26,12 +26,14 @@ class BlueTraceDelegate(
     }
 
     private fun processPayload(proximity: Proximity, targetIdentifier: TargetIdentifier, payload: PayloadData) {
-        clearExpiredContactEvents()
-
         val uniqueIdentifier = "${targetIdentifier.value}${payload.hashCode()}"
-        if (recentContactEvents.containsKey(uniqueIdentifier)) {
+        val payloadExpiryTime = recentContactEvents[uniqueIdentifier]
+
+        if (payloadExpiryTime != null && payloadExpiryTime > Date().time) {
             return
         }
+
+        clearExpiredContactEvents()
 
         BlueTracePayload.parse(payload)?.let { blueTracePayload ->
             val record = StreetPassRecord(
@@ -45,14 +47,13 @@ class BlueTraceDelegate(
             )
 
             blueTraceDataPersistence.saveEncounter(record)
-            recentContactEvents[uniqueIdentifier] = Date()
+            recentContactEvents[uniqueIdentifier] = Date().time + encounterWindow
         }
     }
 
     private fun clearExpiredContactEvents() {
-        recentContactEvents.entries.removeIf {
-            Date().time - it.value.time >= encounterWindow
-        }
+        val expiredContactEvents = recentContactEvents.entries.filter { it.value <= Date().time }
+        recentContactEvents.entries.removeAll(expiredContactEvents)
     }
 }
 

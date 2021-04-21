@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="learn_more_top_image_margin">0dp</dimen>
+    <dimen name="learn_more_top_item_margin">15dp</dimen>
+    <dimen name="learn_more_item_margin">15dp</dimen>
+</resources>

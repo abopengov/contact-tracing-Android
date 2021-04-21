@@ -1,5 +1,6 @@
 package com.example.tracetogether.onboarding
 
+import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -9,12 +10,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.tracetogether.*
-import kotlinx.android.synthetic.main.fragment_register_number.*
+import com.example.tracetogether.Preference
+import com.example.tracetogether.TracerApp
+import com.example.tracetogether.Utils
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.util.Extensions.getLocalizedText
 import com.example.tracetogether.util.Extensions.setLocalizedString
+import com.google.android.gms.auth.api.credentials.Credential
+import com.google.android.gms.auth.api.credentials.Credentials
+import com.google.android.gms.auth.api.credentials.HintRequest
 import kotlinx.android.synthetic.main.button_and_progress.*
+import kotlinx.android.synthetic.main.fragment_register_number.*
+
 
 /*
     Fragment for the mobile number register screen
@@ -26,14 +37,27 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
 
     private var mView: View? = null
 
-    private var backspaceFlag: Boolean = false;
-    private var editFlag: Boolean = false;
-    private var selectionPointer: Int = 0;
+    private var backspaceFlag: Boolean = false
+    private var editFlag: Boolean = false
+    private var selectionPointer: Int = 0
+
+    private var hasBecomeVisible = false
+
+    private val startPhoneNumberHint =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                val phoneNumber =
+                    result.data?.getParcelableExtra<Credential>(Credential.EXTRA_KEY)?.id
+                if (phoneNumber != null && phoneNumber.length >= 10) {
+                    phone_number.setText(phoneNumber.substring(phoneNumber.length - 10))
+                }
+            }
+        }
 
     override fun becomesVisible() {
         CentralLog.d(TAG, "becomes visible")
+        hasBecomeVisible = true
         val myActivity = this as OnboardingFragmentInterface
-
 
         if (validateNumber(phone_number?.text.toString())) {
             myActivity.enableButton()
@@ -41,7 +65,9 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
             myActivity.disableButton()
         }
 
-
+        if (context != null && phone_number?.text.isNullOrBlank()) {
+            requestHint()
+        }
     }
 
     override fun onButtonClick(buttonView: View) {
@@ -54,8 +80,8 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
         onboardActivity?.let {
             it.onBackPressed()
         } ?: (Utils.restartAppWithNoContext(
-                0,
-                "RegisterNumberFragment not attached to OnboardingActivity"
+            0,
+            "RegisterNumberFragment not attached to OnboardingActivity"
         ))
     }
 
@@ -78,8 +104,8 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
                 it.updatePhoneNumber(numberText)
                 it.requestForOTP(numberText)
             } ?: (Utils.restartAppWithNoContext(
-                    0,
-                    "RegisterNumberFragment not attached to OnboardingActivity"
+                0,
+                "RegisterNumberFragment not attached to OnboardingActivity"
             ))
 
         }
@@ -103,16 +129,16 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
             }
 
             override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
+                s: CharSequence, start: Int,
+                count: Int, after: Int
             ) {
                 selectionPointer = s.length - phone_number.selectionStart
                 backspaceFlag = count > after
             }
 
             override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
+                s: CharSequence, start: Int,
+                before: Int, count: Int
             ) {
                 phone_number_error.visibility = View.GONE
                 if (validateNumber(s.toString())) {
@@ -136,24 +162,21 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
             }
         }
 
-        val versionSuffix = if (Utils.getServerURL().contains("stg")) ".S" else ""
-
-        tv_app_version?.text =
-                "app_version_label".getLocalizedText() + BuildConfig.VERSION_NAME + versionSuffix
+        val versionLabel = "app_version_label".getLocalizedText() + BuildConfig.VERSION_NAME + Utils.getVersionSuffix()
+        tv_app_version?.text = versionLabel
 
         disableButton()
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         CentralLog.i(TAG, "Making view")
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_register_number, container, false)
     }
-
 
     override fun onUpdatePhoneNumber(num: String) {
         CentralLog.d(TAG, "onUpdatePhoneNumber $num")
@@ -173,6 +196,10 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
             listener = context
         } else {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
+        }
+
+        if (hasBecomeVisible && phone_number?.text.isNullOrBlank()) {
+            requestHint()
         }
     }
 
@@ -200,22 +227,32 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
 
         if (!editFlag) {
             if (phoneLength >= 6 && !backspaceFlag) {
-                editFlag = true;
+                editFlag = true
                 masked = "(" + phone.substring(0, 3) + ") " + phone.substring(
-                        3,
-                        6
-                ) + "-" + phone.substring(6);
-                phone_number?.setText(masked);
+                    3,
+                    6
+                ) + "-" + phone.substring(6)
+                phone_number?.setText(masked)
                 phone_number?.setSelection(phone_number.text.length - selectionPointer)
             } else if (phoneLength >= 3 && !backspaceFlag) {
-                editFlag = true;
+                editFlag = true
                 masked = "(" + phone.substring(0, 3) + ") " + phone.substring(3)
-                phone_number?.setText(masked);
+                phone_number?.setText(masked)
                 phone_number?.setSelection(phone_number.text.length - selectionPointer)
             }
         } else {
-            editFlag = false;
+            editFlag = false
         }
+    }
+
+    private fun requestHint() {
+        val hintRequest = HintRequest.Builder()
+            .setPhoneNumberIdentifierSupported(true)
+            .build()
+        val credentialsClient = Credentials.getClient(requireContext())
+        val intent = credentialsClient.getHintPickerIntent(hintRequest)
+
+        startPhoneNumberHint.launch(IntentSenderRequest.Builder(intent.intentSender).build())
     }
 
     interface OnFragmentInteractionListener {

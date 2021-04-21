@@ -3,7 +3,6 @@ package com.example.tracetogether.onboarding
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,8 +54,8 @@ class SetupFragment : OnboardingFragmentInterface() {
     override fun onError(error: String) {}
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_setup, container, false)
@@ -68,8 +67,8 @@ class SetupFragment : OnboardingFragmentInterface() {
         tv_step?.setLocalizedString("setup_step")
         tv_title?.setLocalizedString("setup_app_permission")
         tv_desc?.text = HtmlCompat.fromHtml(
-                "setup_app_permission_title".getLocalizedText(),
-                HtmlCompat.FROM_HTML_MODE_LEGACY
+            "setup_app_permission_title".getLocalizedText(),
+            HtmlCompat.FROM_HTML_MODE_LEGACY
         )
         tv_desc_sub_1?.setLocalizedString("bluetooth")
         tv_desc_sub_2?.setLocalizedString("location_permissions")
@@ -105,11 +104,11 @@ class SetupFragment : OnboardingFragmentInterface() {
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-                SetupFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
+            SetupFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
                 }
+            }
     }
 }

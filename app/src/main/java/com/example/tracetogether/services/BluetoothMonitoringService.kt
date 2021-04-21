@@ -36,8 +36,6 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
 
     private var mNotificationManager: NotificationManager? = null
 
-    private lateinit var serviceUUID: String
-
     private val bluetoothStatusReceiver = BluetoothStatusReceiver()
 
     private lateinit var streetPassRecordStorage: StreetPassRecordStorage
@@ -67,7 +65,6 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
         commandHandler = CommandHandler(WeakReference(this))
 
         CentralLog.d(TAG, "Creating service - BluetoothMonitoringService")
-        serviceUUID = BuildConfig.BLE_SSID
 
         unregisterReceivers()
         registerReceivers()
@@ -94,7 +91,7 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
             val name = CHANNEL_SERVICE
             // Create the channel for the notification
             val mChannel =
-                    NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW)
+                NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW)
             mChannel.enableLights(false)
             mChannel.enableVibration(true)
             mChannel.vibrationPattern = longArrayOf(0L)
@@ -109,7 +106,7 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
     private fun notifyLackingThings(override: Boolean = false) {
         if (notificationShown != NOTIFICATION_STATE.LACKING_THINGS || override) {
             var notif =
-                    NotificationTemplates.lackingThingsNotification(this.applicationContext, CHANNEL_ID)
+                NotificationTemplates.lackingThingsNotification(this.applicationContext, CHANNEL_ID)
             startForeground(NOTIFICATION_ID, notif)
             notificationShown = NOTIFICATION_STATE.LACKING_THINGS
         }
@@ -118,7 +115,7 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
     private fun notifyRunning(override: Boolean = false) {
         if (notificationShown != NOTIFICATION_STATE.RUNNING || override) {
             var notif =
-                    NotificationTemplates.getRunningNotification(this.applicationContext, CHANNEL_ID)
+                NotificationTemplates.getRunningNotification(this.applicationContext, CHANNEL_ID)
             startForeground(NOTIFICATION_ID, notif)
             notificationShown = NOTIFICATION_STATE.RUNNING
         }
@@ -148,8 +145,8 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
         //check for permissions
         if (!hasLocationPermissions() || !isBluetoothEnabled()) {
             CentralLog.i(
-                    TAG,
-                    "location permission: ${hasLocationPermissions()} bluetooth: ${isBluetoothEnabled()}"
+                TAG,
+                "location permission: ${hasLocationPermissions()} bluetooth: ${isBluetoothEnabled()}"
             )
             notifyLackingThings()
             return START_STICKY
@@ -179,8 +176,8 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
         //check for permissions
         if (!hasLocationPermissions() || !isBluetoothEnabled()) {
             CentralLog.i(
-                    TAG,
-                    "location permission: ${hasLocationPermissions()} bluetooth: ${isBluetoothEnabled()}"
+                TAG,
+                "location permission: ${hasLocationPermissions()} bluetooth: ${isBluetoothEnabled()}"
             )
             notifyLackingThings()
             return

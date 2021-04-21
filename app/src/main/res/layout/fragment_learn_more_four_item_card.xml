@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/LearnItemTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/learn_more_top_item_margin"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="*THIS ORG* will:" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_description1"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="22dp"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_description1"
+        tools:src="@drawable/ic_home" />
+
+    <TextView
+        android:id="@+id/tv_description1"
+        style="@style/LearnMultiItemText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="@dimen/learn_more_item_margin"
+        android:layout_marginEnd="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_description1"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        tools:text="Ask you to quarantine for 14 days or longer if deemed necessary" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_description2"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="22dp"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_description2"
+        tools:src="@drawable/ic_positive_light" />
+
+    <TextView
+        android:id="@+id/tv_description2"
+        style="@style/LearnMultiItemText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="@dimen/learn_more_item_margin"
+        android:layout_marginEnd="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_description2"
+        app:layout_constraintTop_toBottomOf="@id/tv_description1"
+        tools:text="Recommed you get tested for Covid-19" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_description3"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="22dp"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_description3"
+        tools:src="@drawable/ic_pill_bottle" />
+
+    <TextView
+        android:id="@+id/tv_description3"
+        style="@style/LearnMultiItemText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="@dimen/learn_more_item_margin"
+        android:layout_marginEnd="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_description3"
+        app:layout_constraintTop_toBottomOf="@id/tv_description2"
+        tools:text="Ask you to monitor your symptoms" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_description4"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="22dp"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_description4"
+        tools:src="@drawable/ic_help" />
+
+    <TextView
+        android:id="@+id/tv_description4"
+        style="@style/LearnMultiItemText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="@dimen/learn_more_item_margin"
+        android:layout_marginEnd="36dp"
+        android:textColorLink="@color/final_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_description4"
+        app:layout_constraintTop_toBottomOf="@id/tv_description3"
+        tools:text="To learn more go to FAQs" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,15 +4,17 @@ import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import com.example.tracetogether.fragment.*
 import com.example.tracetogether.herald.FairEfficacyInstrumentation
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.onboarding.PreOnboardingActivity
-import com.example.tracetogether.util.AppConstants
 import com.example.tracetogether.util.Extensions.getLocalizedText
+import com.example.tracetogether.viewmodels.LearnMoreViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main_new.*
 import kotlinx.coroutines.CoroutineScope
@@ -30,6 +32,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     private var mNavigationLevel = 0
     var LAYOUT_MAIN_ID = 0
     private var selected = 0
+
+    private val viewModel: LearnMoreViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_new)
@@ -39,66 +44,65 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         LAYOUT_MAIN_ID = R.id.content
 
         val mOnNavigationItemSelectedListener =
-                BottomNavigationView.OnNavigationItemSelectedListener { item ->
-                    when (item.itemId) {
-                        R.id.navigation_home -> {
+            BottomNavigationView.OnNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.navigation_home -> {
 
-                            if (selected != R.id.navigation_home) {
-                                openFragment(
-                                        LAYOUT_MAIN_ID, HomeFragment(),
-                                        HomeFragment::class.java.name, 0
-                                )
-                            }
-                            selected = R.id.navigation_home
-                            return@OnNavigationItemSelectedListener true
+                        if (selected != R.id.navigation_home) {
+                            goToHome()
                         }
-                        R.id.navigation_statistics -> {
-                            if (selected != R.id.navigation_statistics) {
-                                var fragment = WebViewFragment().newInstance(AppConstants.KEY_STATS, "")
-                                openFragment(
-                                        LAYOUT_MAIN_ID, fragment,
-                                        fragment::class.java.name, 0
-                                )
-                            }
-
-                            selected = R.id.navigation_statistics
-                            return@OnNavigationItemSelectedListener true
-                        }
-                        R.id.navigation_help -> {
-                            if (selected != R.id.navigation_help) {
-                                openFragment(
-                                        LAYOUT_MAIN_ID, HelpFragment(),
-                                        HelpFragment::class.java.name, 0
-                                )
-                            }
-
-                            selected = R.id.navigation_help
-                            return@OnNavigationItemSelectedListener true
-                        }
-                        R.id.navigation_guidance -> {
-                            if (selected != R.id.navigation_guidance) {
-                                openFragment(
-                                        LAYOUT_MAIN_ID, GuidanceFragment(),
-                                        GuidanceFragment::class.java.name, 0
-                                )
-                            }
-
-                            selected = R.id.navigation_guidance
-                            return@OnNavigationItemSelectedListener true
-                        }
+                        selected = R.id.navigation_home
+                        return@OnNavigationItemSelectedListener true
                     }
-                    false
+                    R.id.navigation_statistics -> {
+                        if (selected != R.id.navigation_statistics) {
+                            val fragment = StatsFragment()
+                            openFragment(
+                                LAYOUT_MAIN_ID, fragment,
+                                fragment::class.java.name
+                            )
+                        }
+
+                        selected = R.id.navigation_statistics
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.navigation_learn_more -> {
+                        if (selected != R.id.navigation_learn_more) {
+                            openFragment(
+                                LAYOUT_MAIN_ID, LearnMoreFragment(),
+                                LearnMoreFragment::class.java.name
+                            )
+                        }
+
+                        selected = R.id.navigation_learn_more
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.navigation_guidance -> {
+                        if (selected != R.id.navigation_guidance) {
+                            openFragment(
+                                LAYOUT_MAIN_ID, GuidanceFragment(),
+                                GuidanceFragment::class.java.name
+                            )
+                        }
+
+                        selected = R.id.navigation_guidance
+                        return@OnNavigationItemSelectedListener true
+                    }
                 }
+                false
+            }
 
         nav_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         nav_view?.menu?.findItem(R.id.navigation_home)?.title = "menu_home".getLocalizedText()
         nav_view?.menu?.findItem(R.id.navigation_statistics)?.title =
-                "menu_statistics".getLocalizedText()
-        nav_view?.menu?.findItem(R.id.navigation_help)?.title = "menu_help".getLocalizedText()
+            "menu_statistics".getLocalizedText()
+        nav_view?.menu?.findItem(R.id.navigation_learn_more)?.title =
+            "menu_learn_more".getLocalizedText()
         nav_view?.menu?.findItem(R.id.navigation_guidance)?.title =
-                "menu_guidance".getLocalizedText()
+            "menu_guidance".getLocalizedText()
 
-        goToHome()
+        addHomeFragment()
+        updateLearnMoreBadge()
     }
 
     override fun onResume() {
@@ -107,6 +111,23 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         if (!FairEfficacyInstrumentation.enabled) {
             showAppRegistrationStatus()
         }
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            supportFragmentManager.popBackStack()
+            return
+        }
+
+        finish()
+    }
+
+    private fun updateLearnMoreBadge() {
+        viewModel.userHasSeenWhatsNew.observe(this, Observer { hasSeen ->
+            val badge = nav_view.getOrCreateBadge(R.id.navigation_learn_more)
+            badge.isVisible = !hasSeen
+            badge.number = 1
+        })
     }
 
     private fun showAppRegistrationStatus() = launch {
@@ -128,33 +149,40 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         return false
     }
 
-    fun goToHome() {
-        openFragment(
-                LAYOUT_MAIN_ID, HomeFragment(),
-                HomeFragment::class.java.name, 0
-        )
-        nav_view.selectedItemId = R.id.navigation_home
+    fun addHomeFragment() {
+        val fragmentTransaction: FragmentTransaction? = supportFragmentManager?.beginTransaction()
+        val homeFragment = HomeFragment()
+
+        fragmentTransaction?.replace(LAYOUT_MAIN_ID, homeFragment)
+        fragmentTransaction?.addToBackStack(HomeFragment::class.java.name)
+        fragmentTransaction?.commit()
     }
 
-    fun goStatistics() {
+    fun goToHome() {
+        openFragment(
+            LAYOUT_MAIN_ID, HomeFragment(),
+            HomeFragment::class.java.name
+        )
+    }
+
+    fun goToStatistics() {
         nav_view.selectedItemId = R.id.navigation_statistics
     }
 
+    fun goToHelp() {
+        nav_view.selectedItemId = R.id.navigation_learn_more
+    }
 
     fun openFragment(
-            containerViewId: Int,
-            fragment: Fragment,
-            tag: String,
-            title: Int
+        containerViewId: Int,
+        fragment: Fragment,
+        tag: String
     ) {
-        try { // pop all fragments
-            supportFragmentManager.popBackStackImmediate(
-                    LAYOUT_MAIN_ID,
-                    FragmentManager.POP_BACK_STACK_INCLUSIVE
-            )
+        try {
+            supportFragmentManager?.popBackStack(HomeFragment::class.java.name, 0)
             mNavigationLevel = 0
             val transaction =
-                    supportFragmentManager.beginTransaction()
+                supportFragmentManager.beginTransaction()
             transaction.replace(containerViewId, fragment, tag)
             transaction.commit()
         } catch (e: Throwable) {
