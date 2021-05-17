@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.tracetogether.MainActivity
 import kotlinx.android.synthetic.main.fragment_upload_uploadcomplete.*
 import com.example.tracetogether.R
 import com.example.tracetogether.util.Extensions.setLocalizedString
@@ -14,9 +15,9 @@ import com.example.tracetogether.util.Extensions.setLocalizedString
  */
 class UploadCompleteFragment : Fragment() {
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_upload_uploadcomplete, container, false)
     }
@@ -29,8 +30,12 @@ class UploadCompleteFragment : Fragment() {
         btn_finish?.setLocalizedString("finish_button")
 
         uploadCompleteFragmentActionButton?.setOnClickListener {
-            var myParentFragment: UploadPageFragment = (parentFragment as UploadPageFragment)
-            myParentFragment.goBackToHome()
+            goBackToHome()
         }
+    }
+
+    private fun goBackToHome() {
+        val parentActivity = activity as MainActivity?
+        parentActivity?.onBackPressed()
     }
 }

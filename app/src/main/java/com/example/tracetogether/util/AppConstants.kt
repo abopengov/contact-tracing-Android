@@ -10,4 +10,5 @@ object AppConstants {
     const val KEY_HELP = "helpEmail"
     const val KEY_HOME = "home"
     const val KEY_MHR = "mhr"
+    const val KEY_CLOSE_CONTACTS_FAQ = "closeContactsFaq"
 }

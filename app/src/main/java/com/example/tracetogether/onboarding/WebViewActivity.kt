@@ -21,7 +21,7 @@ class WebViewActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.webview)
-        tv_title?.setLocalizedString("webview_title")
+        tv_title?.setLocalizedString("alberta_health_webview_title")
         webview?.webViewClient = WebViewClient()
 
         //Grabs extra intent data to see which url to use

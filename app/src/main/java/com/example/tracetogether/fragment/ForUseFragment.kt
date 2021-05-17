@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.tracetogether.MainActivity
 import com.example.tracetogether.Preference
 import kotlinx.android.synthetic.main.fragment_upload_foruse.*
@@ -18,9 +20,9 @@ import com.example.tracetogether.util.Extensions.show
  */
 class ForUseFragment : Fragment() {
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_upload_foruse, container, false)
     }
@@ -42,19 +44,25 @@ class ForUseFragment : Fragment() {
 
 
         forUseFragmentActionButtonCT?.setOnClickListener {
-            var myParentFragment: ForUseByOTCFragment =
-                    (parentFragment as ForUseByOTCFragment)
-            myParentFragment.goToUploadFragment(false)
+            navigateToTestDateFragment(false)
         }
 
         forUseFragmentActionButtonMRH?.setOnClickListener {
-            var myParentFragment: ForUseByOTCFragment = (parentFragment as ForUseByOTCFragment)
-            myParentFragment.goToUploadFragment(true)
+            navigateToTestDateFragment(true)
         }
 
         backButton?.setOnClickListener {
-            var activity = activity as MainActivity
-            activity?.goToHome()
+            activity?.onBackPressed()
         }
+    }
+
+    private fun navigateToTestDateFragment(mhrFlow: Boolean) {
+        val fragManager: FragmentManager? = activity?.supportFragmentManager
+        val fragTrans: FragmentTransaction? = fragManager?.beginTransaction()
+        val fragB = TestDateFragment(mhrFlow)
+
+        fragTrans?.replace(R.id.content, fragB)
+        fragTrans?.addToBackStack(TestDateFragment::class.java.name)
+        fragTrans?.commit()
     }
 }

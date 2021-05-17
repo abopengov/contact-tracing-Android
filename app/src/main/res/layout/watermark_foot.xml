@@ -18,7 +18,7 @@
             android:layout_height="36dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_footer_logo_dark" />
+            app:srcCompat="@drawable/ic_government_of_alberta_logo_dark" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/watermark_foot_label"

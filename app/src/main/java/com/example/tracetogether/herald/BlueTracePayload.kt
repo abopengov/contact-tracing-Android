@@ -39,16 +39,23 @@ class BlueTracePayload(
             val payloadHeaderData = data.subdata(0, 5)
 
             return if (heraldEnvelopeHeader.data == payloadHeaderData) {
-                val tempIdLength = data.uint16(7)
-                val tempId = data.string(7, Data.StringLengthEncodingOption.UINT16).value
+                val tempIdLength = data.uint16(7) ?: return null
+                val tempId =
+                    data.string(7, Data.StringLengthEncodingOption.UINT16)?.value ?: return null
 
                 var modelC = ""
                 var rssi = Int8(0)
                 var txPower = UInt16(0)
 
-                val extendedData = ConcreteExtendedDataV1(PayloadData(data.subdata(9 + tempIdLength.value).value))
+                val extendedData = ConcreteExtendedDataV1(
+                    PayloadData(
+                        data.subdata(9 + tempIdLength.value).value ?: ByteArray(
+                            0
+                        )
+                    )
+                )
                 extendedData.sections.forEach { section ->
-                    when(section.code.value) {
+                    when (section.code.value) {
                         0x40 -> rssi = section.data.int8(0)
                         0x41 -> txPower = section.data.uint16(0)
                         0x42 -> modelC = String(section.data.value)

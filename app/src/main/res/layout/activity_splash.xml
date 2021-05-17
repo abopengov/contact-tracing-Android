@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
     android:background="@color/primary_purple"
-    tools:context=".SplashActivity">
+    tools:context="com.example.tracetogether.SplashActivity">
 
     <LinearLayout
         android:id="@+id/center"
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:src="@drawable/ic_splash_logo"
+            android:src="@drawable/ic_ab_trace_together"
             app:layout_constraintTop_toTopOf="@+id/center" />
 
         <View
@@ -56,7 +56,7 @@
             android:layout_height="36dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_footer_logo_light" />
+            app:srcCompat="@drawable/ic_government_of_alberta_logo_light" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_desc_sub"

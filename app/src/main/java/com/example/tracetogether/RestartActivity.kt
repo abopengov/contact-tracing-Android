@@ -46,12 +46,11 @@ class RestartActivity : AppCompatActivity() {
 
     private fun restartApp() {
         val intent = Intent(
-                this.applicationContext,
-                SplashActivity::class.java
+            this.applicationContext,
+            SplashActivity::class.java
         )
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
 }
-

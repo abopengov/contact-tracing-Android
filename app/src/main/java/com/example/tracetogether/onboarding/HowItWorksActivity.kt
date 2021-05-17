@@ -23,7 +23,7 @@ class HowItWorksActivity : FragmentActivity() {
         continue_button?.setLocalizedString("continue_button")
 
         btn_onboardingStart?.setOnClickListener {
-            val intent = Intent(this, ExplanationActivity::class.java)
+            val intent = Intent(this, OnboardingActivity::class.java)
             startActivity(intent)
         }
     }

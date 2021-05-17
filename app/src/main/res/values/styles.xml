@@ -1,20 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@android:color/black</item>
         <item name="android:fontFamily">@font/font</item>
         <item name="fontFamily">@font/font</item>
-    </style>
-
-    <style name="AppTheme.DebugNoActionBar" parent="Theme.AppCompat.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:fontFamily">@font/font</item>
-        <item name="fontFamily">@font/font</item>
+        <item name="colorPrimary">@color/final_blue</item>
+        <item name="colorAccent">@color/final_blue</item>
     </style>
 
     <style name="button" parent="@android:style/Widget.Button">
@@ -49,6 +46,58 @@
         <item name="android:minWidth">200dp</item>
     </style>
 
+    <style name="AppIsWorkingTitle" parent="AppFont">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AppIsNotWorkingTitle" parent="AppFont">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="BannerTitle" parent="AppFont">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="BannerContent" parent="AppFont">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="UploadBannerTitle" parent="AppFont">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/title_gray</item>
+    </style>
+
+    <style name="UploadBannerContent" parent="AppFont">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/content_gray</item>
+    </style>
+
+    <style name="LinkText" parent="AppFont">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/final_blue</item>
+    </style>
+
+    <style name="DisclosureSubTitle" parent="AppFont">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="DisclosureDetails" parent="AppFont">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="OnboardingImage">
         <item name="android:layout_marginLeft">26dp</item>
         <item name="android:layout_marginTop">12dp</item>
@@ -59,7 +108,7 @@
         <item name="android:layout_marginTop">15dp</item>
         <item name="android:paddingLeft">24dp</item>
         <item name="android:paddingRight">24dp</item>
-        <item name="android:textSize">19sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
     </style>
@@ -118,8 +167,9 @@
         <item name="android:paddingLeft">24dp</item>
         <item name="android:paddingRight">24dp</item>
         <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">@font/muli_regular</item>
+        <item name="fontFamily">@font/muli_regular</item>
         <item name="android:textStyle">italic</item>
-        <item name="android:textFontWeight">300</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
@@ -155,10 +205,9 @@
     </style>
 
     <style name="CustomButtonText">
-        <item name="android:fontFamily">@font/font</item>
-        <item name="fontFamily">@font/font</item>
+        <item name="android:fontFamily">@font/muli_bold</item>
+        <item name="fontFamily">@font/muli_bold</item>
         <item name="android:textColor">#fff</item>
-        <item name="android:textFontWeight">600</item>
         <item name="android:textSize">18sp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -191,23 +240,33 @@
     </style>
 
     <style name="PremCard">
-        <item name="android:paddingLeft">11dp</item>
-        <item name="android:paddingRight">11dp</item>
-        <item name="android:layout_height">64dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:background">@drawable/card_border</item>
-
     </style>
 
     <style name="PremCardText">
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="PremCardStatusText">
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">5dp</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:gravity">left</item>
     </style>
 
     <style name="PremCardTextOnly">
@@ -216,7 +275,18 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/black</item>
+    </style>
 
+    <style name="PremInstructionTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="PremInstructionText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="PremCardTextContainer">
@@ -243,5 +313,83 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="RoundedOutlineButton" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/final_blue</item>=
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/final_blue</item>
+        <item name="rippleColor">@color/final_blue_pressed</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="icon">@drawable/ic_take_me</item>
+        <item name="iconTint">@color/final_blue</item>
+        <item name="android:padding">10dp</item>
+        <item name="iconGravity">textEnd</item>
+        <item name="iconPadding">12dp</item>
+        <item name="android:fontFamily">@font/muli_regular</item>
+        <item name="fontFamily">@font/muli_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 
+    <style name="LearnTitle" parent="AppFont">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/grey_2</item>
+    </style>
+
+    <style name="LearnItemTitle" parent="AppFont">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/grey_2</item>
+        <item name="android:fontFamily">@font/muli_regular</item>
+        <item name="fontFamily">@font/muli_regular</item>
+    </style>
+
+    <style name="LearnItemText" parent="AppFont">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/final_blue</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:drawablePadding">15dp</item>
+        <item name="android:drawableEnd">@drawable/ic_chevron_right</item>
+        <item name="android:background">@drawable/rounded_border_blue</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:fontFamily">@font/muli_regular</item>
+        <item name="fontFamily">@font/muli_regular</item>
+    </style>
+
+    <style name="LearnSingleItemText" parent="AppFont">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/grey_2</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="LearnMultiItemText" parent="AppFont">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/grey_2</item>
+    </style>
+
+    <style name="GreySmallText" parent="AppFont">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/grey_2</item>
+    </style>
+
+    <style name="NextText" parent="AppFont">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/final_blue</item>
+        <item name="android:fontFamily">@font/muli_regular</item>
+        <item name="fontFamily">@font/muli_regular</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MaterialCardView.RoundTop" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="PageTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

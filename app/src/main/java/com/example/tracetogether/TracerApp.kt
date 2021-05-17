@@ -2,7 +2,7 @@ package com.example.tracetogether
 
 import android.app.Application
 import android.content.Context
-import android.os.Build
+import com.example.tracetogether.BuildConfig
 import com.example.tracetogether.idmanager.TempIDManager
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.services.BluetoothMonitoringService
@@ -64,4 +64,3 @@ class TracerApp : Application() {
         }
     }
 }
-

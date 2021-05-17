@@ -9,9 +9,9 @@ import com.example.tracetogether.status.persistence.StatusRecordDao
 
 
 @Database(
-        entities = arrayOf(StreetPassRecord::class, StatusRecord::class),
-        version = 1,
-        exportSchema = true
+    entities = arrayOf(StreetPassRecord::class, StatusRecord::class),
+    version = 1,
+    exportSchema = true
 )
 abstract class StreetPassRecordDatabase : RoomDatabase() {
 
@@ -31,11 +31,11 @@ abstract class StreetPassRecordDatabase : RoomDatabase() {
             }
             synchronized(this) {
                 val instance = Room.databaseBuilder(
-                        context,
-                        StreetPassRecordDatabase::class.java,
-                        "record_database"
+                    context,
+                    StreetPassRecordDatabase::class.java,
+                    "record_database"
                 )
-                        .build()
+                    .build()
                 INSTANCE = instance
                 return instance
             }

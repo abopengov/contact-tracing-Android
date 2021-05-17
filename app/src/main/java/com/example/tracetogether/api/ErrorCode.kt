@@ -1,7 +1,6 @@
 package com.example.tracetogether.api
 
 import android.content.Context
-import com.example.tracetogether.R
 import com.example.tracetogether.util.Extensions.getLocalizedText
 
 object ErrorCode {

@@ -18,21 +18,21 @@ object AuthRequests : CoroutineScope by MainScope() {
     }
 
     suspend fun obtainAccessToken(scope: String = "smsOTP"): AuthResponse =
-            suspendCoroutine { cont ->
-                WLAuthorizationManager.getInstance().obtainAccessToken(scope, object :
-                        WLAccessTokenListener {
+        suspendCoroutine { cont ->
+            WLAuthorizationManager.getInstance().obtainAccessToken(scope, object :
+                WLAccessTokenListener {
 
-                    override fun onSuccess(accessToken: AccessToken) {
-                        cont.resume(AuthResponse(accessToken))
-                    }
+                override fun onSuccess(accessToken: AccessToken) {
+                    cont.resume(AuthResponse(accessToken))
+                }
 
-                    override fun onFailure(response: WLFailResponse) {
-                        WFLog.logError("Error retrieving Access Token")
-                        response.errorMsg?.let {
-                            CentralLog.d("Request", "${response.errorStatusCode} - ${response.errorMsg}")
-                        }
-                        cont.resume(AuthResponse(null, response.errorStatusCode, ErrorCode.getStringForErrorCode(TracerApp.AppContext, response.errorStatusCode ?: "")))
+                override fun onFailure(response: WLFailResponse) {
+                    WFLog.logError("Error retrieving Access Token")
+                    response.errorMsg?.let {
+                        CentralLog.d("Request", "${response.errorStatusCode} - ${response.errorMsg}")
                     }
-                })
-            }
+                    cont.resume(AuthResponse(null, response.errorStatusCode, ErrorCode.getStringForErrorCode(TracerApp.AppContext, response.errorStatusCode ?: "")))
+                }
+            })
+        }
 }

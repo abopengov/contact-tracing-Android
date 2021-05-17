@@ -16,11 +16,8 @@ import com.example.tracetogether.util.AppConstants.KEY_GUIDANCE
 import com.example.tracetogether.util.Extensions.getUrl
 import com.example.tracetogether.util.Extensions.hide
 import com.example.tracetogether.util.Extensions.setLocalizedString
-import kotlinx.android.synthetic.main.fragment_statistics.*
-import kotlinx.android.synthetic.main.fragment_statistics.pgWebView
-import kotlinx.android.synthetic.main.fragment_statistics.tvErrorWebView
-import kotlinx.android.synthetic.main.fragment_statistics.view.*
-import kotlinx.android.synthetic.main.fragment_webview.*
+import kotlinx.android.synthetic.main.fragment_guidance.*
+import kotlinx.android.synthetic.main.fragment_guidance.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -36,11 +33,11 @@ class GuidanceFragment : Fragment(), CoroutineScope by MainScope() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_statistics, container, false).apply {
-            wvStatistics?.webViewClient = WebViewClient()
-            wvStatistics?.settings?.javaScriptEnabled = true
-            wvStatistics?.settings?.loadWithOverviewMode = true
-            wvStatistics?.webChromeClient = WebChromeClient()
+        return inflater.inflate(R.layout.fragment_guidance, container, false).apply {
+            wvGuidance?.webViewClient = WebViewClient()
+            wvGuidance?.settings?.javaScriptEnabled = true
+            wvGuidance?.settings?.loadWithOverviewMode = true
+            wvGuidance?.webChromeClient = WebChromeClient()
 
             if (context != null) {
                 url = KEY_GUIDANCE.getUrl(context!!)
@@ -49,7 +46,7 @@ class GuidanceFragment : Fragment(), CoroutineScope by MainScope() {
                 requestUrl()
             } else {
                 pgWebView?.hide()
-                wvStatistics?.loadUrl(url)
+                wvGuidance?.loadUrl(url)
             }
 
         }
@@ -72,12 +69,12 @@ class GuidanceFragment : Fragment(), CoroutineScope by MainScope() {
 
         if (authResponse.isSuccess()) {
             authResponse.data?.optString(KEY_GUIDANCE)?.let {
-                wvStatistics?.loadUrl(it as String)
+                wvGuidance?.loadUrl(it as String)
             }
         }
 
         tvErrorWebView?.isVisible = !authResponse.isSuccess()
-        wvStatistics?.isVisible = authResponse.isSuccess()
+        wvGuidance?.isVisible = authResponse.isSuccess()
     }
 
 

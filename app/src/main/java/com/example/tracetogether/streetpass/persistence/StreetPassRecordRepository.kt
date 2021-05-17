@@ -11,4 +11,3 @@ class StreetPassRecordRepository(private val recordDao: StreetPassRecordDao) {
         recordDao.insert(word)
     }
 }
-
