@@ -1,9 +1,9 @@
 package com.example.tracetogether.herald
 
-import com.vmware.herald.sensor.datatype.Data
-import com.vmware.herald.sensor.datatype.Int8
-import com.vmware.herald.sensor.datatype.PayloadTimestamp
-import com.vmware.herald.sensor.datatype.UInt16
+import io.heraldprox.herald.sensor.datatype.Data
+import io.heraldprox.herald.sensor.datatype.Int8
+import io.heraldprox.herald.sensor.datatype.PayloadTimestamp
+import io.heraldprox.herald.sensor.datatype.UInt16
 import org.junit.Assert.*
 import org.junit.Test
 

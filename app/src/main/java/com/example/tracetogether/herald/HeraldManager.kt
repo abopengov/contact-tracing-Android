@@ -2,15 +2,22 @@ package com.example.tracetogether.herald
 
 import com.example.tracetogether.TracerApp
 import com.example.tracetogether.streetpass.persistence.StreetPassRecordStorage
-import com.vmware.herald.sensor.SensorArray
-import com.vmware.herald.sensor.ble.BLESensorConfiguration
-import com.vmware.herald.sensor.data.SensorLoggerLevel
-import com.vmware.herald.sensor.datatype.TimeInterval
+import io.heraldprox.herald.sensor.SensorArray
+import io.heraldprox.herald.sensor.ble.BLESensorConfiguration
+import io.heraldprox.herald.sensor.data.SensorLoggerLevel
+import io.heraldprox.herald.sensor.datatype.TimeInterval
 
-object HeraldManager {
+interface HeraldManager {
+    fun start()
+    fun stop()
+}
+
+object HeraldManagerImpl: HeraldManager {
+    private val PAYLOAD_UPDATE_FREQUENCY = TimeInterval(60 * 5L)
+
     private var sensorArray: SensorArray? = null
 
-    fun start() {
+    override fun start() {
         if (sensorArray == null) {
             val streetPassRecordStorage = StreetPassRecordStorage(TracerApp.AppContext)
             val sendDistance = !FairEfficacyInstrumentation.enabled
@@ -26,14 +33,14 @@ object HeraldManager {
                     BLESensorConfiguration.logLevel = SensorLoggerLevel.debug
                 }
 
-                BLESensorConfiguration.payloadDataUpdateTimeInterval = TimeInterval(60*5L)
+                BLESensorConfiguration.payloadDataUpdateTimeInterval = PAYLOAD_UPDATE_FREQUENCY
 
                 it.start()
             }
         }
     }
 
-    fun stop() {
+    override fun stop() {
         sensorArray?.stop()
         sensorArray = null
     }

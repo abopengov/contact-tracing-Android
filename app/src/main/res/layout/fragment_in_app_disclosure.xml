@@ -6,11 +6,14 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:fillViewport="true"
-    tools:context="com.example.tracetogether.onboarding.OnboardingActivity">
+    tools:context=".onboarding.OnboardingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -18,9 +21,7 @@
             style="@style/OnboardingTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="12dp"
-            android:layout_marginRight="10dp"
             android:gravity="start"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
@@ -33,9 +34,7 @@
             style="@style/DisclosureSubTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="10dp"
             tools:text="Network information" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -43,9 +42,7 @@
             style="@style/DisclosureDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="12dp"
-            android:layout_marginRight="10dp"
             android:gravity="start"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
@@ -57,9 +54,7 @@
             style="@style/DisclosureSubTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="10dp"
             tools:text="Location" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -67,9 +62,7 @@
             style="@style/DisclosureDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="12dp"
-            android:layout_marginRight="10dp"
             android:gravity="start"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
@@ -81,9 +74,7 @@
             style="@style/DisclosureSubTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="10dp"
             tools:text="Location" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -91,33 +82,7 @@
             style="@style/DisclosureDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="12dp"
-            android:layout_marginRight="10dp"
-            android:gravity="start"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
-            android:visibility="visible"
-            tools:text="TBD" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_item_4_title"
-            style="@style/DisclosureSubTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="10dp"
-            tools:text="Location" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_item_4_details"
-            style="@style/DisclosureDetails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="10dp"
             android:gravity="start"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
@@ -127,9 +92,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:gravity="bottom"
@@ -158,15 +122,13 @@
                 tools:text="I agree to the the app access to my MAC address" />
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/footer"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next"
+            style="@style/Main.PrimaryButton.Next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:paddingTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <include layout="@layout/button_and_progress" />
-        </FrameLayout>
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Next" />
     </LinearLayout>
 </ScrollView>

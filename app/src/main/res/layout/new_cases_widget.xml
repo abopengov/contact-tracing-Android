@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_large_radius"
+    android:orientation="vertical"
+    android:padding="@dimen/widget_margin"
+    android:theme="@style/ThemeOverlay.TraceTogether.AppWidgetContainer">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_top_purple"
+        android:paddingTop="4dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo_top" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:paddingStart="@dimen/widget_dynamic_padding_10"
+        android:paddingEnd="@dimen/widget_dynamic_padding_10">
+
+        <TextView
+            android:id="@+id/tv_new_cases_title"
+            style="@style/GreyDescriptionMediumText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="New cases today" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_new_cases"
+                style="@style/BlueDescriptionBoldText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="@dimen/widget_dynamic_padding_5"
+                android:text="-"
+                android:textSize="20sp"
+                tools:text="339" />
+
+            <ImageView
+                android:id="@+id/iv_new_cases_trend"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".8"
+                android:paddingStart="5dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="@dimen/widget_dynamic_padding_10"
+                android:scaleType="fitCenter"
+                tools:visibility="visible"
+                android:src="@drawable/ic_trending_up"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

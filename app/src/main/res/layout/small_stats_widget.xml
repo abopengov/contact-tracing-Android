@@ -1,0 +1,106 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_large_radius"
+    android:padding="@dimen/widget_margin"
+    android:theme="@style/ThemeOverlay.TraceTogether.AppWidgetContainer">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_left_purple"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo_left" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:id="@+id/tv_new_cases_title"
+                style="@style/GreyDescriptionText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                tools:text="Total new cases today" />
+
+            <TextView
+                android:id="@+id/tv_new_cases"
+                style="@style/BlueDescriptionMediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="-"
+                tools:text="339" />
+
+            <ImageView
+                android:id="@+id/iv_new_cases_trend"
+                android:layout_width="@dimen/widget_trend_width"
+                android:layout_height="@dimen/widget_trend_height"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_trending_up"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/grey_border" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:id="@+id/tv_vaccines_given_today_title"
+                style="@style/GreyDescriptionText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                tools:text="Vaccine given today" />
+
+            <TextView
+                android:id="@+id/tv_vaccines_given_today"
+                style="@style/BlueDescriptionMediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="-"
+                tools:text="339" />
+
+            <ImageView
+                android:id="@+id/iv_vaccines_trend"
+                android:layout_width="@dimen/widget_trend_width"
+                android:layout_height="@dimen/widget_trend_height"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_trending_up"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

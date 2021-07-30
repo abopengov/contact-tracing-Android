@@ -3,14 +3,17 @@ package com.example.tracetogether.util
 import android.content.Context
 import android.text.TextUtils
 import com.example.tracetogether.Preference
+import com.example.tracetogether.TracerApp
 import com.example.tracetogether.api.Request
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
-import java.io.*
-import java.lang.Exception
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.io.InputStream
 import java.util.*
 
 
@@ -103,6 +106,9 @@ class LocalizationHandler : CoroutineScope by MainScope() {
 
 
     fun getString(key: String): String? {
+        if (json == null) {
+            loadJSONFromAsset(TracerApp.AppContext)
+        }
         return json?.optString(key, getDefaultString(key))
     }
 

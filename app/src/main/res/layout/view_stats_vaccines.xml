@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stats_vaccines_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/grey_11"
+    app:cardCornerRadius="10dp"
+    app:strokeColor="@color/outline_grey"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/tv_vaccines_given_today"
+            style="@style/BlackDescriptionMediumText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@id/tv_vaccines_given_today_count"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Vaccines given today" />
+
+        <TextView
+            android:id="@+id/tv_vaccines_given_today_count"
+            style="@style/BlueDescriptionMediumText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            app:layout_goneMarginEnd="0dp"
+            app:layout_constraintEnd_toStartOf="@id/iv_vaccines_trend"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2000" />
+
+        <ImageView
+            android:id="@+id/iv_vaccines_trend"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_trending_up"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tv_vaccines_given_today_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_vaccines_given_today_count"
+            tools:visibility="visible" />
+
+        <View
+            android:id="@+id/stat_divider1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/dashed_line"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vaccines_given_today" />
+
+        <TextView
+            android:id="@+id/tv_vaccines_administered"
+            style="@style/GreyDescriptionMediumText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@id/tv_vaccines_given_today_count"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stat_divider1"
+            tools:text="Total vaccines administered" />
+
+        <TextView
+            android:id="@+id/tv_vaccines_administered_count"
+            style="@style/GreyDescriptionMediumText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/stat_divider1"
+            tools:text="2000" />
+
+        <View
+            android:id="@+id/stat_divider2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/dashed_line"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vaccines_administered" />
+
+        <TextView
+            android:id="@+id/tv_fully_vaccinated"
+            style="@style/GreyDescriptionMediumText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@id/tv_vaccines_given_today_count"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stat_divider2"
+            tools:text="Total fully vaccinated" />
+
+        <TextView
+            android:id="@+id/tv_fully_vaccinated_count"
+            style="@style/GreyDescriptionMediumText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/stat_divider2"
+            tools:text="2000" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

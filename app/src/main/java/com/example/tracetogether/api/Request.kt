@@ -32,7 +32,8 @@ object Request : CoroutineScope by MainScope() {
         timeout: Int = 3000,
         scope: String? = null,
         data: JSONObject? = null,
-        queryParams: HashMap<String, String>? = null
+        queryParams: HashMap<String, String>? = null,
+        parseResponse: Boolean = true
     ): Response =
         suspendCoroutine { cont ->
             val request = WLResourceRequest(URI(path), method, timeout, scope)
@@ -45,12 +46,12 @@ object Request : CoroutineScope by MainScope() {
 
             val listener = object : WLResponseListener {
                 override fun onSuccess(response: WLResponse?) {
-                    CentralLog.d("Request", "Request.onSuccess url=${request.url} - response=${response?.responseJSON}")
+                    CentralLog.d("Request", "Request.onSuccess url=${request.url} - response=${response?.responseText}")
                     cont.resume(
                         Response(
                             response?.status,
                             response?.responseText,
-                            response?.responseJSON
+                            if (parseResponse) response?.responseJSON else null
                         )
                     )
                 }
@@ -68,7 +69,7 @@ object Request : CoroutineScope by MainScope() {
                         Response(
                             response?.status,
                             response?.responseText,
-                            response?.responseJSON,
+                            if (parseResponse) response?.responseJSON else null,
                             ErrorCode.getStringForErrorCode(
                                 TracerApp.AppContext,
                                 response?.errorStatusCode ?: ""

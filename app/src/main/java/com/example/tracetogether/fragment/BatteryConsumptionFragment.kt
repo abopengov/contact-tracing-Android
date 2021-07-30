@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.example.tracetogether.R
+import com.example.tracetogether.pause.PauseDialogFragment
+import com.example.tracetogether.util.Extensions.getLocalizedText
 import com.example.tracetogether.util.Extensions.setLocalizedString
+import com.example.tracetogether.util.Extensions.underline
 import kotlinx.android.synthetic.main.fragment_battery_consumption.*
 
 class BatteryConsumptionFragment : Fragment() {
@@ -23,20 +25,20 @@ class BatteryConsumptionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_battery_consumption.setLocalizedString("battery_consumption_title")
+        toolbar.title = "battery_consumption_title".getLocalizedText()
+        toolbar.setNavigationOnClickListener { goBack() }
 
-        val learnMoreCardFragment = LearnMoreCardFragment(
-            R.drawable.battery_consumption_screen_01,
-            "battery_consumption_details"
-        )
+        tv_description.setLocalizedString("battery_consumption_details")
+        tv_pause_schedule_title.setLocalizedString("pause_title")
+        tv_pause_details.setLocalizedString("pause_description")
+        tv_go_to_pause_schedule.setLocalizedString("home_pause_set_schedule")
+        tv_go_to_pause_schedule.underline()
 
-        val fragTrans: FragmentTransaction = requireActivity()
-            .supportFragmentManager
-            .beginTransaction()
-        fragTrans.add(R.id.batteryCardView, learnMoreCardFragment)
-        fragTrans.commit()
+        tv_go_to_pause_schedule?.setOnClickListener { gotoPauseSchedule() }
+    }
 
-        backButton?.setOnClickListener { goBack() }
+    private fun gotoPauseSchedule() {
+        PauseDialogFragment().show(childFragmentManager, "pauseDialog")
     }
 
     private fun goBack() {

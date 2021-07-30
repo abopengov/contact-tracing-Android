@@ -1,6 +1,16 @@
 package com.example.tracetogether
 
 import android.content.Context
+import com.example.tracetogether.model.GuidanceTile
+import com.example.tracetogether.more.MoreLink
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.json.JSONObject
+import java.lang.Exception
+import java.lang.reflect.Type
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 object Preference {
     private const val PREF_ID = "Tracer_pref"
@@ -20,8 +30,31 @@ object Preference {
     private const val LAST_SYSTEM_LANG = "LAST_SYS_LANG"
     private const val FEATURE_MHR = "FEATURE_MHR"
     private const val URL_DATA = "URL_DATA"
+    private const val LAST_FETCHED_URL_DATA_TIMESTAMP = "LAST_FETCHED_URL_DATA_TIMESTAMP"
 
     private const val LAST_WHATS_NEW_SEEN = "LAST_WHATS_NEW_SEEN"
+
+    private const val PRIVACY_POLICY_VERSION_ACCEPTED = "PRIVACY_POLICY_VERSION_SEEN"
+    private const val PRIVACY_POLICY_FETCH_TIME = "PRIVACY_POLICY_FETCH_TIME"
+
+    private const val PAUSED_SCHEDULED = "PAUSED_SCHEDULED"
+    private const val PAUSE_START_TIME = "PAUSE_START_TIME"
+    private const val PAUSE_END_TIME = "PAUSE_END_TIME"
+
+    private const val GUIDANCE_TILE = "GUIDANCE_TILE"
+    private const val MORE_LINKS = "MORE_LINKS"
+
+    private val DEFAULT_PAUSE_START_TIME = LocalTime.of(0, 0)
+    private val DEFAULT_PAUSE_END_TIME = LocalTime.of(8, 0)
+
+    private val moreLinksArrayType: Type = Types.newParameterizedType(
+            List::class.java,
+            MoreLink::class.java
+    )
+
+    private val moreLinksArrayMoshiAdapter = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build().adapter<List<MoreLink>>(moreLinksArrayType)
 
     fun getUUIDRetryAttempts(context: Context): Int {
         return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
@@ -76,7 +109,7 @@ object Preference {
     fun getLastFetchTimeInMillis(context: Context): Long {
         return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
             .getLong(
-                    LAST_FETCH_TIME, 0
+                LAST_FETCH_TIME, 0
             )
     }
 
@@ -93,7 +126,7 @@ object Preference {
     fun getNextFetchTimeInMillis(context: Context): Long {
         return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
             .getLong(
-                    NEXT_FETCH_TIME, 0
+                NEXT_FETCH_TIME, 0
             )
     }
 
@@ -120,7 +153,7 @@ object Preference {
     fun getLocalizationFetchTime(context: Context): Long {
         return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
             .getLong(
-                    LOCALIZATION_TIME, 0
+                LOCALIZATION_TIME, 0
             )
     }
 
@@ -132,7 +165,7 @@ object Preference {
     fun getSystemLang(context: Context): String? {
         return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
             .getString(
-                    LAST_SYSTEM_LANG, ""
+                LAST_SYSTEM_LANG, ""
             )
     }
 
@@ -144,26 +177,33 @@ object Preference {
     fun shouldShowFeatureMHR(context: Context): Boolean {
         return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
             .getBoolean(
-                    FEATURE_MHR, false
+                FEATURE_MHR, false
             )
     }
 
     fun putUrlData(context: Context, lang: String) {
         context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
             .edit().putString(URL_DATA, lang).apply()
+        context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+                .edit().putLong(LAST_FETCHED_URL_DATA_TIMESTAMP, System.currentTimeMillis()).apply()
     }
 
     fun getUrlData(context: Context): String? {
         return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
             .getString(
-                    URL_DATA, ""
+                URL_DATA, ""
             )
+    }
+
+    fun getLastFetchedUrlDataTimestamp(context: Context): Long {
+        return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+                .getLong(LAST_FETCHED_URL_DATA_TIMESTAMP, 0)
     }
 
     fun userHasSeenWhatsNew(context: Context): Boolean {
         val lastSeenAppVersion = context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
             .getString(
-                    LAST_WHATS_NEW_SEEN, ""
+                LAST_WHATS_NEW_SEEN, ""
             )
         return BuildConfig.VERSION_NAME == lastSeenAppVersion
     }
@@ -180,6 +220,114 @@ object Preference {
                 .remove(LAST_WHATS_NEW_SEEN)
                 .apply()
         }
+    }
 
+    fun getPrivacyPolicyAccepted(context: Context): Int {
+        return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .getInt(PRIVACY_POLICY_VERSION_ACCEPTED, 1)
+    }
+
+    fun setPrivacyPolicyAccepted(context: Context, privacyVersion: Int) {
+        context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .edit()
+            .putInt(PRIVACY_POLICY_VERSION_ACCEPTED, privacyVersion)
+            .apply()
+    }
+
+    fun getPrivacyPolicyFetchTime(context: Context): Long {
+        return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .getLong(PRIVACY_POLICY_FETCH_TIME, 0)
+    }
+
+    fun setPrivacyPolicyFetchTime(context: Context, time: Long) {
+        context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .edit().putLong(PRIVACY_POLICY_FETCH_TIME, time).apply()
+    }
+
+    fun getStatsFetchTime(context: Context, key: String): Long {
+        return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .getLong(key, 0)
+    }
+
+    fun setStatsFetchTime(context: Context, key: String, time: Long) {
+        context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .edit().putLong(key, time).apply()
+    }
+
+    fun getPauseScheduled(context: Context): Boolean {
+        return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .getBoolean(PAUSED_SCHEDULED, false)
+    }
+
+    fun setPauseScheduled(context: Context, pauseScheduled: Boolean) {
+        context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .edit().putBoolean(PAUSED_SCHEDULED, pauseScheduled).apply()
+    }
+
+    fun getPauseStartTime(context: Context): LocalTime {
+        return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .getString(PAUSE_START_TIME, null)
+            ?.let { LocalTime.parse(it, DateTimeFormatter.ISO_LOCAL_TIME) }
+            ?: DEFAULT_PAUSE_START_TIME
+    }
+
+    fun setPauseStartTime(context: Context, pauseStartTime: LocalTime) {
+        context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .edit().putString(PAUSE_START_TIME, DateTimeFormatter.ISO_LOCAL_TIME.format(pauseStartTime)).apply()
+    }
+
+    fun getPauseEndTime(context: Context): LocalTime {
+        return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .getString(PAUSE_END_TIME, null)
+            ?.let { LocalTime.parse(it, DateTimeFormatter.ISO_LOCAL_TIME) }
+            ?: DEFAULT_PAUSE_END_TIME
+    }
+
+    fun setPauseEndTime(context: Context, pauseEndTime: LocalTime) {
+        context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+            .edit().putString(PAUSE_END_TIME, DateTimeFormatter.ISO_LOCAL_TIME.format(pauseEndTime)).apply()
+    }
+
+    fun getGuidanceTile(context: Context): GuidanceTile? {
+        return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+                .getString(GUIDANCE_TILE, null)
+                ?.let {
+                    try {
+                        GuidanceTile.parse(JSONObject(it))
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+    }
+
+    fun setGuidanceTile(context: Context, guidanceTile: GuidanceTile?) {
+        val sharedPreferences = context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+        if (guidanceTile != null) {
+            sharedPreferences.edit().putString(GUIDANCE_TILE, guidanceTile.toString()).apply()
+        } else {
+            sharedPreferences.edit().remove(GUIDANCE_TILE).apply()
+        }
+    }
+
+    fun getMoreLinks(context: Context): List<MoreLink>? {
+        return context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+                .getString(MORE_LINKS, null)
+                ?.let {
+                    try {
+                        moreLinksArrayMoshiAdapter.fromJson(it)
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+    }
+
+    fun setMoreLinks(context: Context, moreLinks: List<MoreLink>?) {
+        val sharedPreferences = context.getSharedPreferences(PREF_ID, Context.MODE_PRIVATE)
+        if (moreLinks != null) {
+            val moreLinksArrayString = moreLinksArrayMoshiAdapter.toJson(moreLinks)
+            sharedPreferences.edit().putString(MORE_LINKS, moreLinksArrayString).apply()
+        } else {
+            sharedPreferences.edit().remove(MORE_LINKS).apply()
+        }
     }
 }

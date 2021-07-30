@@ -21,7 +21,9 @@ To get started on the app, setup and configure the following:
 1. ./gradle.properties
 2. ./app/build.gradle
 3. IBM MobileFirst Platform
-4. Protocol version
+4. Google Maps API
+5. Cache Duration Configurations
+6. Protocol version
 
 ---
                
@@ -44,34 +46,14 @@ PUSH_NOTIFICATION_ID=771578
 PUSH_NOTIFICATION_CHANNEL_NAME="CT Notifications"
 
 #service configurations
-SCAN_DURATION=10000
-MIN_SCAN_INTERVAL=35000
-MAX_SCAN_INTERVAL=60000
-
-ADVERTISING_DURATION=180000
-ADVERTISING_INTERVAL=5000
-
 PURGE_INTERVAL=86400000
 PURGE_TTL=1814400000
-MAX_QUEUE_TIME=7000
 BM_CHECK_INTERVAL=540000
 HEALTH_CHECK_INTERVAL=900000
-CONNECTION_TIMEOUT=6000
-BLACKLIST_DURATION=100000
-
-STAGING_SERVICE_UUID = "B82AB3FC-1595-4F6A-80F0-FE094CC218F9"
-
-V2_CHARACTERISTIC_ID = "117BDD58-57CE-4E7A-8E87-7CCCDDA2A804"
-
-PRODUCTION_SERVICE_UUID = "B82AB3FC-1595-4F6A-80F0-FE094CC218F9"
 
 android.useAndroidX=true
 android.enableJetifier=true
 ```
-
-SERVICE_UUID and V2_CHARACTERISTIC_ID must match the iOS version or no cross platform scanning will occur.
-
-SCAN_DURATION and SCAN_INTERVAL should be close to the iOS version or cross platform communication will be one sided 
 
 ---
                
@@ -81,24 +63,19 @@ Change the package name and other configurations accordingly such as the resValu
 ```groovy
     buildTypes {
         debug {
-            buildConfigField "String", "BLE_SSID", PRODUCTION_SERVICE_UUID
-            resValue "string", "app_name", "TracerAppDebug"
+            resValue "string", "app_name", "APP NAME"
         }
 
         release {
-            buildConfigField "String", "BLE_SSID", PRODUCTION_SERVICE_UUID
             debuggable false
             jniDebuggable false
             renderscriptDebuggable false
             minifyEnabled false
-            multiDexEnabled false
             zipAlignEnabled true
-            resValue "string", "app_name", "TracerApp"
+            resValue "string", "app_name", "APP NAME"
         }
     }
 ```
-
-> Values such as BLE_SSID have been defined in gradle.properties as described above.
 
 ---
 
@@ -122,6 +99,22 @@ It is recommended to add in a check for SSL certificate returned by the backend.
 
 ---
 
+### Google Maps API
+
+This app uses Google Maps SDK. An active Google Maps API key is required for interactive map components to work.
+
+Google Maps API keys can be specified in both `./debug.properties` and `./release.properties` files with key name `MAPS_API_KEY`.
+
+---
+
+### Cache Duration Configurations
+
+Additional configuration parameters are specified in `./debug.properties` and `./release.properties` files with key names `STATS_CACHE_DURATION` and `URLS_CACHE_DURATION`.
+
+These configurations determine how often the app retrieves new data from the server for statistics and urls. Values are in milliseconds.
+
+---
+
 ### Statement from Google
 The following is a statement from Google:
 "At Google Play we take our responsibility to provide accurate and relevant information for our users very seriously. For that reason, we are currently only approving apps that reference COVID-19 or related terms in their store listing if the app is published, commissioned, or authorized by an official government entity or public health organization, and the app does not contain any monetization mechanisms such as ads, in-app products, or in-app donations. This includes references in places such as the app title, description, release notes, or screenshots.
@@ -142,3 +135,7 @@ TraceTogether uses the following third party libraries / tools.
 [1.2.0] * Added vulnerability fix and anonymity hardening
 
 [2.0.0] * Added Herald for Bluetooth communication
+
+[2.2.0] * New look & feel, Learn More section, test & symptom dates
+
+[2.3.0] * New statistics and map screens, widgets, and pause scheduling

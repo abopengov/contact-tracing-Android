@@ -1,11 +1,11 @@
 package com.example.tracetogether.fragment
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -29,12 +29,13 @@ class LearnMoreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_learn_more?.setLocalizedString("learn_more_title")
+        tv_learn_more?.setLocalizedString("learn_title")
         tv_app_basics?.setLocalizedString("app_basics_title")
         tv_info_exchanged?.setLocalizedString("info_exchanged_title")
         tv_permissions?.setLocalizedString("permissions_title")
         tv_testing_positive?.setLocalizedString("testing_positive_title")
         tv_potential_exposures?.setLocalizedString("potential_exposures_title")
+        tv_how_will_i_be_notified?.setLocalizedString("how_will_i_be_notified_title")
         tv_battery_consumption?.setLocalizedString("battery_consumption_title")
         tv_whats_new?.setLocalizedString("whats_new_title")
         tv_faq?.setLocalizedString("faq_title")
@@ -44,6 +45,7 @@ class LearnMoreFragment : Fragment() {
         tv_permissions?.setOnClickListener { navigateToFragment(PermissionsFragment()) }
         tv_testing_positive?.setOnClickListener { navigateToFragment(TestingPositiveFragment()) }
         tv_potential_exposures?.setOnClickListener { navigateToFragment(PotentialExposuresFragment()) }
+        tv_how_will_i_be_notified?.setOnClickListener { navigateToFragment(HowWillIBeNotifiedFragment()) }
         tv_battery_consumption?.setOnClickListener { navigateToFragment(BatteryConsumptionFragment()) }
         tv_whats_new?.setOnClickListener { navigateToFragment(WhatsNewFragment()) }
         tv_faq?.setOnClickListener { openFaq() }
@@ -64,8 +66,9 @@ class LearnMoreFragment : Fragment() {
 
     private fun openFaq() {
         val url = AppConstants.KEY_FAQ.getUrl(requireContext(), getString(R.string.faq_url))
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        startActivity(intent)
+
+        val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
+        val customTabsIntent: CustomTabsIntent = builder.build()
+        customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
     }
 }

@@ -8,7 +8,7 @@ class WFLog {
 
     companion object {
 
-        private val TAG = "TracerApp"
+        private val TAG = "*APP NAME*"
 
         fun logError(message: String) {
             Logger.getInstance(TAG).error(message)

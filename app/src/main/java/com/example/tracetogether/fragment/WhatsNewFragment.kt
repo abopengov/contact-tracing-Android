@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
-import com.example.tracetogether.MainActivity
 import com.example.tracetogether.R
-import com.example.tracetogether.util.Extensions.setLocalizedString
+import com.example.tracetogether.util.Extensions.getLocalizedText
 import com.example.tracetogether.viewmodels.LearnMoreViewModel
 import kotlinx.android.synthetic.main.fragment_whats_new.*
 
@@ -28,8 +27,8 @@ class WhatsNewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        backButton?.setOnClickListener { goBack() }
-        tv_whats_new?.setLocalizedString("whats_new_in_this_app_title")
+        toolbar.title = "whats_new_in_this_app_title".getLocalizedText()
+        toolbar.setNavigationOnClickListener { goBack() }
         tv_whats_new_content?.loadUrl("file:///android_asset/changelog.html")
 
         viewModel.whatsNewPageSeen(true)

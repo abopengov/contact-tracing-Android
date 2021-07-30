@@ -11,7 +11,7 @@ import com.example.tracetogether.R
 import com.example.tracetogether.util.Extensions.setLocalizedString
 import kotlinx.android.synthetic.main.fragment_learn_payload_example.*
 
-class LearnMorePayloadExampleFragment() : Fragment() {
+class LearnMorePayloadExampleFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

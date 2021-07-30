@@ -5,219 +5,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.example.tracetogether.onboarding.OnboardingActivity">
+    tools:context=".onboarding.OnboardingActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/btn_next"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_title"
-                style="@style/OnboardingTitle"
+            <FrameLayout
+                android:id="@+id/progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:animateLayoutChanges="true"
+                android:visibility="visible">
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </FrameLayout>
+
+            <WebView
+                android:id="@+id/wv_privacy_policy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:textAllCaps="true"
-                android:visibility="visible" />
+                android:isScrollContainer="false"
+                android:visibility="gone"
+                tools:ignore="WebViewLayout" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc1"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc2"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc3"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc4"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc5"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc6"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc7"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc8"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc9"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc10"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc11"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/privacy_desc12"
-                style="@style/OnboardingDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:gravity="start"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:visibility="visible" />
-
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/privacy_button"
+                style="@style/Main.OutlineButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="42dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/custom_outlined_button"
-                android:textColor="@color/final_blue"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                tools:text="View Privacy Policy Online" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/faq_button"
+                style="@style/Main.OutlineButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/custom_outlined_button"
-                android:textColor="@color/final_blue"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                tools:text="View FAQ" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="46dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="128dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="40dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -225,10 +73,10 @@
                     android:id="@+id/checkbox_agreement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:checked="false"
                     android:paddingLeft="0dp"
                     android:paddingRight="0dp"
-                    android:layout_marginEnd="5dp"
                     android:theme="@style/SwitchThemePrivacy" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -245,16 +93,15 @@
         </LinearLayout>
     </ScrollView>
 
-    <FrameLayout
-        android:id="@+id/footer"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_next"
+        style="@style/Main.PrimaryButton.Next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <include layout="@layout/button_and_progress" />
-    </FrameLayout>
-
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Next" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

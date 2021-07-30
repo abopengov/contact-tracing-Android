@@ -8,12 +8,12 @@ import androidx.core.app.ActivityCompat
 import com.example.tracetogether.BuildConfig
 import com.example.tracetogether.Preference
 import com.example.tracetogether.TracerApp
-import com.vmware.herald.sensor.SensorArray
-import com.vmware.herald.sensor.data.*
-import com.vmware.herald.sensor.datatype.Base64
-import com.vmware.herald.sensor.datatype.Int32
-import com.vmware.herald.sensor.datatype.Int8
-import com.vmware.herald.sensor.datatype.PayloadData
+import io.heraldprox.herald.sensor.SensorArray
+import io.heraldprox.herald.sensor.data.*
+import io.heraldprox.herald.sensor.datatype.Base64
+import io.heraldprox.herald.sensor.datatype.Int32
+import io.heraldprox.herald.sensor.datatype.Int8
+import io.heraldprox.herald.sensor.datatype.PayloadData
 import java.util.*
 
 object FairEfficacyInstrumentation {
@@ -29,6 +29,7 @@ object FairEfficacyInstrumentation {
         if (enabled) {
             // Add UserId
             Preference.putUUID(TracerApp.AppContext, UUID.randomUUID().toString())
+            Preference.putIsOnBoarded(TracerApp.AppContext,true)
             BatteryLog(TracerApp.AppContext, "battery.csv")
         }
     }
@@ -86,16 +87,18 @@ object FairEfficacyInstrumentation {
 
     fun setupLogging(sensorArray: SensorArray) {
         val payloadDataFormatter = PayloadDataFormatter {
+            val value = it.value ?: return@PayloadDataFormatter ""
+
             when {
-                it.value.isEmpty() -> {
+                value.isEmpty() -> {
                     ""
                 }
-                it.value.size <= 10 -> {
-                    Base64.encode(it.value)
+                value.size <= 10 -> {
+                    Base64.encode(value)
                 }
                 else -> {
-                    val subdata = it.subdata(10, it.value.size - 10)
-                    val suffix = if (subdata?.value != null) subdata.value else ByteArray(0)
+                    val subdata = it.subdata(10, value.size - 10)
+                    val suffix = subdata?.value ?: ByteArray(0)
                     val base64EncodedString = Base64.encode(suffix)
                     base64EncodedString.substring(
                         0,

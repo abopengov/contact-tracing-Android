@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.tracetogether.R
-import com.example.tracetogether.util.Extensions.setLocalizedString
+import com.example.tracetogether.util.Extensions.getLocalizedText
 import kotlinx.android.synthetic.main.fragment_app_basics.*
 
 
@@ -24,9 +24,8 @@ class AppBasicsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        backButton?.setOnClickListener { goBack() }
-
-        tv_app_basics?.setLocalizedString("app_basics_title")
+        toolbar.title = "app_basics_title".getLocalizedText()
+        toolbar.setNavigationOnClickListener { goBack() }
 
         val adapter = AppBasicsPagerAdapter(this)
         learnMorePagingView.setAdapter(adapter)
@@ -45,9 +44,9 @@ internal class AppBasicsPagerAdapter(fragment: Fragment) : FragmentStateAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> LearnMoreCardFragment(R.drawable.app_basics_screen_01, "app_basics_page1_details")
-            1 -> LearnMoreCardFragment(R.drawable.app_basics_screen_02, "app_basics_page2_details")
-            2 -> LearnMoreTwoItemCardFragment(
+            0 -> LearnMoreCardFragment.newInstance(R.drawable.app_basics_screen_01, "app_basics_page1_details")
+            1 -> LearnMoreCardFragment.newInstance(R.drawable.app_basics_screen_02, "app_basics_page2_details")
+            2 -> LearnMoreTwoItemCardFragment.newInstance(
                 R.drawable.app_basics_screen_03,
                 "app_basics_page3_details1",
                 R.drawable.ic_anonymous,

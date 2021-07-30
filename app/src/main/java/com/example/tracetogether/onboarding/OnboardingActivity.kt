@@ -1,28 +1,20 @@
 package com.example.tracetogether.onboarding
 
-import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
-import android.content.*
-import android.content.pm.PackageManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
-import android.os.*
-import android.provider.Settings
+import android.os.Bundle
 import android.text.TextUtils
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.activity_onboarding.*
-import pub.devrel.easypermissions.AfterPermissionGranted
-import pub.devrel.easypermissions.EasyPermissions
 import com.example.tracetogether.Preference
 import com.example.tracetogether.R
-import com.example.tracetogether.Utils
 import com.example.tracetogether.api.ErrorCode
 import com.example.tracetogether.api.Request
 import com.example.tracetogether.api.auth.SmsCodeChallengeHandler
@@ -30,29 +22,26 @@ import com.example.tracetogether.idmanager.TempIDManager
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.services.BluetoothMonitoringService
 import com.example.tracetogether.util.Extensions.getLocalizedText
+import kotlinx.android.synthetic.main.activity_onboarding.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
-private const val REQUEST_ENABLE_BT = 123
-private const val PERMISSION_REQUEST_ACCESS_LOCATION = 456
-private const val BATTERY_OPTIMISER = 789
-
 private const val TOU_INDEX = 0
 private const val DISCLOSURE_INDEX = 1
 private const val REGISTER_INDEX = 2
 private const val OTP_INDEX = 3
-private const val SETUP_INDEX = 4
-private const val SETUP_DONE_INDEX = 5
+private const val LOCATION_PERMISSION_INDEX = 4
+private const val BACKGROUND_PERMISSION_INDEX = 5
+private const val SETUP_DONE_INDEX = 6
 
 /*
     Activity used for the Onboarding flow,
     holds most of the functionality for the Onboarding fragments
  */
 class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
-    SetupFragment.OnFragmentInteractionListener,
     SetupCompleteFragment.OnFragmentInteractionListener,
     RegisterNumberFragment.OnFragmentInteractionListener,
     OTPFragment.OnFragmentInteractionListener,
@@ -60,22 +49,49 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
 
     private var TAG: String = "OnboardingActivity"
     private var pagerAdapter: ScreenSlidePagerAdapter? = null
-    private var bleSupported = false
     private var resendingCode = false
 
+    private var mIsResetup = false
+
+    val smsCodeRequiredReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            // Might receive a challenge again if something failed, only navigate to next page if not on otp fragment yet
+            if (pager.currentItem == REGISTER_INDEX) {
+                navigateToNextPage()
+            }
+        }
+    }
+    val smsCodeSuccessReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            navigateToNextPage()
+        }
+    }
+    val smsCodeFailReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            updateOTPError("verification_failed".getLocalizedText())
+        }
+    }
+    val challengeCancelledReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            // We cancel the challenge when calling resendCode, so continuing the resendCode flow here
+            requestForOTP("", true)
+        }
+    }
+
     private fun enableFragmentbutton() {
-        var interfaceObject: OnboardingFragmentInterface? = pagerAdapter?.getItem(pager.currentItem)
+        val interfaceObject: OnboardingFragmentInterface? = pagerAdapter?.getItem(pager.currentItem)
         interfaceObject?.enableButton()
     }
 
     private fun alertDialog(desc: String?) {
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setMessage(desc)
+        dialogBuilder
+            .setTitle("alert_title".getLocalizedText())
+            .setMessage(desc)
             .setCancelable(false)
-            .setPositiveButton("ok".getLocalizedText(),
-                DialogInterface.OnClickListener { dialog, id ->
-                    dialog.dismiss()
-                })
+            .setPositiveButton("alert_done".getLocalizedText()) { dialog, _ ->
+                dialog.dismiss()
+            }
 
         val alert = dialogBuilder.create()
         alert.show()
@@ -100,9 +116,6 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         //Keeping here incase we need it
         //navigateToNextPage()
     }
-
-    private var mIsOpenSetting = false
-    private var mIsResetup = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -152,7 +165,13 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
                     OTP_INDEX -> {
                         //Cannot put check point at this page without triggering OTP
                     }
-                    SETUP_INDEX -> {
+                    LOCATION_PERMISSION_INDEX -> {
+                        Preference.putCheckpoint(
+                            baseContext,
+                            position
+                        )
+                    }
+                    BACKGROUND_PERMISSION_INDEX -> {
                         Preference.putCheckpoint(
                             baseContext,
                             position
@@ -171,7 +190,7 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
 
         //disable swiping
         pager.setPagingEnabled(false)
-        pager.offscreenPageLimit = 6
+        pager.offscreenPageLimit = 7
 
         val extras = intent.extras
         if (extras != null) {
@@ -188,46 +207,24 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
     }
 
     private fun registerForSmsCodeChallengeBroadcasts() {
-
         val broadcastManager = LocalBroadcastManager.getInstance(this)
 
-        //Receive "verify sms code required"
-        broadcastManager.registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent) {
-                // Might receive a challenge again if something failed, only navigate to next page if not on otp fragment yet
-                if (pager.currentItem == REGISTER_INDEX) {
-                    navigateToNextPage()
-                }
-            }
-        }, IntentFilter(SmsCodeChallengeHandler.ACTION_VERIFY_SMS_CODE_REQUIRED))
-
-        //Receive "sms code verified"
-        broadcastManager.registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent) {
-                navigateToNextPage()
-            }
-        }, IntentFilter(SmsCodeChallengeHandler.ACTION_VERIFY_SMS_CODE_SUCCESS))
-
-        //Receive "sms code failed to verify"
-        broadcastManager.registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent) {
-                updateOTPError("verification_failed".getLocalizedText())
-            }
-        }, IntentFilter(SmsCodeChallengeHandler.ACTION_VERIFY_SMS_CODE_FAIL))
-
-        broadcastManager.registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                // We cancel the challenge when calling resendCode, so continuing the resendCode flow here
-                requestForOTP("", true)
-            }
-        }, IntentFilter(SmsCodeChallengeHandler.ACTION_CHALLENGE_CANCELLED))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (mIsOpenSetting) {
-            Handler().postDelayed(Runnable { setupPermissionsAndSettings() }, 1000)
-        }
+        broadcastManager.registerReceiver(
+            smsCodeRequiredReceiver,
+            IntentFilter(SmsCodeChallengeHandler.ACTION_VERIFY_SMS_CODE_REQUIRED)
+        )
+        broadcastManager.registerReceiver(
+            smsCodeSuccessReceiver,
+            IntentFilter(SmsCodeChallengeHandler.ACTION_VERIFY_SMS_CODE_SUCCESS)
+        )
+        broadcastManager.registerReceiver(
+            smsCodeFailReceiver,
+            IntentFilter(SmsCodeChallengeHandler.ACTION_VERIFY_SMS_CODE_FAIL)
+        )
+        broadcastManager.registerReceiver(
+            challengeCancelledReceiver,
+            IntentFilter(SmsCodeChallengeHandler.ACTION_CHALLENGE_CANCELLED)
+        )
     }
 
     override fun onBackPressed() {
@@ -243,6 +240,11 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
     }
 
     override fun onDestroy() {
+        val broadcastManager = LocalBroadcastManager.getInstance(this)
+        broadcastManager.unregisterReceiver(smsCodeRequiredReceiver)
+        broadcastManager.unregisterReceiver(smsCodeSuccessReceiver)
+        broadcastManager.unregisterReceiver(smsCodeFailReceiver)
+        broadcastManager.unregisterReceiver(challengeCancelledReceiver)
         cancel()
         super.onDestroy()
     }
@@ -254,150 +256,6 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         intent.putExtra(SmsCodeChallengeHandler.EXTRA_SKIP_CANCELLED_BROADCAST, true)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
         navigateToPreviousPage()
-    }
-
-    private val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
-        val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        bluetoothManager.adapter
-    }
-
-    private val BluetoothAdapter.isDisabled: Boolean
-        get() = !isEnabled
-
-    fun enableBluetooth() {
-        CentralLog.d(TAG, "[enableBluetooth]")
-        // Ensures Bluetooth is available on the device and it is enabled. If not,
-        // displays a dialog requesting user permission to enable Bluetooth.
-        bluetoothAdapter?.let {
-            if (it.isDisabled) {
-                val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                startActivityForResult(
-                    enableBtIntent,
-                    REQUEST_ENABLE_BT
-                )
-            } else {
-                setupPermissionsAndSettings()
-            }
-        }
-    }
-
-    @AfterPermissionGranted(PERMISSION_REQUEST_ACCESS_LOCATION)
-    fun setupPermissionsAndSettings() {
-        CentralLog.d(TAG, "[setupPermissionsAndSettings]")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            var perms = Utils.getRequiredPermissions()
-
-            if (EasyPermissions.hasPermissions(this, *perms)) {
-                // Already have permission, do the thing
-                initBluetooth()
-                navigateToNextPage()
-            } else {
-                // Do not have permissions, request them now
-                EasyPermissions.requestPermissions(
-                    this, "permission_location_rationale".getLocalizedText(),
-                    PERMISSION_REQUEST_ACCESS_LOCATION, *perms
-                )
-            }
-        } else {
-            initBluetooth()
-            navigateToNextPage()
-        }
-    }
-
-    private fun initBluetooth() {
-        checkBLESupport()
-    }
-
-    private fun checkBLESupport() {
-        CentralLog.d(TAG, "[checkBLESupport] ")
-        if (!BluetoothAdapter.getDefaultAdapter().isMultipleAdvertisementSupported) {
-            bleSupported = false
-            Utils.stopBluetoothMonitoringService(this)
-        } else {
-            bleSupported = true
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // User chose not to enable Bluetooth.
-        CentralLog.d(TAG, "requestCode $requestCode resultCode $resultCode")
-        if (requestCode == REQUEST_ENABLE_BT) {
-            if (resultCode == Activity.RESULT_CANCELED) {
-                finish()
-                return
-            } else {
-                setupPermissionsAndSettings()
-            }
-        } else if (requestCode == BATTERY_OPTIMISER) {
-            if (resultCode != Activity.RESULT_CANCELED) {
-                Handler().postDelayed({
-                    navigateToNextPage()
-                }, 1000)
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        CentralLog.d(TAG, "[onRequestPermissionsResult] requestCode $requestCode")
-        when (requestCode) {
-            PERMISSION_REQUEST_ACCESS_LOCATION -> {
-                for (x in 0 until permissions.size) {
-                    var permission = permissions[x]
-                    if (grantResults[x] == PackageManager.PERMISSION_DENIED) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            var showRationale = shouldShowRequestPermissionRationale(permission)
-                            if (!showRationale) {
-
-                                // build alert dialog
-                                val dialogBuilder = AlertDialog.Builder(this)
-                                // set message of alert dialog
-                                dialogBuilder.setMessage("open_location_setting".getLocalizedText())
-                                    // if the dialog is cancelable
-                                    .setCancelable(false)
-                                    // positive button text and action
-                                    .setPositiveButton("ok".getLocalizedText(),
-                                        DialogInterface.OnClickListener { dialog, id ->
-                                            CentralLog.d(TAG, "user also CHECKED never ask again")
-                                            mIsOpenSetting = true
-                                            var intent =
-                                                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                            var uri: Uri =
-                                                Uri.fromParts("package", packageName, null)
-                                            intent.data = uri
-                                            startActivity(intent)
-
-                                        })
-                                    // negative button text and action
-                                    .setNegativeButton("cancel".getLocalizedText(),
-                                        DialogInterface.OnClickListener { dialog, id ->
-                                            dialog.cancel()
-                                        })
-
-                                // create dialog box
-                                val alert = dialogBuilder.create()
-
-                                // show alert dialog
-                                alert.show()
-
-                            } else if (Manifest.permission.WRITE_CONTACTS.equals(permission)) {
-                                CentralLog.d(TAG, "user did not CHECKED never ask again")
-                            } else {
-                                excludeFromBatteryOptimization()
-                            }
-                        }
-                    } else if (grantResults[x] == PackageManager.PERMISSION_GRANTED) {
-                        excludeFromBatteryOptimization()
-                    }
-                }
-            }
-        }
     }
 
     fun navigateToNextPage() {
@@ -416,8 +274,13 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
                 finish()
             }
         } else {
-            pager.currentItem = pager.currentItem - 1
-            pagerAdapter!!.notifyDataSetChanged()
+            if (pager.currentItem == LOCATION_PERMISSION_INDEX) {
+                finish()
+            }
+            else {
+                pager.currentItem = pager.currentItem - 1
+                pagerAdapter!!.notifyDataSetChanged()
+            }
         }
     }
 
@@ -439,7 +302,6 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
                 Request.POST
             )
 
-
             if (authResponse.status != 200) {
                 continueToOtp = false
                 updatePhoneNumberError(authResponse.error)
@@ -459,7 +321,7 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
             if (!triggerSmsOTPResponse.isSuccess() || triggerSmsOTPResponse.status != 200 || triggerSmsOTPResponse.data == null) {
                 // No need to show an error for CHALLENGE_HANDLING_CANCELED, it means we cancelled the challenge in progress (via otp screen by either pressing back or click on "wrong number?")
                 if (triggerSmsOTPResponse.errorCode != ErrorCode.CHALLENGE_HANDLING_CANCELED) {
-                    updateOTPError("invalid_otp".getLocalizedText())
+                    updateOTPError("onboarding_otp_incorrect".getLocalizedText())
                 }
                 enableFragmentbutton()
             } else {
@@ -502,38 +364,6 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
         }
     }
 
-    private fun excludeFromBatteryOptimization() {
-        CentralLog.d(TAG, "[excludeFromBatteryOptimization] ")
-        val powerManager =
-            this.getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
-        val packageName = this.packageName
-        val intent =
-            Utils.getBatteryOptimizerExemptionIntent(
-                packageName
-            )
-
-        if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
-            CentralLog.d(TAG, "Not on Battery Optimization whitelist")
-            //check if there's any activity that can handle this
-            if (Utils.canHandleIntent(
-                    intent,
-                    packageManager
-                )
-            ) {
-                this.startActivityForResult(
-                    intent,
-                    BATTERY_OPTIMISER
-                )
-            } else {
-                //no way of handling battery optimizer
-                navigateToNextPage()
-            }
-        } else {
-            CentralLog.d(TAG, "On Battery Optimization whitelist")
-            navigateToNextPage()
-        }
-    }
-
     fun updatePhoneNumber(num: String) {
         val onboardingFragment: OnboardingFragmentInterface = pagerAdapter!!.getItem(OTP_INDEX)
         onboardingFragment.onUpdatePhoneNumber(num)
@@ -560,7 +390,7 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
 
         val fragmentMap: MutableMap<Int, OnboardingFragmentInterface> = HashMap()
 
-        override fun getCount(): Int = 6
+        override fun getCount(): Int = 7
 
         override fun getItem(position: Int): OnboardingFragmentInterface {
             return fragmentMap.getOrPut(position, { createFragAtIndex(position) })
@@ -572,7 +402,8 @@ class OnboardingActivity : FragmentActivity(), CoroutineScope by MainScope(),
                 DISCLOSURE_INDEX -> return InAppDisclosureFragment()
                 REGISTER_INDEX -> return RegisterNumberFragment()
                 OTP_INDEX -> return OTPFragment()
-                SETUP_INDEX -> return SetupFragment()
+                LOCATION_PERMISSION_INDEX -> return LocationPermissionFragment()
+                BACKGROUND_PERMISSION_INDEX -> return BackgroundPermissionFragment()
                 SETUP_DONE_INDEX -> return SetupCompleteFragment()
                 else -> {
                     TOUFragment()

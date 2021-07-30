@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.tracetogether.R
-import com.example.tracetogether.util.Extensions.setLocalizedString
+import com.example.tracetogether.util.Extensions.getLocalizedText
 import kotlinx.android.synthetic.main.fragment_permissions.*
 
 class PermissionsFragment : Fragment() {
@@ -23,9 +23,8 @@ class PermissionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        backButton?.setOnClickListener { goBack() }
-
-        tv_permissions?.setLocalizedString("permissions_title")
+        toolbar.title = "permissions_title".getLocalizedText()
+        toolbar.setNavigationOnClickListener { goBack() }
 
         val adapter = PermissionsPagerAdapter(this)
         learnMorePagingView.setAdapter(adapter)
@@ -44,7 +43,7 @@ internal class PermissionsPagerAdapter(fragment: Fragment) : FragmentStateAdapte
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> LearnMoreRequestCardFragment(
+            0 -> LearnMoreRequestCardFragment.newInstance(
                 R.drawable.ic_location,
                 "permissions_page1_will_title",
                 LearnMoreRequestCardFragment.Item(
@@ -59,7 +58,7 @@ internal class PermissionsPagerAdapter(fragment: Fragment) : FragmentStateAdapte
                 ),
                 null
             )
-            1 -> LearnMoreRequestCardFragment(
+            1 -> LearnMoreRequestCardFragment.newInstance(
                 R.drawable.ic_bluetooth,
                 "permissions_page2_will_title",
                 LearnMoreRequestCardFragment.Item(
@@ -76,7 +75,7 @@ internal class PermissionsPagerAdapter(fragment: Fragment) : FragmentStateAdapte
                 ),
                 null
             )
-            2 -> LearnMoreRequestCardFragment(
+            2 -> LearnMoreRequestCardFragment.newInstance(
                 R.drawable.ic_phone,
                 "permissions_page3_will_title",
                 LearnMoreRequestCardFragment.Item(
@@ -90,7 +89,7 @@ internal class PermissionsPagerAdapter(fragment: Fragment) : FragmentStateAdapte
                 ),
                 null
             )
-            3 -> LearnMoreRequestCardFragment(
+            3 -> LearnMoreRequestCardFragment.newInstance(
                 R.drawable.ic_bell,
                 "permissions_page4_will_title",
                 LearnMoreRequestCardFragment.Item(

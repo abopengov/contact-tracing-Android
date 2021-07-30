@@ -13,11 +13,6 @@ import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import pub.devrel.easypermissions.EasyPermissions
 import com.example.tracetogether.BuildConfig
 import com.example.tracetogether.Preference
 import com.example.tracetogether.Utils
@@ -29,6 +24,11 @@ import com.example.tracetogether.notifications.NotificationTemplates
 import com.example.tracetogether.status.persistence.StatusRecord
 import com.example.tracetogether.status.persistence.StatusRecordStorage
 import com.example.tracetogether.streetpass.persistence.StreetPassRecordStorage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import pub.devrel.easypermissions.EasyPermissions
 import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
@@ -37,6 +37,7 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
     private var mNotificationManager: NotificationManager? = null
 
     private val bluetoothStatusReceiver = BluetoothStatusReceiver()
+    private val notificationStatusReceiver = NotificationStatusReceiver()
 
     private lateinit var streetPassRecordStorage: StreetPassRecordStorage
     private lateinit var statusRecordStorage: StatusRecordStorage
@@ -104,25 +105,21 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
     }
 
     private fun notifyLackingThings(override: Boolean = false) {
-        if (notificationShown != NOTIFICATION_STATE.LACKING_THINGS || override) {
-            var notif =
-                NotificationTemplates.lackingThingsNotification(this.applicationContext, CHANNEL_ID)
-            startForeground(NOTIFICATION_ID, notif)
-            notificationShown = NOTIFICATION_STATE.LACKING_THINGS
-        }
+        val notif =
+            NotificationTemplates.lackingThingsNotification(this.applicationContext, CHANNEL_ID)
+        startForeground(NOTIFICATION_ID, notif)
+        notificationShown = NOTIFICATION_STATE.LACKING_THINGS
     }
 
     private fun notifyRunning(override: Boolean = false) {
-        if (notificationShown != NOTIFICATION_STATE.RUNNING || override) {
-            var notif =
-                NotificationTemplates.getRunningNotification(this.applicationContext, CHANNEL_ID)
-            startForeground(NOTIFICATION_ID, notif)
-            notificationShown = NOTIFICATION_STATE.RUNNING
-        }
+        val notif =
+            NotificationTemplates.getRunningNotification(this.applicationContext, CHANNEL_ID)
+        startForeground(NOTIFICATION_ID, notif)
+        notificationShown = NOTIFICATION_STATE.RUNNING
     }
 
     private fun hasLocationPermissions(): Boolean {
-        val perms = Utils.getRequiredPermissions()
+        val perms = Utils.getLocationPermissionIdentifier()
         return EasyPermissions.hasPermissions(this.applicationContext, *perms)
     }
 
@@ -246,7 +243,7 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
             broadcastMessage = it
         }
 
-        HeraldManager.start()
+        HeraldManagerImpl.start()
         saveStatus("Scanning Started")
     }
 
@@ -272,10 +269,17 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
 
     private fun performUserLoginCheck() {
 
-        if (Preference.getUUID(applicationContext) == "" && Preference.isOnBoarded(applicationContext)) {
+        if (Preference.getUUID(applicationContext) == "" && Preference.isOnBoarded(
+                applicationContext
+            )
+        ) {
 
             CentralLog.d(TAG, "User is not logged in but has completed onboarding")
-            Utils.restartApp(applicationContext, 1,"User is not logged in but has completed onboarding")
+            Utils.restartApp(
+                applicationContext,
+                1,
+                "User is not logged in but has completed onboarding"
+            )
         }
     }
 
@@ -315,7 +319,7 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
         teardown()
         unregisterReceivers()
 
-        HeraldManager.stop()
+        HeraldManagerImpl.stop()
         saveStatus("Scanning Stopped")
 
         job.cancel()
@@ -325,6 +329,11 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
         val bluetoothStatusReceivedFilter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
         registerReceiver(bluetoothStatusReceiver, bluetoothStatusReceivedFilter)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val notificationSettingsChangedFileter = IntentFilter(NotificationManager.ACTION_NOTIFICATION_CHANNEL_BLOCK_STATE_CHANGED)
+            registerReceiver(notificationStatusReceiver, notificationSettingsChangedFileter)
+        }
+
         CentralLog.i(TAG, "Receivers registered")
     }
 
@@ -333,6 +342,14 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
             unregisterReceiver(bluetoothStatusReceiver)
         } catch (e: Throwable) {
             CentralLog.w(TAG, "bluetoothStatusReceiver is not registered?")
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                unregisterReceiver(notificationStatusReceiver)
+            } catch (e: Throwable) {
+                CentralLog.w(TAG, "notificationStatusReceiver is not registered?")
+            }
         }
     }
 
@@ -365,6 +382,18 @@ class BluetoothMonitoringService : Service(), CoroutineScope {
                             Utils.startBluetoothMonitoringService(this@BluetoothMonitoringService.applicationContext)
                         }
                     }
+                }
+            }
+        }
+    }
+
+    inner class NotificationStatusReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let {
+                val action = intent.action
+                if (action == NotificationManager.ACTION_NOTIFICATION_CHANNEL_BLOCK_STATE_CHANGED) {
+                    CentralLog.d(TAG, "########### Notification Settings Changed")
+                    Utils.startBluetoothMonitoringService(this@BluetoothMonitoringService.applicationContext)
                 }
             }
         }

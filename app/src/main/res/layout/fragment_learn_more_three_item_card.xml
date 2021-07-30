@@ -41,7 +41,7 @@
 
     <TextView
         android:id="@+id/tv_description1"
-        style="@style/LearnMultiItemText"
+        style="@style/GreyDescriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/learn_more_item_margin"
@@ -64,7 +64,7 @@
 
     <TextView
         android:id="@+id/tv_description2"
-        style="@style/LearnMultiItemText"
+        style="@style/GreyDescriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/learn_more_item_margin"
@@ -87,7 +87,7 @@
 
     <TextView
         android:id="@+id/tv_description3"
-        style="@style/LearnMultiItemText"
+        style="@style/GreyDescriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/learn_more_item_margin"

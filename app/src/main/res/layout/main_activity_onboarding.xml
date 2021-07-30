@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.example.tracetogether.onboarding.OnboardingActivity">
+    tools:context=".onboarding.OnboardingActivity">
 
     <View
         android:id="@+id/transparent_layer"
@@ -19,13 +19,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btn_onboardingStart"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -34,8 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
                 android:layout_marginTop="0dp"
+                android:layout_marginRight="4dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -50,8 +50,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
                 android:layout_marginTop="0dp"
+                android:layout_marginRight="60dp"
                 android:gravity="center"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
@@ -97,20 +97,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/btn_onboardingStart"
-        style="@style/CustomButton"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_next"
+        style="@style/Main.PrimaryButton.Next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <TextView
-            android:id="@+id/tv_btn"
-            style="@style/CustomButtonText" />
-
-        <ImageView
-            style="@style/CustomButtonIcon"
-            android:src="@drawable/ic_arrow_forward_white" />
-    </LinearLayout>
-
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="Join the fight" />
+    
 </androidx.constraintlayout.widget.ConstraintLayout>

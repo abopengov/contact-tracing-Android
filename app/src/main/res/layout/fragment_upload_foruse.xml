@@ -1,93 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_back" />
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:titleTextAppearance="@style/LearnTitle" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_title"
-        style="@style/OnboardingTitle"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginRight="23dp"
-        android:gravity="center"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:textAllCaps="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:layout_weight="1">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_desc"
-        style="@style/OnboardingDesc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginRight="36dp"
-        android:gravity="center"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/iv_ahs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_ahs_logo"
-        app:layout_constraintBottom_toTopOf="@+id/forUseFragmentActionButtonCT"
-        app:layout_constraintTop_toBottomOf="@+id/tv_desc" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                style="@style/OnboardingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="23dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="23dp"
+                android:gravity="center"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:textAllCaps="true"
+                tools:text="Have you been asked to upload your Data?" />
 
-    <LinearLayout
-        android:id="@+id/forUseFragmentActionButtonCT"
-        style="@style/CustomButton"
-        app:layout_constraintBottom_toTopOf="@id/forUseFragmentActionButtonMRH"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_desc"
+                style="@style/OnboardingDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="36dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="36dp"
+                android:gravity="center"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                tools:text="If you have tested positive for COVID-19, you may have been asked to upload your ABTT data. Please proceed with either Contact Tracer or MyHealth Records (MHR) One Time Key self-service flow." />
 
-        <TextView
-            android:id="@+id/btn_proceed"
-            style="@style/CustomButtonText" />
+            <ImageView
+                android:id="@+id/iv_ahs"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_weight="1"
+                android:src="@drawable/ic_ahs_logo" />
 
-        <ImageView
-            style="@style/CustomButtonIcon"
-            android:src="@drawable/ic_arrow_forward_white" />
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_ct"
+                style="@style/Main.PrimaryButton.Next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                tools:text="Contact Tracer" />
 
-    <LinearLayout
-        android:id="@+id/forUseFragmentActionButtonMRH"
-        style="@style/CustomButton.Outline"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_mhr"
+                style="@style/Main.OutlineButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                app:icon="@drawable/ic_arrow_forward_white"
+                tools:text="MyHealth Records" />
 
-        <TextView
-            android:id="@+id/btn_proceed_mhr"
-            style="@style/CustomButtonText.Outline" />
+        </LinearLayout>
 
-        <ImageView
-            style="@style/CustomButtonIcon.Outline"
-            android:src="@drawable/ic_arrow_forward_white" />
-    </LinearLayout>
+    </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

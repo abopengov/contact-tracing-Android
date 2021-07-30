@@ -1,7 +1,7 @@
 package com.example.tracetogether.herald
 
 import com.example.tracetogether.streetpass.persistence.StreetPassRecord
-import com.vmware.herald.sensor.datatype.*
+import io.heraldprox.herald.sensor.datatype.*
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

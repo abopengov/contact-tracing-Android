@@ -28,5 +28,5 @@
         android:layout_marginStart="36dp"
         android:layout_marginEnd="36dp"
         style="@style/LearnSingleItemText"
-        tools:text="Two devices with ABTraceTogether come in close contact"/>
+        tools:text="Two devices with *APP NAME* come in close contact"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

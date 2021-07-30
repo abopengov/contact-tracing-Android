@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:titleTextAppearance="@style/LearnTitle"
+        tools:title="Pause Schedule" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/tv_description"
+                style="@style/BlackDescriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="To further reduce battery usage, enabling Pause Schedule pauses your phone from detecting other devices for up to 8 hours daily." />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_pause_times"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                app:cardBackgroundColor="@color/grey_super_light"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_description"
+                app:strokeColor="@color/grey_border"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_schedule"
+                        style="@style/GreyTitleText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:layout_constraintBottom_toBottomOf="@id/pause_switch"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/pause_switch"
+                        tools:text="Schedule" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/pause_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group_time_setup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:constraint_referenced_ids="tv_start_time,tv_end_time,tv_start_time_value,tv_end_time_value,btn_edit"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/tv_start_time"
+                        style="@style/GreyTitleText"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="35dp"
+                        android:labelFor="@id/tv_start_time_value"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_schedule"
+                        tools:text="Start Time" />
+
+                    <TextView
+                        android:id="@+id/tv_end_time"
+                        style="@style/GreyTitleText"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="35dp"
+                        android:labelFor="@id/tv_end_time_value"
+                        app:layout_constraintStart_toEndOf="@id/tv_start_time"
+                        app:layout_constraintTop_toBottomOf="@id/tv_schedule"
+                        tools:text="End Time" />
+
+                    <TextView
+                        android:id="@+id/tv_start_time_value"
+                        style="@style/GreyDescriptionText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="18dp"
+                        app:layout_constraintEnd_toEndOf="@id/tv_start_time"
+                        app:layout_constraintStart_toStartOf="@id/tv_start_time"
+                        app:layout_constraintTop_toBottomOf="@id/tv_start_time"
+                        tools:text="12:00 AM" />
+
+                    <TextView
+                        android:id="@+id/tv_end_time_value"
+                        style="@style/GreyDescriptionText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="@id/tv_end_time"
+                        app:layout_constraintStart_toStartOf="@id/tv_end_time"
+                        app:layout_constraintTop_toBottomOf="@id/tv_end_time"
+                        tools:text="08:00 AM" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_edit"
+                        style="@style/Main.OutlineButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="47dp"
+                        android:layout_marginBottom="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_start_time_value"
+                        tools:text="Edit" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</LinearLayout>

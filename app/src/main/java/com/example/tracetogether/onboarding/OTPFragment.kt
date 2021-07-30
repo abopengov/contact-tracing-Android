@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -19,18 +18,16 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import com.example.tracetogether.Preference
 import com.example.tracetogether.R
 import com.example.tracetogether.Utils
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.util.Extensions.getLocalizedText
 import com.example.tracetogether.util.Extensions.setLocalizedString
+import com.example.tracetogether.util.Extensions.underline
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
-import kotlinx.android.synthetic.main.button_and_progress.*
 import kotlinx.android.synthetic.main.fragment_otp.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -55,8 +52,6 @@ class OTPFragment : OnboardingFragmentInterface() {
     private val TAG: String = "OTPFragment"
     private val COUNTDOWN_DURATION = 180L
     private var stopWatch: CountDownTimer? = null
-    private var colorError: Int = 0
-    private var colorText: Int = 0
     private var otpInputs: MutableList<EditText> = mutableListOf()
     private var timerHasFinished: Boolean = false
 
@@ -108,7 +103,7 @@ class OTPFragment : OnboardingFragmentInterface() {
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser) {
+        if (isVisibleToUser && context != null) {
             startTimer()
             SmsRetriever.getClient(requireContext()).startSmsUserConsent(null)
         } else {
@@ -144,7 +139,7 @@ class OTPFragment : OnboardingFragmentInterface() {
         }
     }
 
-    override fun onBackButtonClick(view: View) {
+    override fun onBackButtonClick() {
         val onboardActivity = context as OnboardingActivity?
         onboardActivity?.let {
             it.onBackPressed()
@@ -178,22 +173,19 @@ class OTPFragment : OnboardingFragmentInterface() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        onboardingButtonText?.setLocalizedString("next_button")
-        sent_to?.text = HtmlCompat.fromHtml(
-            "otp_sent".getLocalizedText()
-                .replace("%s", buildPhoneString(Preference.getPhoneNumber(requireContext()))),
-            HtmlCompat.FROM_HTML_MODE_LEGACY
+        btn_next?.setLocalizedString("next_button")
+        tv_sent_to?.text = String.format(
+            "onboarding_otp_description".getLocalizedText(),
+            buildPhoneString(Preference.getPhoneNumber(requireContext()))
         )
 
-        tv_step_two?.setLocalizedString("otp_step")
-        tv_enter_otp?.setLocalizedString("enter_otp")
+        tv_enter_otp?.setLocalizedString("onboarding_otp_title")
 
         tv_receive_code?.setLocalizedString("resend_code_label")
-        resendCode?.setLocalizedString("resend_code")
-        resendCode.paintFlags = resendCode.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        tv_resend_code?.setLocalizedString("resend_code")
+        tv_resend_code?.underline()
 
-        colorError = ContextCompat.getColor(requireContext(), R.color.error)
-        colorText = ContextCompat.getColor(requireContext(), R.color.grey_3)
+        tv_expired?.setLocalizedString("otp_countdown_expired")
 
         otpInputs.add(otp_et1)
         otpInputs.add(otp_et2)
@@ -217,7 +209,7 @@ class OTPFragment : OnboardingFragmentInterface() {
         otp_et5?.setOnKeyListener(OTPKeyListener())
         otp_et6?.setOnKeyListener(OTPKeyListener())
 
-        resendCode?.setOnClickListener {
+        tv_resend_code?.setOnClickListener {
             CentralLog.d(TAG, "resend pressed")
             resendCodeAndStartTimer()
         }
@@ -243,9 +235,9 @@ class OTPFragment : OnboardingFragmentInterface() {
 
     override fun onUpdatePhoneNumber(num: String) {
         CentralLog.d(TAG, "onUpdatePhoneNumber $num")
-        sent_to?.text = HtmlCompat.fromHtml(
-            "otp_sent".getLocalizedText()
-                .replace("%s", buildPhoneString(num)), HtmlCompat.FROM_HTML_MODE_LEGACY
+        tv_sent_to?.text = String.format(
+            "onboarding_otp_description".getLocalizedText(),
+            buildPhoneString(Preference.getPhoneNumber(requireContext()))
         )
 
         phoneNumber = num
@@ -266,25 +258,25 @@ class OTPFragment : OnboardingFragmentInterface() {
                     finalNumberOfSecondsString = "$numberOfSecondsInt"
                 }
 
-                timer?.text = HtmlCompat.fromHtml(
-                    "otp_countdown".getLocalizedText().replace(
-                        "%s",
-                        "<b>$numberOfMinsInt:$finalNumberOfSecondsString</b>"
-                    ),
-                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                tv_timer?.text = String.format(
+                    "otp_countdown".getLocalizedText(),
+                    "$numberOfMinsInt:$finalNumberOfSecondsString"
                 )
             }
 
             override fun onFinish() {
-                timer?.setLocalizedString("otp_countdown_expired")
-                timer?.setTextColor(colorError)
+                tv_timer?.visibility = View.GONE
+                tv_expired?.visibility = View.VISIBLE
+                tv_receive_code?.visibility = View.GONE
                 setButtonText("resend_button".getLocalizedText())
                 enableButton()
                 timerHasFinished = true;
             }
         }
         stopWatch?.start()
-        timer?.setTextColor(colorText)
+        tv_timer?.visibility = View.VISIBLE
+        tv_expired?.visibility = View.GONE
+        tv_receive_code?.visibility = View.VISIBLE
     }
 
     override fun onError(error: String) {

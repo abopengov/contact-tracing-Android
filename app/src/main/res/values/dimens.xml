@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="onboarding_top_image_margin">30dp</dimen>
     <dimen name="learn_more_top_image_margin">0dp</dimen>
     <dimen name="learn_more_top_item_margin">15dp</dimen>
     <dimen name="learn_more_item_margin">15dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">0dp</dimen>
+    <dimen name="widget_dynamic_padding_5">0dp</dimen>
+    <dimen name="widget_dynamic_padding_10">5dp</dimen>
+    <dimen name="widget_side_padding">10dp</dimen>
+    <dimen name="widget_trend_width">20dp</dimen>
+    <dimen name="widget_trend_height">11dp</dimen>
 </resources>

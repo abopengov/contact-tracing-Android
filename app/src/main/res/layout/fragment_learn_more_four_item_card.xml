@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/tv_description1"
-        style="@style/LearnMultiItemText"
+        style="@style/GreyDescriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -53,7 +53,7 @@
 
     <TextView
         android:id="@+id/tv_description2"
-        style="@style/LearnMultiItemText"
+        style="@style/GreyDescriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -76,7 +76,7 @@
 
     <TextView
         android:id="@+id/tv_description3"
-        style="@style/LearnMultiItemText"
+        style="@style/GreyDescriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -99,7 +99,7 @@
 
     <TextView
         android:id="@+id/tv_description4"
-        style="@style/LearnMultiItemText"
+        style="@style/GreyDescriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"

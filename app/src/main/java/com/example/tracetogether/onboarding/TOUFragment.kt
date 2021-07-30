@@ -4,25 +4,24 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.tracetogether.R
 import com.example.tracetogether.Utils
 import com.example.tracetogether.logging.CentralLog
-import com.example.tracetogether.util.AppConstants.KEY_HELP
-import com.example.tracetogether.util.Extensions.getLocalizedText
+import com.example.tracetogether.privacy.PrivacyViewModel
+import com.example.tracetogether.util.AppConstants
 import com.example.tracetogether.util.Extensions.getUrl
 import com.example.tracetogether.util.Extensions.setLocalizedString
-import kotlinx.android.synthetic.main.button_and_progress.*
 import kotlinx.android.synthetic.main.fragment_tou.*
-import kotlinx.android.synthetic.main.fragment_tou.checkbox_agreement
-import kotlinx.android.synthetic.main.fragment_tou.tv_agreement
-import kotlinx.android.synthetic.main.fragment_tou.tv_title
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 
 
 private const val ARG_PARAM1 = "param1"
@@ -31,14 +30,14 @@ private const val ARG_PARAM2 = "param2"
 /*
     Fragment for the Privacy Acceptance screen
  */
-class TOUFragment : OnboardingFragmentInterface() {
+class TOUFragment : OnboardingFragmentInterface(), CoroutineScope by MainScope() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private val TAG: String = "TOUFragment"
     private lateinit var mainContext: Context
 
-    private var helpEmail: String = ""
+    private val privacyViewModel: PrivacyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +45,6 @@ class TOUFragment : OnboardingFragmentInterface() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        helpEmail = KEY_HELP.getUrl(context!!) ?: getString(R.string.help_desk_email)
     }
 
     override fun onUpdatePhoneNumber(num: String) {}
@@ -57,13 +55,15 @@ class TOUFragment : OnboardingFragmentInterface() {
 
     override fun onButtonClick(buttonView: View) {
         CentralLog.d(TAG, "OnButtonClick 4")
+        privacyViewModel.acceptPrivacyPolicy()
+
         val onboardActivity = context as OnboardingActivity?
         onboardActivity?.let {
             it.navigateToNextPage()
         } ?: (Utils.restartAppWithNoContext(0, "TOUFragment not attached to OnboardingActivity"))
     }
 
-    override fun onBackButtonClick(view: View) {}
+    override fun onBackButtonClick() {}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,26 +75,35 @@ class TOUFragment : OnboardingFragmentInterface() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_title?.setLocalizedString("privacy_policy_title")
-        privacy_desc1?.setLocalizedString("privacy_policy_text1")
-        privacy_desc2?.setLocalizedString("privacy_policy_text2")
-        privacy_desc3?.setLocalizedString("privacy_policy_text3")
-        privacy_desc4?.setLocalizedString("privacy_policy_text4")
-        privacy_desc5?.setLocalizedString("privacy_policy_text5")
-        privacy_desc7?.setLocalizedString("privacy_policy_text7")
-        privacy_desc8?.setLocalizedString("privacy_policy_text8")
-        onboardingButtonText?.setLocalizedString("next_button")
+        btn_next?.setLocalizedString("next_button")
 
-        //Add extra data to WebView intent, to determine which url to use
-        //0 - for privacy url
-        //1 - for faq url
+        wv_privacy_policy?.setWebViewClient(object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                if (url.startsWith("http")) {
+                    openUrl(url)
+                    return true
+                } else if (url.startsWith("mailto:")) {
+                    startActivity(
+                        Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    )
+                    return true
+                }
+                return false
+            }
+
+            override fun onLoadResource(view: WebView, url: String) {
+                progress_bar?.visibility = View.GONE
+                wv_privacy_policy?.visibility = View.VISIBLE
+            }
+        })
+
         privacy_button?.setOnClickListener {
             CentralLog.d(TAG, "clicked view privacy")
-            startWebActivityIntent(0)
+            openPrivacy()
         }
         faq_button?.setOnClickListener {
             CentralLog.d(TAG, "clicked view faq")
-            startWebActivityIntent(1)
+            openFaq()
         }
 
         privacy_button?.setLocalizedString("view_privacy")
@@ -102,64 +111,23 @@ class TOUFragment : OnboardingFragmentInterface() {
 
         disableButton()
 
-        val privacyClickableSpan: ClickableSpan = object : ClickableSpan() {
-            override fun onClick(textView: View) {
-                startWebActivityIntent(0)
-            }
-        }
-
-        val faqClickableSpan: ClickableSpan = object : ClickableSpan() {
-            override fun onClick(textView: View) {
-                startWebActivityIntent(1)
-            }
-        }
-
-        privacy_desc6?.text = createSpannableStringByText(
-            "privacy_policy_text6".getLocalizedText(), "privacy_policy_text6_key".getLocalizedText(),
-            privacyClickableSpan
-        )
-        privacy_desc9?.text = createSpannableStringByText(
-            "privacy_policy_text9".getLocalizedText(), "privacy_policy_text9_key".getLocalizedText(),
-            faqClickableSpan
-        )
-
-        val emailClickableSpan: ClickableSpan = object : ClickableSpan() {
-            override fun onClick(textView: View) {
-                CentralLog.d(TAG, "Starting send email intent")
-                sendEmailIntent()
-            }
-        }
-
-
-        privacy_desc10?.text =
-            createSpannableString(
-                "privacy_policy_text10".getLocalizedText().replace(".","") + " %s",
-                "$helpEmail.",
-                emailClickableSpan
-            )
-        privacy_desc11?.setLocalizedString("privacy_policy_text11")
-        privacy_desc12?.text =
-            createSpannableString(
-                "privacy_policy_text12".getLocalizedText() + " %s",
-                "$helpEmail.",
-                emailClickableSpan
-            )
-
         checkbox_agreement?.setOnCheckedChangeListener { buttonView, isChecked ->
             if (checkbox_agreement.isChecked) enableButton() else disableButton()
         }
 
-        privacy_desc6?.setMovementMethod(LinkMovementMethod.getInstance())
-        privacy_desc9?.setMovementMethod(LinkMovementMethod.getInstance())
-        privacy_desc10?.setMovementMethod(LinkMovementMethod.getInstance())
-        privacy_desc12?.setMovementMethod(LinkMovementMethod.getInstance())
-
         tv_agreement?.setOnClickListener {
-            checkbox_agreement.toggle()
+            checkbox_agreement?.toggle()
         }
 
         tv_agreement?.setLocalizedString("agreement")
 
+        privacyViewModel.privacyPolicy.observe(viewLifecycleOwner, Observer { privacyPolicy ->
+            privacyPolicy?.let {
+                wv_privacy_policy?.loadData(it, "text/html; charset=utf-8", null)
+            }
+        })
+
+        privacyViewModel.getPrivacyPolicy()
     }
 
     override fun onAttach(context: Context) {
@@ -177,64 +145,20 @@ class TOUFragment : OnboardingFragmentInterface() {
         listener = null
     }
 
-    private fun sendEmailIntent() {
-        var email: Array<String> = arrayOf(helpEmail)
-        val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
-            type = "text/plain"
-            data = Uri.parse("mailto:") // only email apps should handle this
-            putExtra(Intent.EXTRA_EMAIL, email)
-        }
-        if (emailIntent.resolveActivity(context!!.packageManager) != null) {
-            startActivity(emailIntent)
-        }
+    private fun openFaq() {
+        val url = AppConstants.KEY_FAQ.getUrl(requireContext(), getString(R.string.faq_url))
+        openUrl(url)
     }
 
-    private fun startWebActivityIntent(type: Int) {
-        val intent = Intent(mainContext, WebViewActivity::class.java)
-        intent.putExtra("type", type)
-        startActivity(intent)
+    private fun openPrivacy() {
+        val url = AppConstants.KEY_PRIVACY.getUrl(requireContext(), getString(R.string.privacy_url))
+        openUrl(url)
     }
 
-    private fun createSpannableString(
-        string: String,
-        span: String,
-        clickableSpan: ClickableSpan
-    ): SpannableString {
-        val spanIndex = string.indexOf("%s")
-        val newString = string.replaceFirst(Regex("\\%s\\b"), span)
-
-        val ss = SpannableString(newString)
-
-        if (spanIndex > 0) {
-            ss.setSpan(
-                clickableSpan,
-                spanIndex,
-                spanIndex + span.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-
-        return ss
-    }
-
-    private fun createSpannableStringByText(
-        string: String,
-        span: String,
-        clickableSpan: ClickableSpan
-    ): SpannableString {
-        val spanIndex = string.indexOf(span)
-        val ss = SpannableString(string)
-
-        if (spanIndex > 0) {
-            ss.setSpan(
-                clickableSpan,
-                spanIndex,
-                spanIndex + span.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-
-        return ss
+    private fun openUrl(url: String) {
+        val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
+        val customTabsIntent: CustomTabsIntent = builder.build()
+        customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
     }
 
     interface OnFragmentInteractionListener {

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stats_charts_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/grey_11"
+    app:cardCornerRadius="10dp"
+    app:strokeColor="@color/outline_grey"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_charts_title"
+            style="@style/GreyDescriptionMediumText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Cases reported over time" />
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout_timeline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            app:tabPaddingEnd="-1dp"
+            app:tabPaddingStart="-1dp"
+            app:tabSelectedTextColor="@color/final_blue"
+            app:tabTextAppearance="@style/StatsTabTextAppearance"
+            app:tabTextColor="@color/grey_unselected">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_item_last_30_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:textAllCaps="false"
+                tools:text="Last 30 days" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_item_three_months"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:textAllCaps="false"
+                tools:text="Last 3 months" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_item_six_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:textAllCaps="false"
+                tools:text="Last 6 months" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_chart"
+            android:layout_width="match_parent"
+            android:layout_height="165dp"
+            android:layout_marginTop="10dp" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="165dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

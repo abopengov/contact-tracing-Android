@@ -5,7 +5,9 @@
     android:viewportHeight="18"
     android:tint="#4B9560"
     android:alpha="0.8">
-  <path
-      android:fillColor="@android:color/transparent"
-      android:pathData="M 0.00 0.00 L 10.00 0.00 L 10.00 10.00 L 0.00 10.00 L 0.00 0.00 Z" />
+  <group android:translateY="2">
+    <path
+        android:pathData="M5.5123,10.7975L2.0123,7.2975C1.6223,6.9075 1.0023,6.9075 0.6123,7.2975C0.2223,7.6875 0.2223,8.3075 0.6123,8.6975L4.8023,12.8875C5.1923,13.2775 5.8223,13.2775 6.2123,12.8875L16.8123,2.2975C17.2023,1.9075 17.2023,1.2875 16.8123,0.8975C16.4223,0.5075 15.8023,0.5075 15.4123,0.8975L5.5123,10.7975Z"
+        android:fillColor="#4B9560"/>
+  </group>
 </vector>

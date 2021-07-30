@@ -1,7 +1,7 @@
 package com.example.tracetogether.herald
 
-import com.vmware.herald.sensor.datatype.*
-import com.vmware.herald.sensor.payload.extended.ConcreteExtendedDataV1
+import io.heraldprox.herald.sensor.datatype.*
+import io.heraldprox.herald.sensor.payload.extended.ConcreteExtendedDataV1
 
 class BlueTracePayload(
     val tempId: String,
@@ -24,7 +24,7 @@ class BlueTracePayload(
             append(extendedData.payload())
         }
 
-        append(UInt16(innerData.value.size))
+        append(UInt16(innerData.value?.size ?: 0))
         append(innerData)
     }
 
@@ -49,24 +49,24 @@ class BlueTracePayload(
 
                 val extendedData = ConcreteExtendedDataV1(
                     PayloadData(
-                        data.subdata(9 + tempIdLength.value).value ?: ByteArray(
+                        data.subdata(9 + tempIdLength.value)?.value ?: ByteArray(
                             0
                         )
                     )
                 )
                 extendedData.sections.forEach { section ->
                     when (section.code.value) {
-                        0x40 -> rssi = section.data.int8(0)
-                        0x41 -> txPower = section.data.uint16(0)
-                        0x42 -> modelC = String(section.data.value)
+                        0x40 -> section.data.int8(0)?.let { rssi = it }
+                        0x41 -> section.data.uint16(0)?.let { txPower = it }
+                        0x42 -> section.data.value?.let { modelC = String(it) }
                     }
                 }
 
                 return BlueTracePayload(
                     tempId = tempId,
                     modelC = modelC,
-                    rssi = rssi,
-                    txPower = txPower
+                    txPower = txPower,
+                    rssi = rssi
                 )
             } else null
         }
