@@ -29,7 +29,7 @@ class UploadCompleteFragment : Fragment() {
         tv_desc?.setLocalizedString("upload_complete_desc")
         btn_finish?.setLocalizedString("finish_button")
 
-        uploadCompleteFragmentActionButton?.setOnClickListener {
+        btn_finish?.setOnClickListener {
             goBackToHome()
         }
     }

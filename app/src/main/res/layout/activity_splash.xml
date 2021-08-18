@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
     android:background="@color/primary_purple"
-    tools:context="com.example.tracetogether.SplashActivity">
+    tools:context=".SplashActivity">
 
     <LinearLayout
         android:id="@+id/center"
@@ -79,5 +79,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

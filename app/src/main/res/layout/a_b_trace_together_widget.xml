@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/widget_margin"
+    android:theme="@style/ThemeOverlay.TraceTogether.AppWidgetContainer">
+
+    <RelativeLayout
+        android:id="@+id/widget_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/final_blue"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/iv_checkmark"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_white_check" />
+
+        <TextView
+            android:id="@+id/tv_app_is_working_title"
+            style="@style/WhiteLargeTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/iv_checkmark"
+            android:gravity="center_vertical"
+            android:text="Your app is working."
+            tools:text="Your app is working." />
+
+    </RelativeLayout>
+</RelativeLayout>

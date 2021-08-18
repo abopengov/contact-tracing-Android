@@ -20,9 +20,9 @@ class HowItWorksActivity : FragmentActivity() {
         will_sublabel4_text?.setLocalizedString("howitworks_will_sublabel4")
         not_sublabel1_text?.setLocalizedString("howitworks_not_sublabel1")
         not_sublabel2_text?.setLocalizedString("howitworks_not_sublabel2")
-        continue_button?.setLocalizedString("continue_button")
+        btn_next?.setLocalizedString("continue_button")
 
-        btn_onboardingStart?.setOnClickListener {
+        btn_next?.setOnClickListener {
             val intent = Intent(this, OnboardingActivity::class.java)
             startActivity(intent)
         }

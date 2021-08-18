@@ -6,9 +6,10 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:background="@color/upload_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -19,7 +20,108 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/app_is_paused_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_purple"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/app_paused_buffer_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_paused"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ic_pause"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_app_is_paused_title"
+                    app:layout_constraintEnd_toStartOf="@id/tv_app_is_paused_title"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_app_is_paused_title" />
+
+                <TextView
+                    android:id="@+id/tv_app_is_paused_title"
+                    style="@style/WhiteLargeTitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Detection Paused"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_paused"
+                    app:layout_constraintTop_toBottomOf="@id/app_paused_buffer_view"
+                    tools:text="Detection Paused" />
+
+                <TextView
+                    android:id="@+id/tv_paused_until"
+                    style="@style/BannerSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Detection Paused"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_app_is_paused_title"
+                    tools:text="Until 8:00 AM" />
+
+                <View
+                    android:id="@+id/pause_circle_view"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/background_top_white_radius"
+                    android:elevation="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_paused_until" />
+
+                <View
+                    android:id="@+id/paused_top_card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="48dp"
+                    android:background="@drawable/background_top_white_radius"
+                    android:elevation="5dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_resume_detection"
+                    app:layout_constraintTop_toBottomOf="@id/tv_paused_until" />
+
+                <ImageView
+                    android:id="@+id/iv_phone_purple"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="23dp"
+                    android:elevation="5dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_phone_purple"
+                    app:layout_constraintTop_toTopOf="@id/pause_circle_view" />
+
+                <TextView
+                    android:id="@+id/tv_resume_detection"
+                    style="@style/LinkText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:elevation="5dp"
+                    android:gravity="center_horizontal"
+                    android:text="Resume Detection"
+                    android:textColor="@color/primary_purple"
+                    app:layout_constraintTop_toBottomOf="@id/iv_phone_purple"
+                    tools:text="Resume Detection" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/app_is_working_container"
@@ -27,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/background_app_working"
-                tools:visibility="gone">
+                tools:visibility="visible">
 
                 <View
                     android:id="@+id/app_working_buffer_view"
@@ -50,7 +152,7 @@
 
                 <TextView
                     android:id="@+id/tv_app_is_working_title"
-                    style="@style/AppIsWorkingTitle"
+                    style="@style/WhiteLargeTitleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -114,7 +216,7 @@
                 android:background="@color/not_working_red"
                 android:orientation="vertical"
                 android:visibility="gone"
-                tools:visibility="visible">
+                tools:visibility="gone">
 
                 <View
                     android:id="@+id/app_not_working_buffer_view"
@@ -140,7 +242,7 @@
 
                     <TextView
                         android:id="@+id/tv_app_is_not_working_title"
-                        style="@style/AppIsNotWorkingTitle"
+                        style="@style/BlackLargeTitleText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -235,8 +337,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_gravity="top"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:background="@android:color/darker_gray" />
 
                     <LinearLayout style="@style/PremCard">
@@ -272,8 +374,8 @@
                         android:id="@+id/push_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:background="@color/grey_8"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -328,7 +430,7 @@
                             android:id="@+id/iv_enabled_push_step1"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="20dp"
                             android:src="@drawable/ic_red_icon_01"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -339,17 +441,17 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="13dp"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginEnd="20dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/iv_enabled_push_step1"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:text="Tap on the link below to go to APP NAME in your Settings" />
+                            tools:text="Tap on the link below to go to *APP NAME* in your Settings" />
 
                         <ImageView
                             android:id="@+id/iv_enabled_push_step2"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="20dp"
                             android:layout_marginTop="20dp"
                             android:src="@drawable/ic_red_icon_02"
                             app:layout_constraintStart_toStartOf="parent"
@@ -362,7 +464,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="13dp"
                             android:layout_marginTop="20dp"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginEnd="20dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/iv_enabled_push_step2"
                             app:layout_constraintTop_toBottomOf="@id/tv_push_instructions_step1"
@@ -372,7 +474,7 @@
                             android:id="@+id/iv_enabled_push_step3"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="20dp"
                             android:layout_marginTop="20dp"
                             android:src="@drawable/ic_red_icon_03"
                             app:layout_constraintStart_toStartOf="parent"
@@ -385,7 +487,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="13dp"
                             android:layout_marginTop="20dp"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginEnd="20dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/iv_enabled_push_step3"
                             app:layout_constraintTop_toBottomOf="@id/tv_push_instructions_step2"
@@ -393,13 +495,13 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_push_settings"
-                            style="@style/RoundedOutlineButton"
+                            style="@style/Settings.OutlineButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="30dp"
                             android:layout_marginEnd="20dp"
-                            android:text="Go to APP NAME Settings"
+                            android:text="Go to *APP NAME* Settings"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_push_instructions_step3" />
@@ -420,71 +522,55 @@
 
             </LinearLayout>
 
-            <com.google.android.material.card.MaterialCardView
+            <include
+                layout="@layout/view_guidance_banner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
-                app:cardCornerRadius="10dp">
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/banner_case_highlights"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_case_highlights"
-                    android:foreground="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:id="@+id/iv_stats_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginStart="20dp"
-                        android:src="@drawable/ic_stats_icon"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_case_highlight_title"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tv_case_highlight_title" />
-
-                    <TextView
-                        android:id="@+id/tv_case_highlight_title"
-                        style="@style/BannerTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Case Highlights"
-                        app:layout_constraintStart_toEndOf="@id/iv_stats_icon"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Case Highlights" />
-
-                    <TextView
-                        android:id="@+id/tv_case_highlight_content"
-                        style="@style/BannerContent"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="44dp"
-                        android:text="See today’s Covid-19 statistics numbers."
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@id/tv_case_highlight_title"
-                        app:layout_constraintStart_toStartOf="@id/tv_case_highlight_title"
-                        app:layout_constraintTop_toBottomOf="@id/tv_case_highlight_title"
-                        tools:text="See today’s Covid-19 statistics numbers." />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_share"
-                style="@style/RoundedOutlineButton"
+            <include
+                layout="@layout/view_home_stats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="26dp"
-                app:icon="@drawable/ic_share_arrow"
-                app:iconGravity="textEnd"
-                tools:text="Share this App" />
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="10dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/banner_share_app"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_share_app"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <TextView
+                        android:id="@+id/tv_share_app_title"
+                        style="@style/WhiteBodyCopyTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Share the app" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -541,6 +627,31 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_upload_data_title"
                     tools:text="Uploading your anonymous data is only required if *THIS ORG* contacts you." />
 
+                <ImageView
+                    android:id="@+id/iv_pause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_snooze"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_pause_title"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_pause_title"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_pause_title" />
+
+                <TextView
+                    android:id="@+id/tv_pause_title"
+                    style="@style/UploadBannerTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="23dp"
+                    android:text="Set Pause Schedule"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@id/iv_pause"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_upload_data_content"
+                    tools:text="Set Pause Schedule" />
+
                 <View
                     android:id="@+id/app_version_divider"
                     android:layout_width="match_parent"
@@ -551,7 +662,7 @@
                     android:background="@color/grey_8"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_upload_data_content" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_pause_title" />
 
                 <TextView
                     android:id="@+id/tv_app_version"
@@ -572,6 +683,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

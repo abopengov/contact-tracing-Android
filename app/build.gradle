@@ -1,19 +1,13 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: "com.cookpad.android.plugin.license-tools"
-
-apply plugin: 'com.jaredsburrows.license'
-buildscript {
-    repositories {
-        google()
-        jcenter()
-        flatDir {
-            dir 'libs'
-        }
-    }
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'com.cookpad.android.plugin.license-tools'
+    id 'com.jaredsburrows.license'
+    id 'com.google.secrets_gradle_plugin' version '0.5'
 }
+
 
 def getGitHash = { ->
     def stdout = new ByteArrayOutputStream()
@@ -25,25 +19,24 @@ def getGitHash = { ->
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 30
+    buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.example.tracetogether"
         resValue "string", "build_config_package", "com.example.tracetogether"
         minSdkVersion 23
-        targetSdkVersion 29
-        versionCode 28
-        versionName "2.0.0"
+        targetSdkVersion 30
+        versionCode 45
+        versionName "2.3.0"
         buildConfigField "String", "GITHASH", "\"${getGitHash()}\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation":
                                      "$projectDir/schemas".toString()]
             }
         }
-
+        multiDexEnabled true
         buildConfigField "String", "STORE_URL", STORE_URL
         buildConfigField "String", "SHARE_URL", SHARE_URL
 
@@ -64,7 +57,7 @@ android {
 
     buildTypes {
         debug {
-            resValue "string", "app_name", "ABTraceTogether"
+            resValue "string", "app_name", "APP NAME"
         }
 
         release {
@@ -72,9 +65,8 @@ android {
             jniDebuggable false
             renderscriptDebuggable false
             minifyEnabled false
-            multiDexEnabled false
             zipAlignEnabled true
-            resValue "string", "app_name", "ABTraceTogether"
+            resValue "string", "app_name", "APP NAME"
 
             lintOptions {
                 // Ignore lint errors for now
@@ -99,26 +91,53 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled = true
+
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
-    implementation group: 'androidx.localbroadcastmanager', name: 'localbroadcastmanager', version: '1.0.0-alpha3'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.core:core-ktx:1.5.0'
+    implementation group: 'androidx.localbroadcastmanager', name: 'localbroadcastmanager', version: '1.1.0-alpha01'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'pub.devrel:easypermissions:3.0.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.fragment:fragment-ktx:1.3.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.fragment:fragment-ktx:1.3.5'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.maps.android:android-maps-utils:2.2.3'
+    implementation 'io.heraldprox:herald:2.0.0'
+
+    implementation "com.squareup.moshi:moshi:1.11.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.11.0"
+    implementation 'com.squareup.moshi:moshi-adapters:1.11.0'
+
+    implementation "androidx.browser:browser:1.3.0"
+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'androidx.test:core:1.3.0'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.2"
+    testImplementation 'org.mockito:mockito-core:3.9.0'
+    testImplementation "org.mockito.kotlin:mockito-kotlin:3.2.0"
+    testImplementation "org.robolectric:robolectric:4.5.1"
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // Room components
-    def room_version = "2.2.3"
+    def room_version = "2.2.6"
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -135,9 +154,9 @@ dependencies {
 
     // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
-    implementation "com.google.android.material:material:1.4.0-alpha01"
+    implementation "com.google.android.material:material:1.4.0-rc01"
 
     def archLifecycleVersion = "2.2.0"
     // Lifecycle components
@@ -151,19 +170,16 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.17'
 
     //bottom navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
     //cardview
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.guava:guava:28.2-android'
 
-    //Lottie
-    implementation 'com.airbnb.android:lottie:3.4.0'
-
     // IBM Mobile Foundation
-    implementation 'com.ibm.mobile.foundation:ibmmobilefirstplatformfoundation:8.0.2020032409'
+    implementation 'com.ibm.mobile.foundation:ibmmobilefirstplatformfoundation:8.0.2021061706'
 
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
-    implementation 'com.google.android.gms:play-services-auth-api-phone:17.5.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:17.5.1'
 }

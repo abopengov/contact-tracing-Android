@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_stats"
+            style="@style/LearnTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            tools:text="Stats" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_covid_cases"
+            style="@style/LearnItemText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:drawableStart="@drawable/ic_positive_light"
+            android:drawablePadding="23dp"
+            tools:text="Covid Cases" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vaccinations"
+            style="@style/LearnItemText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/ic_vaccine_light"
+            android:drawablePadding="18dp"
+            tools:text="Vaccinations" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_map"
+            style="@style/LearnItemText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/ic_world_light"
+            android:drawablePadding="21dp"
+            tools:text="Maps" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_dashboard"
+            style="@style/LearnItemText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/ic_take_me_light"
+            android:drawablePadding="26dp"
+            tools:text="Dashboard" />
+    </LinearLayout>
+</ScrollView>

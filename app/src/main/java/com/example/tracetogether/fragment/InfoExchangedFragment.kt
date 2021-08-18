@@ -8,10 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.tracetogether.R
-import com.example.tracetogether.util.Extensions.setLocalizedString
-import kotlinx.android.synthetic.main.fragment_app_basics.backButton
+import com.example.tracetogether.util.Extensions.getLocalizedText
 import kotlinx.android.synthetic.main.fragment_app_basics.learnMorePagingView
-import kotlinx.android.synthetic.main.fragment_info_exchanged.*
+import kotlinx.android.synthetic.main.fragment_info_exchanged.toolbar
 
 
 class InfoExchangedFragment : Fragment() {
@@ -26,9 +25,8 @@ class InfoExchangedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        backButton?.setOnClickListener { goBack() }
-
-        tv_info_exchanged?.setLocalizedString("info_exchanged_title")
+        toolbar.title = "info_exchanged_title".getLocalizedText()
+        toolbar.setNavigationOnClickListener { goBack() }
 
         val adapter = InfoExchangedPagerAdapter(this)
         learnMorePagingView.setAdapter(adapter)
@@ -47,21 +45,30 @@ internal class InfoExchangedPagerAdapter(fragment: Fragment) : FragmentStateAdap
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> LearnMoreCardFragment(
+            0 -> LearnMoreCardFragment.newInstance(
                 R.drawable.info_exchanged_screen_01,
                 "info_exchanged_page1_details"
             )
-            1 -> LearnMoreRequestCardFragment(
-                    null,
+            1 -> LearnMoreRequestCardFragment.newInstance(
+                null,
                 "info_exchanged_page2_title1",
-                LearnMoreRequestCardFragment.Item(R.drawable.ic_phone, "info_exchanged_page2_details1"),
+                LearnMoreRequestCardFragment.Item(
+                    R.drawable.ic_phone,
+                    "info_exchanged_page2_details1"
+                ),
                 null,
                 "info_exchanged_page2_title2",
-                LearnMoreRequestCardFragment.Item(R.drawable.ic_anonymous, "info_exchanged_page2_details2"),
-                LearnMoreRequestCardFragment.Item(R.drawable.ic_blue_x, "info_exchanged_page2_details3")
+                LearnMoreRequestCardFragment.Item(
+                    R.drawable.ic_anonymous,
+                    "info_exchanged_page2_details2"
+                ),
+                LearnMoreRequestCardFragment.Item(
+                    R.drawable.ic_blue_x,
+                    "info_exchanged_page2_details3"
+                )
             )
             2 -> LearnMorePayloadExampleFragment()
-            3 -> LearnMoreCardFragment(
+            3 -> LearnMoreCardFragment.newInstance(
                 R.drawable.info_exchanged_screen_04,
                 "info_exchanged_page4_details"
             )

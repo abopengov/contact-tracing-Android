@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tracetogether.R
 import kotlinx.android.synthetic.main.recycler_view_item.view.*
 import com.example.tracetogether.streetpass.persistence.StreetPassRecord
 import com.example.tracetogether.streetpass.view.StreetPassRecordViewModel
+import kotlinx.android.synthetic.main.activity_main_new.view.*
 
 
 class RecordListAdapter internal constructor(context: Context) :

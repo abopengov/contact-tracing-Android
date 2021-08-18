@@ -18,6 +18,10 @@ import com.example.tracetogether.Preference
 import com.example.tracetogether.status.persistence.StatusRecord
 import com.example.tracetogether.streetpass.persistence.StreetPassRecord
 import org.json.JSONObject
+import java.text.NumberFormat
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.util.*
 
 
 object Extensions {
@@ -113,5 +117,58 @@ object Extensions {
         jsonObject.put("msg", this.msg)
         jsonObject.put("timestamp", this.timestamp)
         return jsonObject
+    }
+
+    fun Int.withCommas(): String = NumberFormat.getNumberInstance(Locale.CANADA).format(this)
+
+    fun Long.withCommas(): String = NumberFormat.getNumberInstance(Locale.CANADA).format(this)
+
+    fun Float.withCommas(): String = NumberFormat.getNumberInstance(Locale.CANADA).format(this)
+
+    fun LocalTime.nextDateTime(now: LocalDateTime = LocalDateTime.now()): LocalDateTime {
+        val date = now.toLocalDate().atTime(this)
+        return if (date.isBefore(now)) {
+            now.toLocalDate().plusDays(1).atTime(this)
+        } else {
+            date
+        }
+    }
+
+    fun LocalTime.withinTimePeriod(startTime: LocalTime?, endTime: LocalTime?): Boolean {
+        if (startTime == null || endTime == null) {
+            return false
+        }
+
+        return if (startTime < endTime) {
+            startTime <= this && endTime > this
+        } else {
+            startTime <= this || endTime > this
+        }
+    }
+
+    fun LocalTime.formatTime(): String {
+        val isPM = hour >= 12
+        return String.format(
+                "%02d:%02d %s",
+                if (hour == 12 || hour == 0) 12 else hour % 12,
+                minute,
+                if (isPM) "PM" else "AM"
+        )
+    }
+
+    fun <T> List<T>.splitBy(predicate: (T) -> Boolean): List<List<T>> {
+        val list = mutableListOf<List<T>>()
+        var subList = mutableListOf<T>()
+        this.forEach { num ->
+            if (predicate(num)) {
+                list.add(subList)
+                subList = mutableListOf()
+            } else {
+                subList.add(num)
+            }
+        }
+        list.add(subList)
+
+        return list
     }
 }

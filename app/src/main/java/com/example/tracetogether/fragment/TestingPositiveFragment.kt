@@ -8,8 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.tracetogether.R
-import com.example.tracetogether.util.Extensions.setLocalizedString
-import kotlinx.android.synthetic.main.fragment_learn_more.*
+import com.example.tracetogether.util.Extensions.getLocalizedText
 import kotlinx.android.synthetic.main.fragment_permissions.*
 
 class TestingPositiveFragment : Fragment() {
@@ -24,9 +23,8 @@ class TestingPositiveFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        backButton?.setOnClickListener { goBack() }
-
-        tv_testing_positive?.setLocalizedString("testing_positive_title")
+        toolbar.title = "testing_positive_title".getLocalizedText()
+        toolbar.setNavigationOnClickListener { goBack() }
 
         val adapter = TestingPositivePagerAdapter(this)
         learnMorePagingView.setAdapter(adapter)
@@ -45,19 +43,19 @@ internal class TestingPositivePagerAdapter(fragment: Fragment) : FragmentStateAd
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> LearnMoreCardFragment(
+            0 -> LearnMoreCardFragment.newInstance(
                 R.drawable.testing_positive_screen_01,
                 "testing_positive_page1_details"
             )
-            1 -> LearnMoreCardFragment(
+            1 -> LearnMoreCardFragment.newInstance(
                 R.drawable.testing_positive_screen_02,
                 "testing_positive_page2_details"
             )
-            2 -> LearnMoreCardFragment(
+            2 -> LearnMoreCardFragment.newInstance(
                 R.drawable.testing_positive_screen_03,
                 "testing_positive_page3_details"
             )
-            3 -> LearnMoreCardFragment(
+            3 -> LearnMoreCardFragment.newInstance(
                 R.drawable.testing_positive_screen_04,
                 "testing_positive_page4_details"
             )

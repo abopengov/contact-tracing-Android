@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import com.example.tracetogether.R
 import com.example.tracetogether.Utils
 import com.example.tracetogether.util.Extensions.setLocalizedString
-import kotlinx.android.synthetic.main.button_and_progress.*
 import kotlinx.android.synthetic.main.fragment_in_app_disclosure.*
 
 class InAppDisclosureFragment : OnboardingFragmentInterface() {
@@ -31,7 +30,7 @@ class InAppDisclosureFragment : OnboardingFragmentInterface() {
         ))
     }
 
-    override fun onBackButtonClick(view: View) {}
+    override fun onBackButtonClick() {}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,9 +49,7 @@ class InAppDisclosureFragment : OnboardingFragmentInterface() {
         tv_item_2_details?.setLocalizedString("in_app_disclosure_location_details")
         tv_item_3_title?.setLocalizedString("in_app_disclosure_phone_number_title")
         tv_item_3_details?.setLocalizedString("in_app_disclosure_phone_number_details")
-        tv_item_4_title?.setLocalizedString("in_app_disclosure_network_title")
-        tv_item_4_details?.setLocalizedString("in_app_disclosure_network_details")
-        onboardingButtonText?.setLocalizedString("next_button")
+        btn_next?.setLocalizedString("next_button")
 
         disableButton()
 

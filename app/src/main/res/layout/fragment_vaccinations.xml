@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:titleTextAppearance="@style/LearnTitle"
+            tools:title="Vaccinations" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_last_updated"
+                    style="@style/GreySmallText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Last updated: 24/03/2021" />
+
+                <include
+                    layout="@layout/view_stats_vaccines"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp" />
+
+                <include
+                    layout="@layout/view_stats_charts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_goto_dashboard"
+                    style="@style/Settings.OutlineButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="35dp"
+                    tools:text="Go to Dashboard" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

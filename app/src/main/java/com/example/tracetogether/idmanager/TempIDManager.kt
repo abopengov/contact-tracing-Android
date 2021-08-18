@@ -109,10 +109,10 @@ object TempIDManager : CoroutineScope by MainScope() {
         val gson: Gson = GsonBuilder().create()
 
         try {
-            val tempIDResult = gson.fromJson(tempIDString, Array<TemporaryID>::class.java)
+            val tempIDResult: Array<TemporaryID>? = gson.fromJson(tempIDString, Array<TemporaryID>::class.java)
             CentralLog.d(
                 TAG,
-                "[TempID] After GSON conversion: ${tempIDResult.firstOrNull()?.tempID} ${tempIDResult.firstOrNull()?.startTime}"
+                "[TempID] After GSON conversion: ${tempIDResult?.firstOrNull()?.tempID} ${tempIDResult?.firstOrNull()?.startTime}"
             )
 
             return tempIDResult
@@ -172,14 +172,14 @@ object TempIDManager : CoroutineScope by MainScope() {
                     var responseText = tempIDsResponse.text?.replace("{\"pin\":", "")
                     responseText = responseText?.substring(0, responseText.length - 1)
 
-                    var result: HashMap<String, Any> = Gson().fromJson(
+                    val result: HashMap<String, Any>? = Gson().fromJson(
                         responseText,
                         object : TypeToken<HashMap<String, Any>>() {}.getType()
                     )
 
-                    val status = result["status"]
-                    val tempIDs = result["tempIDs"]
-                    val refreshTime = result.getValue("refreshTime") as Double
+                    val status = result?.get("status")
+                    val tempIDs = result?.get("tempIDs")
+                    val refreshTime = result?.getValue("refreshTime") as Double
 
                     when {
                         status != "SUCCESS" -> {

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="onboarding_top_image_margin">60dp</dimen>
     <dimen name="learn_more_top_image_margin">40dp</dimen>
     <dimen name="learn_more_top_item_margin">40dp</dimen>
     <dimen name="learn_more_item_margin">30dp</dimen>
+    <dimen name="widget_dynamic_padding_5">5dp</dimen>
+    <dimen name="widget_dynamic_padding_10">10dp</dimen>
+    <dimen name="widget_side_padding">15dp</dimen>
+    <dimen name="widget_trend_width">25dp</dimen>
+    <dimen name="widget_trend_height">15dp</dimen>
 </resources>

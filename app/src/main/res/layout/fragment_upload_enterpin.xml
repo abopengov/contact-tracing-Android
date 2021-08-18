@@ -6,26 +6,15 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <ImageView
-        style="@style/OnboardingImage"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="0dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_upoad_illustration"
-        app:layout_constraintTop_toBottomOf="@+id/enterPinInputs"
-        app:layout_constraintBottom_toTopOf="@+id/enterPinActionButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/enterPinBackButton"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_back" />
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:titleTextAppearance="@style/LearnTitle" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title"
@@ -84,7 +73,7 @@
             android:lineSpacingExtra="12dp"
             android:maxLength="1"
             android:textAlignment="center"
-            android:textColor="@color/primary_purple"
+            android:textColor="@color/final_blue"
             android:textSize="48sp" />
 
         <EditText
@@ -97,7 +86,7 @@
             android:lineSpacingExtra="12dp"
             android:maxLength="1"
             android:textAlignment="center"
-            android:textColor="@color/primary_purple"
+            android:textColor="@color/final_blue"
             android:textSize="48sp" />
 
         <EditText
@@ -110,7 +99,7 @@
             android:lineSpacingExtra="12dp"
             android:maxLength="1"
             android:textAlignment="center"
-            android:textColor="@color/primary_purple"
+            android:textColor="@color/final_blue"
             android:textSize="48sp" />
 
         <EditText
@@ -123,7 +112,7 @@
             android:lineSpacingExtra="12dp"
             android:maxLength="1"
             android:textAlignment="center"
-            android:textColor="@color/primary_purple"
+            android:textColor="@color/final_blue"
             android:textSize="48sp" />
 
         <EditText
@@ -136,7 +125,7 @@
             android:lineSpacingExtra="12dp"
             android:maxLength="1"
             android:textAlignment="center"
-            android:textColor="@color/primary_purple"
+            android:textColor="@color/final_blue"
             android:textSize="48sp" />
 
         <EditText
@@ -149,11 +138,10 @@
             android:lineSpacingExtra="12dp"
             android:maxLength="1"
             android:textAlignment="center"
-            android:textColor="@color/primary_purple"
+            android:textColor="@color/final_blue"
             android:textSize="48sp" />
 
     </LinearLayout>
-
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/enterPinFragmentErrorMessage"
@@ -168,22 +156,18 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enterPinInputs" />
 
-
-    <LinearLayout
-        android:id="@+id/enterPinActionButton"
-        style="@style/CustomButton"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_next"
+        style="@style/Main.PrimaryButton.Next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <TextView
-            android:id="@+id/enterPinButtonText"
-            style="@style/CustomButtonText" />
-
-        <ImageView
-            style="@style/CustomButtonIcon"
-            android:src="@drawable/ic_arrow_forward_white" />
-    </LinearLayout>
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="Next" />
 
     <FrameLayout
         android:id="@+id/uploadPageFragmentLoadingProgressBarFrame"

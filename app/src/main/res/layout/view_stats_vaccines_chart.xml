@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stats_vaccines_chart_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/grey_11"
+    app:cardCornerRadius="10dp"
+    app:strokeColor="@color/outline_grey"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_vaccines_chart"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/ic_vaccine_black"
+            app:layout_constraintBottom_toBottomOf="@id/tv_vaccines_chart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_vaccines_chart" />
+
+        <TextView
+            android:id="@+id/tv_vaccines_chart"
+            style="@style/GreyDescriptionMediumText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_vaccines_chart"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Vaccines given per day over 30 days" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/vaccines_chart"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vaccines_chart" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

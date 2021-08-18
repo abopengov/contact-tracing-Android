@@ -1,7 +1,7 @@
 package com.example.tracetogether.herald
 
-import com.vmware.herald.sensor.datatype.Int8
-import com.vmware.herald.sensor.datatype.UInt16
+import io.heraldprox.herald.sensor.datatype.Int8
+import io.heraldprox.herald.sensor.datatype.UInt16
 import junit.framework.TestCase
 import org.junit.Test
 

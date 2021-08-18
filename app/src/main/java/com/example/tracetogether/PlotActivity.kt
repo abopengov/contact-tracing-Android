@@ -6,7 +6,6 @@ import android.util.Log
 import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.tracetogether.R
 import com.example.tracetogether.model.ExportData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

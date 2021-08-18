@@ -41,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_enabled_location_permission_step1"
         app:layout_constraintTop_toBottomOf="@id/tv_location_permission_instructions_title"
-        tools:text="Tap on the link below to go to AB TraceTogether in your Settings." />
+        tools:text="Tap on the link below to go to *APP NAME* in your Settings." />
 
     <ImageView
         android:id="@+id/iv_enabled_location_permission_step2"
@@ -114,7 +114,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_location_permission_settings"
-        style="@style/RoundedOutlineButton"
+        style="@style/Settings.OutlineButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -125,6 +125,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_location_permission_instructions_step4"
-        tools:text="Go to AB TraceTogether Settings" />
+        tools:text="Go to *APP NAME* Settings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

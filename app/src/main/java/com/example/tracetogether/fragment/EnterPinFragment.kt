@@ -25,6 +25,7 @@ import com.example.tracetogether.TracerApp
 import com.example.tracetogether.Utils
 import com.example.tracetogether.api.Request
 import com.example.tracetogether.api.Response
+import com.example.tracetogether.home.HomeFragment
 import com.example.tracetogether.logging.CentralLog
 import com.example.tracetogether.model.CovidTestData
 import com.example.tracetogether.model.ExportData
@@ -49,15 +50,21 @@ import java.util.*
     retrieving encounter log from storage,
     and encounter log upload
  */
-class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestData: CovidTestData) :
-    Fragment(),
-    CoroutineScope by MainScope() {
-
+class EnterPinFragment : Fragment(), CoroutineScope by MainScope() {
     companion object {
         const val TAG = "UploadFragment"
         const val ENCOUNTER_PARTITION_SIZE = 50000
         const val OTP_CODE_PREFIX = ": "
         const val OTP_CODE_LENGTH = 6
+        private const val EXTRA_COVID_TEST_DATA = "EXTRA_COVID_TEST_DATA"
+
+        fun newInstance(covidTestData: CovidTestData): EnterPinFragment {
+                val fragment = EnterPinFragment()
+                val bundle = Bundle(1)
+                bundle.putParcelable(EXTRA_COVID_TEST_DATA, covidTestData)
+                fragment.arguments = bundle
+                return fragment
+            }
     }
 
     private var disposeObj: Disposable? = null
@@ -66,14 +73,14 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
     private var otpInputs: MutableList<EditText> = mutableListOf()
 
     private val startSmsConsent =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                val message = result.data?.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE)
-                if (message != null) {
-                    getOtpFromMessage(message)
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                    val message = result.data?.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE)
+                    if (message != null) {
+                        getOtpFromMessage(message)
+                    }
                 }
             }
-        }
 
     private val smsVerificationReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -84,7 +91,7 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
                 when (smsRetrieverStatus.statusCode) {
                     CommonStatusCodes.SUCCESS -> {
                         val consentIntent =
-                            extras.getParcelable<Intent>(SmsRetriever.EXTRA_CONSENT_INTENT)
+                                extras.getParcelable<Intent>(SmsRetriever.EXTRA_CONSENT_INTENT)
                         startSmsConsent.launch(consentIntent)
                     }
                 }
@@ -102,9 +109,9 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_upload_enterpin, container, false)
     }
@@ -113,12 +120,12 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
         super.onViewCreated(view, savedInstanceState)
 
         clearInputs()
-        enterPinActionButton?.isEnabled = false
+        btn_next?.isEnabled = false
 
         tv_title?.setLocalizedString("enter_pin_title")
         tv_desc?.setLocalizedString("enter_pin_desc")
         enterPinFragmentErrorMessage?.setLocalizedString("invalid_pin")
-        enterPinButtonText?.setLocalizedString("upload_button")
+        btn_next?.setLocalizedString("upload_button")
 
         otpInputs.add(otp_et1)
         otpInputs.add(otp_et2)
@@ -142,7 +149,7 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
         otp_et5?.setOnKeyListener(OTPKeyListener())
         otp_et6?.setOnKeyListener(OTPKeyListener())
 
-        enterPinActionButton?.setOnClickListener {
+        btn_next?.setOnClickListener {
             if (uploadToken?.equals(getOtp()) == true) {
                 enterPinFragmentErrorMessage.visibility = View.INVISIBLE
                 uploadData()
@@ -154,7 +161,7 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
             }
         }
 
-        enterPinBackButton?.setOnClickListener {
+        toolbar.setNavigationOnClickListener {
             val fragManager: FragmentManager? = activity?.supportFragmentManager
             fragManager?.popBackStack()
         }
@@ -185,23 +192,23 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
         queryParams["userId"] = Preference.getUUID(context)
 
         val getUploadTokenResponse = Request.runRequest(
-            "/adapters/getUploadTokenAdapter/getUploadToken",
-            Request.GET,
-            queryParams = queryParams
+                "/adapters/getUploadTokenAdapter/getUploadToken",
+                Request.GET,
+                queryParams = queryParams
         )
         val token =
-            getUploadTokenResponse.data?.get("token") // if the service failed, it could return token as a JSON object with error instead of string: {"token":{"error":"Unable to get the upload token"}}
+                getUploadTokenResponse.data?.get("token") // if the service failed, it could return token as a JSON object with error instead of string: {"token":{"error":"Unable to get the upload token"}}
         if (!getUploadTokenResponse.isSuccess() || getUploadTokenResponse.status != 200 || token == null || token !is String) {
             enterPinFragmentErrorMessage?.setLocalizedString("failed_to_send_pin")
             enterPinFragmentErrorMessage?.visibility = View.VISIBLE
 
             if (getUploadTokenResponse.status == 401 || token == null) {
-                enterPinActionButton?.isEnabled = false
+                btn_next?.isEnabled = false
             }
 
         } else {
             uploadToken = token
-            enterPinActionButton?.isEnabled = true
+            btn_next?.isEnabled = true
         }
 
         turnOffLoadingProgress()
@@ -256,28 +263,28 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
         queryParams["userId"] = Preference.getUUID(context)
 
         return Request.runRequest(
-            "/adapters/uploadData/uploadData",
-            Request.POST,
-            0,
-            data = jsonData,
-            queryParams = queryParams
+                "/adapters/uploadData/uploadData",
+                Request.POST,
+                0,
+                data = jsonData,
+                queryParams = queryParams
         )
     }
 
     private suspend fun getPartitionedEncounterJson(): List<JSONObject> =
-        withContext(Dispatchers.IO) {
-            val partitionedRecords =
-                Lists.partition(
-                    StreetPassRecordStorage(TracerApp.AppContext).getAllRecords(),
-                    ENCOUNTER_PARTITION_SIZE
-                )
+            withContext(Dispatchers.IO) {
+                val partitionedRecords =
+                        Lists.partition(
+                                StreetPassRecordStorage(TracerApp.AppContext).getAllRecords(),
+                                ENCOUNTER_PARTITION_SIZE
+                        )
 
-            val statusRecords = StatusRecordStorage(TracerApp.AppContext).getAllRecords()
+                val statusRecords = StatusRecordStorage(TracerApp.AppContext).getAllRecords()
 
-            partitionedRecords
-                .map { streetPassRecords -> ExportData(streetPassRecords, statusRecords) }
-                .map(::convertToUploadPayload)
-        }
+                partitionedRecords
+                        .map { streetPassRecords -> ExportData(streetPassRecords, statusRecords) }
+                        .map(::convertToUploadPayload)
+            }
 
     private fun convertToUploadPayload(exportedData: ExportData): JSONObject {
         CentralLog.d(TAG, "records: ${exportedData.recordList}")
@@ -294,12 +301,14 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
         }
 
         val jsonObject = JSONObject()
-        jsonObject.put("covidTestData", JSONObject().apply {
-            put("testDate", covidTestData.testDate / 1000)
-            covidTestData.symptomsDate?.let { symptomsDate ->
-                put("symptomsDate", symptomsDate / 1000)
-            }
-        })
+        arguments?.getParcelable<CovidTestData>(EXTRA_COVID_TEST_DATA)?.let { covidTestData ->
+            jsonObject.put("covidTestData", JSONObject().apply {
+                put("testDate", covidTestData.testDate / 1000)
+                covidTestData.symptomsDate?.let { symptomsDate ->
+                    put("symptomsDate", symptomsDate / 1000)
+                }
+            })
+        }
         jsonObject.put("token", uploadToken)
         jsonObject.put("records", JSONArray(updatedDeviceList))
         jsonObject.put("events", JSONArray(updatedStatusList))
@@ -341,10 +350,10 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
         val startIndex = message.indexOf(OTP_CODE_PREFIX)
         if (message.length >= 8 && startIndex > 0) {
             setOtp(
-                message.substring(
-                    startIndex + OTP_CODE_PREFIX.length,
-                    startIndex + OTP_CODE_PREFIX.length + OTP_CODE_LENGTH
-                )
+                    message.substring(
+                            startIndex + OTP_CODE_PREFIX.length,
+                            startIndex + OTP_CODE_PREFIX.length + OTP_CODE_LENGTH
+                    )
             )
         }
     }
@@ -394,7 +403,7 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
                     if (text.isEmpty()) otpInputs[4].requestFocus()
 
                     if (otp_et1.text.isNotEmpty() && otp_et2.text.isNotEmpty() && otp_et3.text.isNotEmpty()
-                        && otp_et4.text.isNotEmpty() && otp_et5.text.isNotEmpty() && otp_et6.text.isNotEmpty()
+                            && otp_et4.text.isNotEmpty() && otp_et5.text.isNotEmpty() && otp_et6.text.isNotEmpty()
                     ) {
                         getUploadToken()
                     }
@@ -407,13 +416,12 @@ class EnterPinFragment(private val isFirstStep: Boolean, private val covidTestDa
         override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
             if (validateOtp(getOtp())) {
                 Utils.hideKeyboardFrom(view.context, view)
-                enterPinActionButton?.isEnabled = true
-                enterPinButtonText?.setLocalizedString("upload_button")
+                btn_next?.isEnabled = true
+                btn_next?.setLocalizedString("upload_button")
             } else {
-                enterPinActionButton?.isEnabled = false
-                enterPinButtonText?.setLocalizedString("submit_button")
+                btn_next?.isEnabled = false
+                btn_next?.setLocalizedString("submit_button")
             }
         }
-
     }
 }

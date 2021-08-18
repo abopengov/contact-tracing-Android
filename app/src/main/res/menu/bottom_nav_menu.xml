@@ -17,7 +17,7 @@
         android:title="@string/menu_learn_more" />
 
     <item
-        android:id="@+id/navigation_guidance"
-        android:icon="@drawable/ic_guidance"
+        android:id="@+id/navigation_more"
+        android:icon="@drawable/ic_more"
         android:title="@string/menu_guidance" />
 </menu>

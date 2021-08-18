@@ -14,16 +14,11 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.tracetogether.*
-import com.example.tracetogether.Preference
-import com.example.tracetogether.TracerApp
-import com.example.tracetogether.Utils
 import com.example.tracetogether.logging.CentralLog
-import com.example.tracetogether.util.Extensions.getLocalizedText
 import com.example.tracetogether.util.Extensions.setLocalizedString
 import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.Credentials
 import com.google.android.gms.auth.api.credentials.HintRequest
-import kotlinx.android.synthetic.main.button_and_progress.*
 import kotlinx.android.synthetic.main.fragment_register_number.*
 
 
@@ -75,7 +70,7 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
         disableButtonAndRequestOTP()
     }
 
-    override fun onBackButtonClick(view: View) {
+    override fun onBackButtonClick() {
         var onboardActivity = context as OnboardingActivity?
         onboardActivity?.let {
             it.onBackPressed()
@@ -93,7 +88,7 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
 
     private fun requestOTP() {
         mView?.let { view ->
-            phone_number_error?.visibility = View.INVISIBLE
+            phone_number_error?.visibility = View.GONE
 
             var numberText = getUnmaskedNumber(phone_number?.text.toString())
             CentralLog.d(TAG, "The value retrieved: ${numberText}")
@@ -117,11 +112,9 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
         mView = view
 
         tv_enter_number?.setLocalizedString("register_number")
-        tv_step?.setLocalizedString("register_number_step")
         phone_number_desc1?.setLocalizedString("register_number_desc1")
-        phone_number_desc2?.setLocalizedString("register_number_desc2")
         phone_number_error?.setLocalizedString("invalid_phone")
-        onboardingButtonText?.setLocalizedString("next_button")
+        btn_next?.setLocalizedString("next_button")
 
         phone_number?.addTextChangedListener(object : PhoneNumberFormattingTextWatcher() {
             override fun afterTextChanged(s: Editable) {
@@ -161,9 +154,6 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
                 false
             }
         }
-
-        val versionLabel = "app_version_label".getLocalizedText() + BuildConfig.VERSION_NAME + Utils.getVersionSuffix()
-        tv_app_version?.text = versionLabel
 
         disableButton()
     }
@@ -233,12 +223,12 @@ class RegisterNumberFragment : OnboardingFragmentInterface() {
                     6
                 ) + "-" + phone.substring(6)
                 phone_number?.setText(masked)
-                phone_number?.setSelection(phone_number.text.length - selectionPointer)
+                phone_number?.setSelection(masked.length - selectionPointer)
             } else if (phoneLength >= 3 && !backspaceFlag) {
                 editFlag = true
                 masked = "(" + phone.substring(0, 3) + ") " + phone.substring(3)
                 phone_number?.setText(masked)
-                phone_number?.setSelection(phone_number.text.length - selectionPointer)
+                phone_number?.setSelection(masked.length - selectionPointer)
             }
         } else {
             editFlag = false

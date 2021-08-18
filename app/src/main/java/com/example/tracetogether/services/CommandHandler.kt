@@ -5,12 +5,9 @@ import android.os.Message
 import java.lang.ref.WeakReference
 
 class CommandHandler(val service: WeakReference<BluetoothMonitoringService>) : Handler() {
-    override fun handleMessage(msg: Message?) {
-        msg?.let {
-            //            val cmd = msg.arg1
-            val cmd = msg.what
-            service.get()?.runService(BluetoothMonitoringService.Command.findByValue(cmd))
-        }
+    override fun handleMessage(msg: Message) {
+        val cmd = msg.what
+        service.get()?.runService(BluetoothMonitoringService.Command.findByValue(cmd))
     }
 
     fun sendCommandMsg(cmd: BluetoothMonitoringService.Command, delay: Long) {

@@ -16,12 +16,23 @@ import com.example.tracetogether.util.Extensions.setLocalizedStringHint
 import com.example.tracetogether.util.MonthPreviousDateValidator
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
-import kotlinx.android.synthetic.main.button_and_progress.*
 import kotlinx.android.synthetic.main.fragment_test_date.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TestDateFragment(private val mhrFlow: Boolean) : Fragment() {
+class TestDateFragment : Fragment() {
+    companion object {
+        private const val EXTRA_MHR_FLOW = "EXTRA_MHR_FLOW"
+
+        fun newInstance(mhrFlow: Boolean): TestDateFragment {
+            val fragment = TestDateFragment()
+            val bundle = Bundle(1)
+            bundle.putBoolean(EXTRA_MHR_FLOW, mhrFlow)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,22 +44,22 @@ class TestDateFragment(private val mhrFlow: Boolean) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onboardingButtonText?.setLocalizedString("next_button")
+        btn_next?.setLocalizedString("next_button")
         tv_test_date_title?.setLocalizedString("upload_test_date_title")
         et_test_date?.setLocalizedStringHint("upload_enter_date_hint")
         switch_covid_symptoms?.setLocalizedString("upload_symptoms_toggle_text")
         tv_symptoms_date_title?.setLocalizedString("symptoms_date_title")
         et_symtoms_date?.setLocalizedStringHint("upload_enter_date_hint")
 
-        et_test_date.doOnTextChanged { _, _, _, _ -> onboardingButton.isEnabled = canProceed() }
+        et_test_date.doOnTextChanged { _, _, _, _ -> btn_next.isEnabled = canProceed() }
         et_test_date.setOnClickListener(::showDatePicker)
-        et_symtoms_date.doOnTextChanged { _, _, _, _ -> onboardingButton.isEnabled = canProceed() }
+        et_symtoms_date.doOnTextChanged { _, _, _, _ -> btn_next.isEnabled = canProceed() }
         et_symtoms_date.setOnClickListener(::showDatePicker)
 
-        onboardingButton.isEnabled = false
+        btn_next.isEnabled = false
 
         switch_covid_symptoms.setOnCheckedChangeListener { _, isChecked ->
-            onboardingButton.isEnabled = canProceed()
+            btn_next.isEnabled = canProceed()
 
             val visibility = if (isChecked) View.VISIBLE else View.GONE
 
@@ -56,23 +67,24 @@ class TestDateFragment(private val mhrFlow: Boolean) : Fragment() {
             et_symtoms_date.visibility = visibility
         }
 
-        onboardingButton?.setOnClickListener {
+        val mhrFlow = arguments?.getBoolean(EXTRA_MHR_FLOW) ?: false
+        btn_next?.setOnClickListener {
             getCovidTestData()?.let { covidTestData ->
                 if (mhrFlow) {
-                    navigateToUploadPin(mhrFlow, covidTestData)
-                }
-                else {
+                    navigateToUploadPin(covidTestData)
+                } else {
                     navigateToVerifyCaller(covidTestData)
                 }
             }
         }
-        backButton?.setOnClickListener {
+
+        toolbar.setNavigationOnClickListener {
             val fragManager: FragmentManager? = activity?.supportFragmentManager
             fragManager?.popBackStack()
         }
     }
 
-    private fun canProceed() : Boolean {
+    private fun canProceed(): Boolean {
         return et_test_date.text.isNotEmpty()
                 && (!switch_covid_symptoms.isChecked || et_symtoms_date.text.isNotEmpty())
     }
@@ -110,10 +122,10 @@ class TestDateFragment(private val mhrFlow: Boolean) : Fragment() {
         }
     }
 
-    private fun navigateToUploadPin(mhrFlow: Boolean, covidTestData: CovidTestData) {
+    private fun navigateToUploadPin(covidTestData: CovidTestData) {
         val fragManager: FragmentManager? = activity?.supportFragmentManager
         val fragTrans: FragmentTransaction? = fragManager?.beginTransaction()
-        val fragB = EnterPinFragment(mhrFlow, covidTestData)
+        val fragB = EnterPinFragment.newInstance(covidTestData)
 
         fragTrans?.replace(R.id.content, fragB)
         fragTrans?.addToBackStack(EnterPinFragment::class.java.name)
@@ -123,7 +135,7 @@ class TestDateFragment(private val mhrFlow: Boolean) : Fragment() {
     private fun navigateToVerifyCaller(covidTestData: CovidTestData) {
         val fragManager: FragmentManager? = activity?.supportFragmentManager
         val fragTrans: FragmentTransaction? = fragManager?.beginTransaction()
-        val fragB = VerifyCallerFragment(covidTestData)
+        val fragB = VerifyCallerFragment.newInstance(covidTestData)
 
         fragTrans?.replace(R.id.content, fragB)
         fragTrans?.addToBackStack(VerifyCallerFragment::class.java.name)

@@ -14,25 +14,27 @@ import android.view.inputmethod.InputMethodManager
 import com.example.tracetogether.api.ErrorCode
 import com.example.tracetogether.api.Request
 import com.example.tracetogether.logging.CentralLog
+import com.example.tracetogether.pause.PauseScheduler
 import com.example.tracetogether.scheduler.Scheduler
 import com.example.tracetogether.services.BluetoothMonitoringService
 import com.example.tracetogether.services.BluetoothMonitoringService.Companion.PENDING_BM_UPDATE
 import com.example.tracetogether.services.BluetoothMonitoringService.Companion.PENDING_HEALTH_CHECK_CODE
 import com.example.tracetogether.services.BluetoothMonitoringService.Companion.PENDING_PURGE_CODE
 import com.worklight.wlclient.api.WLClient
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 object Utils {
-
     private const val TAG = "Utils"
+    private const val DEFAULT_CACHE_DURATION = 60 * 60 * 1000
 
     fun getServerURL(): String {
         return WLClient.getInstance().serverUrl.toString()
     }
 
-    fun getRequiredPermissions(): Array<String> {
+    fun getLocationPermissionIdentifier(): Array<String> {
         return arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
@@ -75,6 +77,11 @@ object Utils {
     fun startBluetoothMonitoringService(context: Context) {
         if (!Preference.isOnBoarded(context)) {
             CentralLog.d(TAG, "App has not been onboarded. No services started.")
+            return
+        }
+
+        if (PauseScheduler.withinPauseSchedule(context)) {
+            CentralLog.d(TAG, "Detection is currently paused. No services started.")
             return
         }
 
@@ -236,4 +243,29 @@ object Utils {
         }
     }
 
+    fun getStatsCacheDuration(): Int {
+        return try {
+            val statsCacheDuration = BuildConfig.STATS_CACHE_DURATION.toInt()
+            if (statsCacheDuration >= 0) {
+                statsCacheDuration
+            } else {
+                DEFAULT_CACHE_DURATION
+            }
+        } catch (ex: Exception) {
+            DEFAULT_CACHE_DURATION
+        }
+    }
+
+    fun getUrlsCacheDuration(): Int {
+        return try {
+            val urlsCacheDuration = BuildConfig.URLS_CACHE_DURATION.toInt()
+            if (urlsCacheDuration >= 0) {
+                urlsCacheDuration
+            } else {
+                DEFAULT_CACHE_DURATION
+            }
+        } catch (ex: Exception) {
+            DEFAULT_CACHE_DURATION
+        }
+    }
 }

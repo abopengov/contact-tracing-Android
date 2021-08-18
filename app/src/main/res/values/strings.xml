@@ -37,8 +37,14 @@
 
     <string name="faq_url">https://example.com/faq</string>
     <string name="privacy_url">https://example.com/privacy</string>
-    <string name="close_contacts_faq_url">https://example.com/close-contacts-faq</string>
-    <string name="stats_url">https://example.com/statistics</string>
-    <string name="highlights_url">https://example.com/highlights</string>
+    <string name="close_contacts_faq_url">https://example.com/close-contacts</string>
+    <string name="stats_url">https://example.com/stats</string>
+    <string name="guidance_url">https://example.com/guidance</string>
+    <string name="map_cases_high">100+</string>
+    <string name="map_cases_medium">10-99</string>
+    <string name="map_cases_low">1-9</string>
+    <string name="map_cases_none">0</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

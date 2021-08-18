@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:drawableStart="@drawable/ic_location_light"
-                android:drawablePadding="19dp"
+                android:drawablePadding="21dp"
                 tools:text="Permissions we request" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:drawableStart="@drawable/ic_positive_light"
-                android:drawablePadding="19dp"
+                android:drawablePadding="16dp"
                 tools:text="When testing positive" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -98,8 +98,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:drawableStart="@drawable/ic_potential_exposures"
-                android:drawablePadding="19dp"
+                android:drawablePadding="16dp"
                 tools:text="Potential exposures" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_how_will_i_be_notified"
+                style="@style/LearnItemText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/ic_peeps"
+                android:drawablePadding="16dp"
+                tools:text="How will I be notified?" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_battery_consumption"
@@ -108,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:drawableStart="@drawable/ic_lightning_bolt"
-                android:drawablePadding="19dp"
+                android:drawablePadding="23dp"
                 tools:text="Battery consumption" />
 
             <com.google.android.material.textview.MaterialTextView

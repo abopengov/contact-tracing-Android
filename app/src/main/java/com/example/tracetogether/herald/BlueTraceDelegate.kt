@@ -2,30 +2,35 @@ package com.example.tracetogether.herald
 
 import com.example.tracetogether.TracerApp
 import com.example.tracetogether.streetpass.persistence.StreetPassRecord
-import com.vmware.herald.sensor.DefaultSensorDelegate
-import com.vmware.herald.sensor.datatype.*
-import java.util.*
+import io.heraldprox.herald.sensor.DefaultSensorDelegate
+import io.heraldprox.herald.sensor.datatype.*
+import java.util.Date
 
 class BlueTraceDelegate(
     private val blueTraceDataPersistence: BlueTraceDataPersistence,
-    private val encounterWindow: Long = 60000
+    private val encounterWindow: Long = DEFAULT_RECENT_TIME_THRESHOLD_SECONDS
 ) :
     DefaultSensorDelegate() {
+    companion object {
+        private const val DEFAULT_RECENT_TIME_THRESHOLD_SECONDS = 60 * 1000L
+    }
 
     internal val recentContactEvents = mutableMapOf<String, Long>()
 
     override fun sensor(
-        sensor: SensorType?,
-        didMeasure: Proximity?,
-        fromTarget: TargetIdentifier?,
-        withPayload: PayloadData?
+            sensor: SensorType,
+            didMeasure: Proximity,
+            fromTarget: TargetIdentifier,
+            withPayload: PayloadData
     ) {
-        if (didMeasure != null && fromTarget != null && withPayload != null) {
-            processPayload(didMeasure, fromTarget, withPayload)
-        }
+        processPayload(didMeasure, fromTarget, withPayload)
     }
 
-    private fun processPayload(proximity: Proximity, targetIdentifier: TargetIdentifier, payload: PayloadData) {
+    private fun processPayload(
+        proximity: Proximity,
+        targetIdentifier: TargetIdentifier,
+        payload: PayloadData
+    ) {
         val uniqueIdentifier = "${targetIdentifier.value}${payload.hashCode()}"
         val payloadExpiryTime = recentContactEvents[uniqueIdentifier]
 

@@ -29,16 +29,16 @@ class PreOnboardingActivity : FragmentActivity(), CoroutineScope by MainScope() 
         tv_app_version?.text = versionLabel
         tv_title?.setLocalizedString("tv_onboarding_title")
         tv_desc?.setLocalizedString("tv_onboarding_desc")
-        tv_btn?.setLocalizedString("i_want_to_help")
+        btn_next?.setLocalizedString("i_want_to_help")
         watermark_foot_label?.setLocalizedString("tv_onboarding_desc_sub")
 
 
-        btn_onboardingStart?.setOnClickListener {
+        btn_next?.setOnClickListener {
             var intent = Intent(this, HowItWorksActivity::class.java)
             startActivity(intent)
         }
         if (Preference.getUUIDRetryAttempts(applicationContext) > 2) {
-            btn_onboardingStart?.isEnabled = false
+            btn_next?.isEnabled = false
             tv_desc?.setLocalizedString("tv_uuid_retry_error")
             tv_desc?.setTextColor(ContextCompat.getColor(this, R.color.error))
         }

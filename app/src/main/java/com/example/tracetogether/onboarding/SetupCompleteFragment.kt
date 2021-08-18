@@ -39,7 +39,7 @@ class SetupCompleteFragment : OnboardingFragmentInterface() {
         }
     }
 
-    override fun onBackButtonClick(view: View) {}
+    override fun onBackButtonClick() {}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,9 +52,8 @@ class SetupCompleteFragment : OnboardingFragmentInterface() {
         super.onViewCreated(view, savedInstanceState)
 
         tv_title?.setLocalizedString("app_permission_fully_setup")
-        tv_desc?.setLocalizedString("app_permission_fully_setup_desc")
-        setButtonText("finish_button".getLocalizedText())
-        setButtonIcon(R.drawable.ic_checkmark_white)
+        tv_description?.setLocalizedString("app_permission_fully_setup_desc")
+        setButtonText("onboarding_go_to_homepage".getLocalizedText())
     }
 
     override fun onUpdatePhoneNumber(num: String) {}

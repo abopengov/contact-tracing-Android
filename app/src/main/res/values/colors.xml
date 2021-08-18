@@ -18,8 +18,9 @@
     <color name="primary_blue_1">#0030A1</color>
     <color name="primary_blue_4">#0057DD</color>
     <color name="primary_blue_5">#0057DD</color>
-
-    <color name="menu_blue"> #0070C4</color>
+    <color name="menu_blue">#0070C4</color>
+    <color name="chart_blue_start">#0030A1</color>
+    <color name="chart_blue_end">#73D1EB</color>
 
 
     <color name="grey_1">#202020</color>
@@ -34,7 +35,9 @@
     <color name="grey_10">#ECECEC</color>
     <color name="grey_11">#F8F8F8</color>
 
-    <color name="error">#CC0000</color>
+    <color name="outline_grey">#CCCCCC</color>
+
+    <color name="error">#A52626</color>
     <color name="success">#449D44</color>
 
 
@@ -63,4 +66,21 @@
     <color name="border_blue2">#C3D7E2</color>
     <color name="fill_blue">#E6F1F8</color>
     <color name="example_background">#D5E2EA</color>
+
+    <color name="grey_dark">#393939</color>
+    <color name="grey_light">#F0F0F0</color>
+    <color name="grey_border">#CCCCCC</color>
+    <color name="grey_super_light">#FAFAFA</color>
+
+    <color name="grey_unselected">#707070</color>
+    <color name="map_cases_high">#B0ED6A6B</color>
+    <color name="map_cases_medium">#B0FEB24C</color>
+    <color name="map_cases_low">#B0FFF1C9</color>
+    <color name="map_cases_none">#B0F2F2F2</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+
+    <color name="light_purple">#F0ECF9</color>
 </resources>
